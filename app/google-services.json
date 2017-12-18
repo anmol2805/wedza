@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "149269006670",
+    "firebase_url": "https://wedza-2ed1f.firebaseio.com",
+    "project_id": "wedza-2ed1f",
+    "storage_bucket": "wedza-2ed1f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149269006670:android:4b1cff5a59e44e8a",
+        "android_client_info": {
+          "package_name": "com.anmol.wedza"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "149269006670-r1cbjnb2afsosvrbj3g7veac3bk3dkn0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anmol.wedza",
+            "certificate_hash": "34b96318831da91a55cfc5aec7fc8ca64a04c83c"
+          }
+        },
+        {
+          "client_id": "149269006670-e4e2dj5pc2334oj5t4sr53cl76kohgd1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn46uEp3NOwm4Z23WGSQVVcQssGz9Vp9Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "149269006670-e4e2dj5pc2334oj5t4sr53cl76kohgd1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
