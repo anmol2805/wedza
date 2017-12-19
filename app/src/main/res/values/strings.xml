@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Wedza</string>
-    <string name="facebook_app_id">827230157461930</string>
+    <string name="facebook_app_id">404075656693412</string>
+    <string name="fb_login_protocol_scheme">fb404075656693412</string>
 </resources>
