@@ -211,10 +211,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Log.i(TAG,"Login was successful in Firebase");
             Log.i(TAG,"UID "+ currentUser.getUid());
 
-//            Intent intent = new Intent(this,PhoneVerification.class);
-//            intent.putExtra("profilePicturePath",profilePicturePath);
-//            intent.putExtra("username",username);
-//            startActivity(intent);
+            Intent intent = new Intent(this,HomeActivity.class);
+            intent.putExtra("profilePicturePath",profilePicturePath);
+            intent.putExtra("username",username);
+            startActivity(intent);
 
         }
         else

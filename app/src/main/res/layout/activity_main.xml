@@ -1,18 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.anmol.wedza.MainActivity">
+    tools:context="com.anmol.wedza.MainActivity"
+    android:background="#000"
+    >
 
     <TextView
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Getting married soon?"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        />
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/geturapp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Get your app"
+        android:textColor="#fff"
+        android:background="#FFFF0158"
+        android:layout_below="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        />
+
+    <Button
+        android:id="@+id/joinwed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="150dp"
+        android:text="Join Wedding"
+        android:textColor="#fff"
+        android:background="#FFFF0158"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/wedid"
+        android:layout_above="@+id/joinwed"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"
+        android:background="#fff"
+        android:hint="Enter Wedding ID"
+        android:textAlignment="center"
+        android:padding="5dp"
+        />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:text="Exisiting user?"
+        android:textColor="#fff"
+        android:layout_below="@+id/wedid"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:text="login"
+        android:textSize="12sp"
+        android:textColor="#000"
+        android:background="#fff"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:layout_below="@+id/wedid"
+        />
+
+</RelativeLayout>
