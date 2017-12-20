@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.anmol.wedza.PhoneVerification">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Maps"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/maps_button"
+        android:layout_alignParentRight="true" />
+
+
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/profile_picture"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/username"
+        android:layout_below="@+id/profile_picture"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sign out"
+        android:id="@+id/sign_out" />
+
+    <EditText
+        android:id="@+id/phone_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Enter your phone number"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="phone"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/username"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Code"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/ic_send_white_24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/phone_number"
+        android:id="@+id/get_verification_code"
+        android:layout_alignParentRight="true" />
+
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/verification_code_ET"
+        android:inputType="number"
+        android:hint="Code"
+        android:translationX="4000dp"
+        android:gravity="center"
+        android:layout_marginTop="26dp"
+        android:layout_alignBottom="@+id/phone_number"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_arrow_back_black_24dp"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/goBack"
+        android:translationX="4000dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignBottom="@+id/phone_number"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_refresh_black_24dp"
+        android:layout_alignBottom="@+id/phone_number"
+        android:layout_marginBottom="10dp"
+        android:layout_toLeftOf="@+id/verifyCode"
+        android:alpha="0"
+        android:layout_marginRight="10dp"
+        android:id="@+id/refreshTV"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleX="0"
+        android:scaleY="0"
+        android:text="VERIFY"
+        android:src="@drawable/ic_done_white_24dp"
+        android:layout_alignEnd="@+id/get_verification_code"
+        android:layout_alignBottom="@+id/verification_code_ET"
+        android:visibility="invisible"
+        android:id="@+id/verifyCode"
+        android:layout_marginTop="10dp"
+        android:layout_alignRight="@+id/get_verification_code" />
+
+</RelativeLayout>
