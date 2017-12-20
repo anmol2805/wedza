@@ -11,43 +11,81 @@
         android:layout_height="wrap_content"
         android:text="Signup"
         android:textSize="22sp"
-        android:layout_marginTop="62dp"
+        android:layout_marginTop="60dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textView2" />
 
     <Button
         android:id="@+id/login_button"
-        android:layout_width="35dp"
-        android:layout_height="40dp"
-        android:background="@drawable/com_facebook_button_icon_blue"
-        android:layout_marginStart="50dp"
-        android:layout_centerVertical="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView2"
+
         android:layout_marginLeft="50dp"
-        android:layout_alignParentLeft="true" />
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/com_facebook_button_icon_blue" />
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#000"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:id="@+id/textView" />
 
     <Button
         android:id="@+id/google_sign_in"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="20dp"
         android:background="@drawable/common_google_signin_btn_icon_dark_normal"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
         android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_alignBottom="@+id/login_button"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="50dp" />
+        android:layout_alignParentEnd="true" />
 
+    <Button
+        android:id="@+id/signupmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="Signup with mail" />
+
+    <LinearLayout
+        android:id="@+id/lmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:hint="Email"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:hint="Password"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:text="Signup" />
+
+    </LinearLayout>
 
 
 </RelativeLayout>
