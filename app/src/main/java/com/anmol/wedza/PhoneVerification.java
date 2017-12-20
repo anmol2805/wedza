@@ -22,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.rajk.dummyapp.BookAMedicine.MapsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -45,7 +44,6 @@ public class PhoneVerification extends AppCompatActivity {
     private TextView refreshTV;
 
     private Button signOut;
-    private Button temporaryMapsButton;
 
     private FloatingActionButton verifyCode;
     private FloatingActionButton get_verification_code;
@@ -114,7 +112,7 @@ public class PhoneVerification extends AppCompatActivity {
         refreshTV = (TextView) findViewById(R.id.refreshTV);
 
         signOut = (Button) findViewById(R.id.sign_out);
-        temporaryMapsButton = (Button) findViewById(R.id.maps_button);
+
 
         verifyCode = (FloatingActionButton) findViewById(R.id.verifyCode);
         get_verification_code = (FloatingActionButton) findViewById(R.id.get_verification_code);
@@ -125,15 +123,6 @@ public class PhoneVerification extends AppCompatActivity {
         //Instantiate Firebase Variables
         mAuth = FirebaseAuth.getInstance();
 
-
-        //Set Button Click Listeners .
-
-        temporaryMapsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MapsActivity.class));
-            }
-        });
 
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,7 +252,7 @@ public class PhoneVerification extends AppCompatActivity {
     }
 
     private void logout() {
-        Intent intent1 = new Intent(this, LoginScreen.class);
+        Intent intent1 = new Intent(this, LoginActivity.class);
         startActivity(intent1);
     }
 
