@@ -54,6 +54,7 @@ public class PhoneVerification extends AppCompatActivity {
     //Data from previous activity
     private String profilePicturePath;
     private String username;
+    private String weddingid;
 
     //Final Values
     private static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 0;
@@ -103,6 +104,7 @@ public class PhoneVerification extends AppCompatActivity {
         Intent intent = getIntent();
         profilePicturePath = intent.getStringExtra("profilePicturePath");
         username = intent.getStringExtra("username");
+        weddingid = intent.getStringExtra("weddingid");
 
         //Instantiate All the views
         profilePictureIV = (ImageView) findViewById(R.id.profile_picture);
@@ -380,6 +382,9 @@ public class PhoneVerification extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            Intent intent = new Intent(PhoneVerification.this,HomeActivity.class);
+                            intent.putExtra("weddingid",weddingid);
+                            startActivity(intent);
                             showToast("Successfully Verified and Logged in !");
                             Log.d(TAG, "signInWithCredential:success");
                         } else {

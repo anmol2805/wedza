@@ -53,6 +53,7 @@ public class SignupActivity extends AppCompatActivity implements GoogleApiClient
     //Data retrieved from social media method of sign in
     private String profilePicturePath;
     private String username;
+    String weddingid;
 
 
     @Override
@@ -63,7 +64,7 @@ public class SignupActivity extends AppCompatActivity implements GoogleApiClient
 
         //Instantiate Google Login
         instantiateGoogleLogin();
-
+        weddingid = getIntent().getStringExtra("weddingid");
     }
     private void instantiateGoogleLogin(){
 
@@ -212,9 +213,10 @@ public class SignupActivity extends AppCompatActivity implements GoogleApiClient
             Log.i(TAG,"Login was successful in Firebase");
             Log.i(TAG,"UID "+ currentUser.getUid());
 
-            Intent intent = new Intent(this,HomeActivity.class);
+            Intent intent = new Intent(this,PhoneVerification.class);
             intent.putExtra("profilePicturePath",profilePicturePath);
             intent.putExtra("username",username);
+            intent.putExtra("weddingid",weddingid);
             startActivity(intent);
 
         }
