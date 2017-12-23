@@ -2,8 +2,13 @@ package com.anmol.wedza;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 public class IntroduceYourselfActivity extends AppCompatActivity {
+
+    Spinner spinner;
+    ArrayAdapter<CharSequence> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
