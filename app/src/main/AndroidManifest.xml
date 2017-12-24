@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.anmol.wedza">
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".FireApp"
@@ -22,14 +23,16 @@
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".IntroduceYourselfActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".IntroduceYourselfActivity" />
     </application>
 
 </manifest>

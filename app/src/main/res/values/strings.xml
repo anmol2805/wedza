@@ -9,6 +9,7 @@
 
     <string name="action_settings">Settings</string>
     <string-array name="relationtype">
+        <item>Select Relation type</item>
         <item>Father</item>
         <item>Mother</item>
         <item>Brother</item>
