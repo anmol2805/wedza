@@ -36,6 +36,16 @@
 
                />
        </RelativeLayout>
+
     </android.support.v7.widget.CardView>
+
+    <ListView
+        android:id="@+id/newsfeed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/menutop"
+        android:layout_centerHorizontal="true"
+        android:divider="@null"
+         />
 
 </RelativeLayout>
