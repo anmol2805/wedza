@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import java.util.Map;
 public class IntroduceYourselfActivity extends AppCompatActivity {
 
     Spinner spinner;
+    Button done;
     ArrayAdapter<CharSequence> arrayAdapter;
     String relation;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -26,6 +28,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introduce_yourself);
         spinner = (Spinner)findViewById(R.id.relation);
+        done =  (Button)findViewById(R.id.done);
         arrayAdapter =  ArrayAdapter.createFromResource(this,R.array.relationtype,android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
@@ -33,10 +36,17 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 relation = (String) adapterView.getItemAtPosition(i);
-                Map<String,Object> map = new HashMap<>();
-                map.put("relation",relation);
-                //db.document("weddings/mrxwedsmsy/users/user1").set(map);
-                documentReference.set(map);
+                done.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(!relation.contains("Select Relation type")){
+                            Map<String,Object> map = new HashMap<>();
+                            map.put("relation",relation);
+                            documentReference.set(map);
+                        }
+                    }
+                });
+
             }
 
             @Override
@@ -44,6 +54,6 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
 
             }
         });
-        Toast.makeText(this,relation,Toast.LENGTH_SHORT).show();
+
     }
 }
