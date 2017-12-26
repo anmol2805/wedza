@@ -62,7 +62,6 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
                 mediavid.setVisibility(View.VISIBLE);
                 mediavid.setVideoURI(Uri.parse(timelines.get(position).getMedialink()));
             }
-
             return v;
         }
 
