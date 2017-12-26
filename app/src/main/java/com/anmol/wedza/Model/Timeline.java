@@ -5,14 +5,15 @@ package com.anmol.wedza.Model;
  */
 
 public class Timeline {
-    String medialink,event;
+    String medialink,event,mediatype;
 
     public Timeline() {
     }
 
-    public Timeline(String medialink, String event) {
+    public Timeline(String medialink, String event,String mediatype) {
         this.medialink = medialink;
         this.event = event;
+        this.mediatype = mediatype;
     }
 
     public String getMedialink() {
@@ -29,5 +30,13 @@ public class Timeline {
 
     public void setEvent(String event) {
         this.event = event;
+    }
+
+    public String getMediatype() {
+        return mediatype;
+    }
+
+    public void setMediatype(String mediatype) {
+        this.mediatype = mediatype;
     }
 }
