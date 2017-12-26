@@ -20,7 +20,7 @@ import com.anmol.wedza.R;
 
 public class home extends Fragment implements AbsListView.OnScrollListener{
     ListView lv;
-    ArrayAdapter adapter;
+
     ImageView coverpic;
     int lastTopValue = 0;
     @Nullable
