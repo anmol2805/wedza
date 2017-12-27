@@ -64,7 +64,6 @@ public class guestlist extends Fragment {
         });
         return vi;
     }
-
     private void teambride() {
         guests.clear();
         db.collection("weddings/wedding1/users").whereEqualTo("side","bride").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
