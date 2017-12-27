@@ -45,7 +45,6 @@ public class GuestAdapter extends ArrayAdapter<Guest> {
     public int getItemViewType(int position) {
         return position;
     }
-
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
