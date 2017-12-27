@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.anmol.wedza.Adapters.TimelineAdapter;
 import com.anmol.wedza.Model.Timeline;
 import com.anmol.wedza.R;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -40,7 +41,7 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
     TimelineAdapter timelineAdapter;
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home,container,false);
         lv = (ListView)view.findViewById(R.id.newsfeed);
         timelines = new ArrayList<>();
@@ -48,6 +49,17 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         ViewGroup header = (ViewGroup)layoutInflater.inflate(R.layout.listheader,lv,false);
         lv.addHeaderView(header,null,false);
         coverpic = (ImageView)header.findViewById(R.id.listHeaderImage);
+        db.collection("weddings").document("wedding1").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                Glide.with(getActivity()).load(task.getResult().getString("coverpic")).into(coverpic);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
         lv.setOnScrollListener(this);
         timelines.clear();
         db.collection("weddings/wedding1/timeline").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

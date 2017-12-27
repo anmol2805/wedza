@@ -2,6 +2,7 @@ package com.anmol.wedza.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.anmol.wedza.Model.Timeline;
@@ -53,14 +55,24 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
             //LayoutInflater inflater = context.getLayoutInflater();
             View v = inflater.inflate(resource,null);
             ImageView mediaimg = (ImageView)v.findViewById(R.id.mediaphoto);
-            VideoView mediavid = (VideoView)v.findViewById(R.id.mediavideo);
+            final VideoView mediavid = (VideoView)v.findViewById(R.id.mediavideo);
             if(timelines.get(position).getMediatype().contains("image")){
                 mediaimg.setVisibility(View.VISIBLE);
                 Glide.with(getContext()).load(timelines.get(position).getMedialink()).into(mediaimg);
             }
             else if(timelines.get(position).getMediatype().contains("video")){
                 mediavid.setVisibility(View.VISIBLE);
+                MediaController mediaController = new MediaController(getContext());
+                mediaController.setAnchorView(mediavid);
+                mediavid.setMediaController(mediaController);
                 mediavid.setVideoURI(Uri.parse(timelines.get(position).getMedialink()));
+                mediavid.requestFocus();
+                mediavid.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mediaPlayer) {
+                        mediavid.start();
+                    }
+                });
             }
             return v;
         }

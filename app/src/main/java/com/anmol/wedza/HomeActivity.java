@@ -1,5 +1,7 @@
 package com.anmol.wedza;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.anmol.wedza.Fragments.home;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity
@@ -23,10 +26,10 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        if(auth.getCurrentUser()==null){
-            startActivity(new Intent(HomeActivity.this,MainActivity.class));
-            finish();
-        }
+//        if(auth.getCurrentUser()==null){
+//            startActivity(new Intent(HomeActivity.this,MainActivity.class));
+//            finish();
+//        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -40,6 +43,10 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        FragmentManager fm = getFragmentManager();
+        fm.beginTransaction().replace(R.id.content,new home()).commit();
+        fm.executePendingTransactions();
+
     }
 
     @Override
