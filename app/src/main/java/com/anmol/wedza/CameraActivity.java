@@ -66,20 +66,12 @@ public class CameraActivity extends AppCompatActivity {
 
         if (requestCode == MY_PERMISSIONS_REQUEST && grantResults.length > 0) {
             Log.i("grantresults", grantResults.toString());
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Cannot use external storage!!", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                s = 1;
-            }
-            if (grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Cannot use Camera!!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                c = 1;
-            }
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] != PackageManager.PERMISSION_GRANTED ||
+                    grantResults[2] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permissions not given!!", Toast.LENGTH_SHORT).show();
+            } else
+                imageChooser();
 
         }
 
