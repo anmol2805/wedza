@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.anmol.wedza.Model.Gallery;
 import com.anmol.wedza.R;
+import com.bumptech.glide.Glide;
 
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class GalleryAdapter extends BaseAdapter {
         else {
             holder = (ViewHolder)row.getTag();
         }
-        holder.img.setImageURI(galleries.get(position).getUri());
+        Glide.with(ctx).load(galleries.get(position).getUrl()).into(holder.img);
         return row;
     }
 }

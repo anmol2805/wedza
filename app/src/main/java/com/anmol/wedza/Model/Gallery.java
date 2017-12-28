@@ -7,21 +7,21 @@ import android.net.Uri;
  */
 
 public class Gallery {
-    Uri uri;
+    String url;
 
     public Gallery() {
     }
 
-    public Gallery(Uri uri) {
-        this.uri = uri;
+    public Gallery(String url) {
+        this.url = url;
     }
 
-    public Uri getUri() {
-        return uri;
+    public String getUrl() {
+        return url;
     }
 
-    public void setUri(Uri uri) {
-        this.uri = uri;
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
 
