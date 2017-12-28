@@ -1,17 +1,22 @@
 package com.anmol.wedza;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import droidninja.filepicker.FilePickerBuilder;
+import droidninja.filepicker.FilePickerConst;
 
 public class CameraActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST = 123;
@@ -80,4 +85,17 @@ public class CameraActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO && data!=null){
+                filepaths = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA);
+                for(String path : filepaths){
+                    final Uri uri = Uri.fromFile(new File(path));
+
+                }
+            }
+        }
+    }
 }
