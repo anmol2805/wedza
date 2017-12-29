@@ -45,7 +45,7 @@
             >
 
             <Button
-                android:id="@+id/timeline"
+                android:id="@+id/ptimeline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

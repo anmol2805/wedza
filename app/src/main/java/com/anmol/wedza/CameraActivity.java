@@ -9,7 +9,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
@@ -22,11 +26,23 @@ public class CameraActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST = 123;
     int s=0,c=0;
     ArrayList<String> filepaths;
+    Button allow,posttime,saveg;
+    Spinner eventselect;
+    ImageView img;
+    LinearLayout imagelayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+        imagelayout = (LinearLayout)findViewById(R.id.imglayout);
+        img = (ImageView)findViewById(R.id.selectedimg);
+        eventselect = (Spinner)findViewById(R.id.eventselect);
+        allow = (Button)findViewById(R.id.allow);
+        posttime = (Button)findViewById(R.id.ptimeline);
+        saveg = (Button)findViewById(R.id.saveg);
         filepaths = new ArrayList<>();
+        imagelayout.setVisibility(View.GONE);
+        allow.setVisibility(View.VISIBLE);
         permissionRequest();
 
     }
@@ -61,6 +77,8 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void imageChooser() {
+        imagelayout.setVisibility(View.VISIBLE);
+        allow.setVisibility(View.GONE);
         filepaths.clear();
         FilePickerBuilder.getInstance().setMaxCount(1).setSelectedFiles(filepaths).setActivityTheme(R.style.AppTheme).pickPhoto(CameraActivity.this);
     }
