@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.anmol.wedza.Adapters.GalleryAdapter;
 import com.anmol.wedza.Model.Gallery;
@@ -58,7 +59,35 @@ public class gallery extends Fragment {
     }
 
     private void albumshow() {
+        galleries.clear();
+        db.collection("weddings/wedding1/events").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(DocumentSnapshot doc:task.getResult()){
+                    db.collection("weddings/wedding1/gallery").whereEqualTo("event",doc.getId()).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for(DocumentSnapshot doc:task.getResult()){
+                                Gallery gallery = new Gallery(doc.getString("medialink"));
+                                galleries.add(gallery);
+                            }
+                            galleryAdapter = new GalleryAdapter(getActivity(),R.layout.gallerylayout, (ArrayList<Gallery>) galleries);
+                            gridView.setAdapter(galleryAdapter);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
 
+                        }
+                    });
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 
     private void allpicsshow() {
