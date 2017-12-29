@@ -10,14 +10,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
@@ -30,6 +41,8 @@ public class CameraActivity extends AppCompatActivity {
     Spinner eventselect;
     ImageView img;
     LinearLayout imagelayout;
+    StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,9 +124,56 @@ public class CameraActivity extends AppCompatActivity {
                 filepaths = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA);
                 for(String path : filepaths){
                     final Uri uri = Uri.fromFile(new File(path));
+                    img.setImageURI(uri);
+                    eventselect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) {
+                            final String event = (String) adapterView.getItemAtPosition(i);
+                            posttime.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    posttotimeline(uri,event);
+                                }
+                            });
+                            saveg.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    savetogallery(uri,event);
+                                }
+                            });
+                        }
 
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
                 }
             }
         }
+    }
+
+    private void savetogallery(Uri uri, final String event) {
+        StorageReference reference = storageReference.child("photos").child(uri.getLastPathSegment());
+        reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(CameraActivity.this,"Saved successfully",Toast.LENGTH_SHORT).show();
+                String medialink = String.valueOf(taskSnapshot.getDownloadUrl());
+                String mediatype = taskSnapshot.getMetadata().getContentType();
+                DocumentReference ref = db.collection("weddings/wedding1/gallery").document();
+                String imageid = ref.getId();
+                Map<String,Object> map = new HashMap<>();
+                map.put("medialink",medialink);
+                map.put("mediatype",mediatype);
+                map.put("event",event);
+                db.collection("weddings/wedding1/gallery").document(imageid).set(map);
+
+            }
+        });
+    }
+
+    private void posttotimeline(Uri uri, String event) {
+        StorageReference reference = storageReference.child("photos").child(uri.getLastPathSegment());
     }
 }
