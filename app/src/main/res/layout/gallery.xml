@@ -32,14 +32,17 @@
     </android.support.v7.widget.CardView>
 
     <GridView
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:id="@+id/gridview"
-        android:columnWidth="100dp"
-        android:numColumns="auto_fit"
+        android:columnWidth="120dp"
+        android:numColumns="3"
         android:verticalSpacing="10dp"
-        android:stretchMode="columnWidth"
+        android:stretchMode="spacingWidthUniform"
         android:gravity="center"
+        android:padding="5dp"
+        android:background="#dcdcdc"
+
         />
 
 

@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import com.anmol.wedza.Fragments.gallery;
 import com.anmol.wedza.Fragments.guestlist;
 import com.anmol.wedza.Fragments.home;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,7 +48,7 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         FragmentManager fm = getFragmentManager();
-        fm.beginTransaction().replace(R.id.content,new guestlist()).commit();
+        fm.beginTransaction().replace(R.id.content,new gallery()).commit();
         fm.executePendingTransactions();
         camera = (Button)findViewById(R.id.camera);
         camera.setOnClickListener(new View.OnClickListener() {
