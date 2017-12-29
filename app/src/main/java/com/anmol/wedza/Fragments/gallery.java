@@ -2,6 +2,7 @@ package com.anmol.wedza.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,13 @@ import android.widget.GridView;
 import com.anmol.wedza.Adapters.GalleryAdapter;
 import com.anmol.wedza.Model.Gallery;
 import com.anmol.wedza.R;
+import com.facebook.FacebookActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +58,26 @@ public class gallery extends Fragment {
     }
 
     private void albumshow() {
+
     }
 
     private void allpicsshow() {
+        galleries.clear();
+        db.collection("weddings/wedding1/gallery").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(DocumentSnapshot doc:task.getResult()){
+                    Gallery gallery = new Gallery(doc.getString("medialink"));
+                    galleries.add(gallery);
+                }
+                galleryAdapter = new GalleryAdapter(getActivity(),R.layout.gallerylayout, (ArrayList<Gallery>) galleries);
+                gridView.setAdapter(galleryAdapter);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 }
