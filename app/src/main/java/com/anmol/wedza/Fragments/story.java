@@ -2,6 +2,8 @@ package com.anmol.wedza.Fragments;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,12 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.anmol.wedza.Adapters.StoryimageAdapter;
 import com.anmol.wedza.Interfaces.ItemClickListener;
 import com.anmol.wedza.Model.Storyimage;
 import com.anmol.wedza.R;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -56,7 +62,26 @@ public class story extends Fragment {
             public void onItemClick(int pos) {
                 Dialog dialog = new Dialog(getActivity());
                 dialog.setContentView(R.layout.mediashow);
-
+                ImageView previmg = (ImageView)dialog.findViewById(R.id.previmg);
+                final VideoView prevvid = (VideoView)dialog.findViewById(R.id.prevvid);
+                if(storyimages.get(pos).getMediatype().contains("image")){
+                    previmg.setVisibility(View.VISIBLE);
+                    Glide.with(getActivity()).load(storyimages.get(pos).getMedialink()).into(previmg);
+                }
+                else if (storyimages.get(pos).getMediatype().contains("video")){
+                    prevvid.setVisibility(View.VISIBLE);
+                    MediaController mediaController = new MediaController(getActivity());
+                    mediaController.setAnchorView(prevvid);
+                    prevvid.setMediaController(mediaController);
+                    prevvid.setVideoURI(Uri.parse(storyimages.get(pos).getMedialink()));
+                    prevvid.requestFocus();
+                    prevvid.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mediaPlayer) {
+                            prevvid.start();
+                        }
+                    });
+                }
                 dialog.show();
             }
         };
