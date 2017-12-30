@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.anmol.wedza.Interfaces.ItemClickListener;
 import com.anmol.wedza.R;
 
 /**
@@ -31,6 +32,13 @@ public class story extends Fragment {
         listimg = (RecyclerView)vi.findViewById(R.id.listimg);
         listimg.setHasFixedSize(true);
         listimg.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+        ItemClickListener itemClickListener = new ItemClickListener() {
+            @Override
+            public void onItemClick(int pos) {
+
+            }
+        };
+
         return vi;
     }
 }
