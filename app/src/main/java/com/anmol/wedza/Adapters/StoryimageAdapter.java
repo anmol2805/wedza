@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
 import com.anmol.wedza.Interfaces.ItemClickListener;
@@ -47,7 +48,7 @@ public class StoryimageAdapter extends RecyclerView.Adapter<StoryimageAdapter.My
             Glide.with(c).load(storyimages.get(position).getMedialink()).into(holder.mimg);
         }
         else if(storyimages.get(position).getMediatype().contains("video")){
-            holder.mvid.setVisibility(View.VISIBLE);
+            holder.vidlayout.setVisibility(View.VISIBLE);
             MediaController mediaController = new MediaController(c);
             mediaController.setAnchorView(holder.mvid);
             holder.mvid.setMediaController(mediaController);
@@ -67,6 +68,7 @@ public class StoryimageAdapter extends RecyclerView.Adapter<StoryimageAdapter.My
         return storyimages.size();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        RelativeLayout vidlayout;
         ImageView mimg;
         VideoView mvid;
         private ItemClickListener mitemClickListener;
@@ -75,6 +77,7 @@ public class StoryimageAdapter extends RecyclerView.Adapter<StoryimageAdapter.My
             mitemClickListener = itemClickListener;
             mimg = (ImageView)itemView.findViewById(R.id.mediaimg);
             mvid = (VideoView)itemView.findViewById(R.id.mediavid);
+            vidlayout = (RelativeLayout)itemView.findViewById(R.id.vidlayout);
             itemView.setOnClickListener(this);
         }
 
