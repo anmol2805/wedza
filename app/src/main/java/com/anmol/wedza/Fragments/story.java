@@ -56,7 +56,22 @@ public class story extends Fragment {
             }
         };
         loadmedia();
+        loadcontent();
         return vi;
+    }
+
+    private void loadcontent() {
+        db.collection("weddings").document("wedding1").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                storycontent.setText(task.getResult().getString("storycontent"));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 
     private void loadmedia() {
