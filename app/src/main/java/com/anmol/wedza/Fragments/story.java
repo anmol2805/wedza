@@ -1,5 +1,6 @@
 package com.anmol.wedza.Fragments;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -52,7 +54,10 @@ public class story extends Fragment {
         itemClickListener = new ItemClickListener() {
             @Override
             public void onItemClick(int pos) {
+                Dialog dialog = new Dialog(getActivity());
+                dialog.setContentView(R.layout.mediashow);
 
+                dialog.show();
             }
         };
         loadmedia();
@@ -76,7 +81,7 @@ public class story extends Fragment {
 
     private void loadmedia() {
         storyimages.clear();
-        db.collection("weddings/wedding1/stories").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("weddings/wedding1/stories").orderBy("time", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (DocumentSnapshot doc : task.getResult()){
