@@ -2,6 +2,7 @@ package com.anmol.wedza.Fragments;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.anmol.wedza.Adapters.StoryimageAdapter;
 import com.anmol.wedza.Interfaces.ItemClickListener;
 import com.anmol.wedza.Model.Storyimage;
 import com.anmol.wedza.R;
+import com.anmol.wedza.StoryMediaPreview;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -60,29 +62,10 @@ public class story extends Fragment {
         itemClickListener = new ItemClickListener() {
             @Override
             public void onItemClick(int pos) {
-                Dialog dialog = new Dialog(getActivity());
-                dialog.setContentView(R.layout.mediashow);
-                ImageView previmg = (ImageView)dialog.findViewById(R.id.previmg);
-                final VideoView prevvid = (VideoView)dialog.findViewById(R.id.prevvid);
-                if(storyimages.get(pos).getMediatype().contains("image")){
-                    previmg.setVisibility(View.VISIBLE);
-                    Glide.with(getActivity()).load(storyimages.get(pos).getMedialink()).into(previmg);
-                }
-                else if (storyimages.get(pos).getMediatype().contains("video")){
-                    prevvid.setVisibility(View.VISIBLE);
-                    MediaController mediaController = new MediaController(getActivity());
-                    mediaController.setAnchorView(prevvid);
-                    prevvid.setMediaController(mediaController);
-                    prevvid.setVideoURI(Uri.parse(storyimages.get(pos).getMedialink()));
-                    prevvid.requestFocus();
-                    prevvid.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mediaPlayer) {
-                            prevvid.start();
-                        }
-                    });
-                }
-                dialog.show();
+                Intent intent = new Intent(getActivity(), StoryMediaPreview.class);
+                intent.putExtra("medialink",storyimages.get(pos).getMedialink());
+                intent.putExtra("mediatype",storyimages.get(pos).getMediatype());
+                getActivity().startActivity(intent);
             }
         };
         loadmedia();
