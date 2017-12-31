@@ -4,9 +4,9 @@
     package="com.anmol.wedza">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".FireApp"
@@ -34,8 +34,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignupActivity" />
-        <activity android:name=".IntroduceYourselfActivity"></activity>
-        <activity android:name=".CameraActivity"></activity>
+        <activity android:name=".IntroduceYourselfActivity" />
+        <activity android:name=".CameraActivity" />
+        <activity android:name=".StoryMediaPreview"></activity>
     </application>
 
 </manifest>
