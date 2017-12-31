@@ -49,7 +49,7 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         FragmentManager fm = getFragmentManager();
-        fm.beginTransaction().replace(R.id.content,new story()).commit();
+        fm.beginTransaction().replace(R.id.content,new gallery()).commit();
         fm.executePendingTransactions();
         camera = (Button)findViewById(R.id.camera);
         camera.setOnClickListener(new View.OnClickListener() {

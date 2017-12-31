@@ -14,6 +14,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.anmol.wedza.Adapters.GalleryAdapter;
+import com.anmol.wedza.Adapters.GalleryAlbumAdapter;
 import com.anmol.wedza.Model.Gallery;
 import com.anmol.wedza.R;
 import com.anmol.wedza.StoryMediaPreview;
@@ -38,6 +39,7 @@ public class gallery extends Fragment {
     GridView gridView;
     Button allpics,albums;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    GalleryAlbumAdapter galleryAlbumAdapter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -80,11 +82,11 @@ public class gallery extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             for(DocumentSnapshot doc:task.getResult()){
-                                Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"));
+                                Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"),doc.getString("event"));
                                 galleries.add(gallery);
                             }
-                            galleryAdapter = new GalleryAdapter(getActivity(),R.layout.gallerylayout, (ArrayList<Gallery>) galleries);
-                            gridView.setAdapter(galleryAdapter);
+                            galleryAlbumAdapter = new GalleryAlbumAdapter(getActivity(),R.layout.galleryalbumlayout, (ArrayList<Gallery>) galleries);
+                            gridView.setAdapter(galleryAlbumAdapter);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -108,7 +110,7 @@ public class gallery extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(DocumentSnapshot doc:task.getResult()){
-                    Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"));
+                    Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"),doc.getString("event"));
                     galleries.add(gallery);
                 }
                 galleryAdapter = new GalleryAdapter(getActivity(),R.layout.gallerylayout, (ArrayList<Gallery>) galleries);
