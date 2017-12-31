@@ -7,13 +7,14 @@ import android.net.Uri;
  */
 
 public class Gallery {
-    String url;
+    String url,mediatype;
 
     public Gallery() {
     }
 
-    public Gallery(String url) {
+    public Gallery(String url,String mediatype) {
         this.url = url;
+        this.mediatype = mediatype;
     }
 
     public String getUrl() {
@@ -22,6 +23,14 @@ public class Gallery {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getMediatype() {
+        return mediatype;
+    }
+
+    public void setMediatype(String mediatype) {
+        this.mediatype = mediatype;
     }
 }
 
