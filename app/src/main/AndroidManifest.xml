@@ -37,7 +37,8 @@
         <activity android:name=".IntroduceYourselfActivity" />
         <activity android:name=".CameraActivity" />
         <activity android:name=".StoryMediaPreview" />
-        <activity android:name=".WishesActivity"></activity>
+        <activity android:name=".WishesActivity" />
+        <activity android:name=".CommentsActivity"></activity>
     </application>
 
 </manifest>
