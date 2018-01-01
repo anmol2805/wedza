@@ -39,7 +39,8 @@
         <activity android:name=".StoryMediaPreview" />
         <activity android:name=".WishesActivity" />
         <activity android:name=".CommentsActivity" />
-        <activity android:name=".KeypeopleActivity"></activity>
+        <activity android:name=".KeypeopleActivity" />
+        <activity android:name=".EventsActivity"></activity>
     </application>
 
 </manifest>
