@@ -50,6 +50,7 @@ public class GalleryAdapter extends BaseAdapter {
     }
     private class ViewHolder{
         ImageView img;
+        ImageView pimg;
         VideoView mvid;
         RelativeLayout vidlayout;
     }
@@ -61,31 +62,20 @@ public class GalleryAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(resource,null);
             holder.img = (ImageView)row.findViewById(R.id.galleryimg);
-            holder.mvid = (VideoView)row.findViewById(R.id.mvid);
-            holder.vidlayout = (RelativeLayout)row.findViewById(R.id.vidlayout);
+            holder.pimg = (ImageView)row.findViewById(R.id.playicon);
             row.setTag(holder);
         }
         else {
             holder = (ViewHolder)row.getTag();
         }
+
         if(galleries.get(position).getMediatype().contains("image")){
-            holder.img.setVisibility(View.VISIBLE);
+            holder.pimg.setVisibility(View.GONE);
             Glide.with(ctx).load(galleries.get(position).getUrl()).into(holder.img);
         }
         else if(galleries.get(position).getMediatype().contains("video")){
-            holder.vidlayout.setVisibility(View.VISIBLE);
-            MediaController mediaController = new MediaController(ctx);
-            mediaController.setAnchorView(holder.mvid);
-            holder.mvid.setMediaController(mediaController);
-            holder.mvid.setVideoURI(Uri.parse(galleries.get(position).getUrl()));
-            holder.mvid.requestFocus();
-            final ViewHolder finalHolder = holder;
-            holder.mvid.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mediaPlayer) {
-                    finalHolder.mvid.start();
-                }
-            });
+            holder.pimg.setVisibility(View.VISIBLE);
+            Glide.with(ctx).load(galleries.get(position).getUrl()).into(holder.img);
         }
 
         return row;

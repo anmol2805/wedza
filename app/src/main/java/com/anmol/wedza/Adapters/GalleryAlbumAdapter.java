@@ -62,8 +62,8 @@ public class GalleryAlbumAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(resource,null);
             holder.img = (ImageView)row.findViewById(R.id.galleryimg);
-            holder.mvid = (VideoView)row.findViewById(R.id.mvid);
-            holder.vidlayout = (RelativeLayout)row.findViewById(R.id.vidlayout);
+//            holder.mvid = (VideoView)row.findViewById(R.id.mvid);
+//            holder.vidlayout = (RelativeLayout)row.findViewById(R.id.vidlayout);
             holder.albumname = (TextView)row.findViewById(R.id.albumname);
             row.setTag(holder);
         }
@@ -71,25 +71,27 @@ public class GalleryAlbumAdapter extends BaseAdapter {
             holder = (ViewHolder)row.getTag();
         }
         holder.albumname.setText(galleries.get(position).getEvent());
-        if(galleries.get(position).getMediatype().contains("image")){
-            holder.img.setVisibility(View.VISIBLE);
-            Glide.with(ctx).load(galleries.get(position).getUrl()).into(holder.img);
-        }
-        else if(galleries.get(position).getMediatype().contains("video")){
-            holder.vidlayout.setVisibility(View.VISIBLE);
-            MediaController mediaController = new MediaController(ctx);
-            mediaController.setAnchorView(holder.mvid);
-            holder.mvid.setMediaController(mediaController);
-            holder.mvid.setVideoURI(Uri.parse(galleries.get(position).getUrl()));
-            holder.mvid.requestFocus();
-            final ViewHolder finalHolder = holder;
-            holder.mvid.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mediaPlayer) {
-                    finalHolder.mvid.start();
-                }
-            });
-        }
+        Glide.with(ctx).load(galleries.get(position).getUrl()).into(holder.img);
+//        if(galleries.get(position).getMediatype().contains("image")){
+//            holder.img.setVisibility(View.VISIBLE);
+//            Glide.with(ctx).load(galleries.get(position).getUrl()).into(holder.img);
+//        }
+//        else if(galleries.get(position).getMediatype().contains("video")){
+//
+//            holder.vidlayout.setVisibility(View.VISIBLE);
+//            MediaController mediaController = new MediaController(ctx);
+//            mediaController.setAnchorView(holder.mvid);
+//            holder.mvid.setMediaController(mediaController);
+//            holder.mvid.setVideoURI(Uri.parse(galleries.get(position).getUrl()));
+//            holder.mvid.requestFocus();
+//            final ViewHolder finalHolder = holder;
+//            holder.mvid.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                @Override
+//                public void onPrepared(MediaPlayer mediaPlayer) {
+//                    finalHolder.mvid.start();
+//                }
+//            });
+//        }
 
 
         return row;
