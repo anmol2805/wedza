@@ -18,10 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -45,6 +49,7 @@ public class CameraActivity extends AppCompatActivity {
     LinearLayout imagelayout;
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    List<String> events = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +63,18 @@ public class CameraActivity extends AppCompatActivity {
         filepaths = new ArrayList<>();
         imagelayout.setVisibility(View.GONE);
         allow.setVisibility(View.VISIBLE);
+        db.collection("weddings/wedding1/events").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(DocumentSnapshot doc:task.getResult()){
+                    String eventname = doc.getId();
+                    events.add(eventname);
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(CameraActivity.this,android.R.layout.simple_spinner_item,events);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                eventselect.setAdapter(adapter);
+            }
+        });
         permissionRequest();
 
     }
