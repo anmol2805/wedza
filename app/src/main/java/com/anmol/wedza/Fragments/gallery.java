@@ -74,6 +74,7 @@ public class gallery extends Fragment {
                 }
                 else if(selectintent == 1){
                     Intent intent = new Intent(getActivity(), AlbumActivity.class);
+                    intent.putExtra("event",galleries.get(i).getEvent());
                     getActivity().startActivity(intent);
                 }
 
