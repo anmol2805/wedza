@@ -31,10 +31,10 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-//        if(auth.getCurrentUser()==null){
-//            startActivity(new Intent(HomeActivity.this,MainActivity.class));
-//            finish();
-//        }
+        if(auth.getCurrentUser()==null){
+            startActivity(new Intent(HomeActivity.this,MainActivity.class));
+            finish();
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
