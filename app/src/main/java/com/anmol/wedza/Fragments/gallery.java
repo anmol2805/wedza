@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.anmol.wedza.Adapters.GalleryAdapter;
 import com.anmol.wedza.Adapters.GalleryAlbumAdapter;
+import com.anmol.wedza.AlbumActivity;
 import com.anmol.wedza.Model.Gallery;
 import com.anmol.wedza.R;
 import com.anmol.wedza.StoryMediaPreview;
@@ -40,6 +41,7 @@ public class gallery extends Fragment {
     Button allpics,albums;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     GalleryAlbumAdapter galleryAlbumAdapter;
+    int selectintent;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -60,19 +62,28 @@ public class gallery extends Fragment {
                 albumshow();
             }
         });
+        allpicsshow();
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getActivity(), StoryMediaPreview.class);
-                intent.putExtra("medialink",galleries.get(i).getUrl());
-                intent.putExtra("mediatype",galleries.get(i).getMediatype());
-                getActivity().startActivity(intent);
+                if(selectintent == 0){
+                    Intent intent = new Intent(getActivity(), StoryMediaPreview.class);
+                    intent.putExtra("medialink",galleries.get(i).getUrl());
+                    intent.putExtra("mediatype",galleries.get(i).getMediatype());
+                    getActivity().startActivity(intent);
+                }
+                else if(selectintent == 1){
+                    Intent intent = new Intent(getActivity(), AlbumActivity.class);
+                    getActivity().startActivity(intent);
+                }
+
             }
         });
         return vi;
     }
 
     private void albumshow() {
+        selectintent = 1;
         galleries.clear();
         db.collection("weddings/wedding1/events").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -105,6 +116,7 @@ public class gallery extends Fragment {
     }
 
     private void allpicsshow() {
+        selectintent = 0;
         galleries.clear();
         db.collection("weddings/wedding1/gallery").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
