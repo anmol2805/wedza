@@ -53,11 +53,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     //Data retrieved from social media method of sign in
     private String profilePicturePath;
     private String username;
-
+    String weddingid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        weddingid = getIntent().getStringExtra("weddingid");
         instantiateFacebookLogin();
 
         //Instantiate Google Login
@@ -211,9 +212,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Log.i(TAG,"Login was successful in Firebase");
             Log.i(TAG,"UID "+ currentUser.getUid());
 
-            Intent intent = new Intent(this,HomeActivity.class);
+            Intent intent = new Intent(this,PhoneVerification.class);
             intent.putExtra("profilePicturePath",profilePicturePath);
             intent.putExtra("username",username);
+            intent.putExtra("weddingid",weddingid);
             startActivity(intent);
 
         }
