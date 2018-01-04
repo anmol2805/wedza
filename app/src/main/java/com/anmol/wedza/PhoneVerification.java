@@ -355,7 +355,7 @@ public class PhoneVerification extends AppCompatActivity {
 
     private void verifyCode(){
 
-        if(!((mVerificationId!=null||code.equals(null))||code.equals(""))) {
+        if(!((code.equals(null))||code.equals(""))) {
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code.getText().toString());
             signInWithPhoneAuthCredential(credential);
         }else
