@@ -34,7 +34,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignupActivity" />
-        <activity android:name=".IntroduceYourselfActivity" />
+        <activity android:name=".IntroduceYourselfActivity" >
+
+        </activity>
         <activity android:name=".CameraActivity" />
         <activity android:name=".StoryMediaPreview" />
         <activity android:name=".WishesActivity" />

@@ -382,7 +382,9 @@ public class PhoneVerification extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(PhoneVerification.this,HomeActivity.class);
+                            Intent intent = new Intent(PhoneVerification.this,IntroduceYourselfActivity.class);
+                            intent.putExtra("profilePicturePath",profilePicturePath);
+                            intent.putExtra("username",username);
                             intent.putExtra("weddingid",weddingid);
                             startActivity(intent);
                             showToast("Successfully Verified and Logged in !");

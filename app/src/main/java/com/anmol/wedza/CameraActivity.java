@@ -50,6 +50,7 @@ public class CameraActivity extends AppCompatActivity {
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     List<String> events = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,36 +141,67 @@ public class CameraActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK){
             if (requestCode == FilePickerConst.REQUEST_CODE_PHOTO && data!=null){
-                filepaths = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA);
                 for(String path : filepaths){
                     final Uri uri = Uri.fromFile(new File(path));
                     img.setImageURI(uri);
-                    eventselect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) {
-                            final String event = (String) adapterView.getItemAtPosition(i);
-                            posttime.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    posttotimeline(uri,event);
-                                }
-                            });
-                            saveg.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    savetogallery(uri,event);
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-
-                        }
-                    });
+                    eventselectfun(uri);
+//                    eventselect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                        @Override
+//                        public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) {
+//                            final String event = (String) adapterView.getItemAtPosition(i);
+//                            posttime.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View view) {
+//                                    posttotimeline(uri,event);
+//                                }
+//                            });
+//                            saveg.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View view) {
+//                                    savetogallery(uri,event);
+//                                }
+//                            });
+//                        }
+//
+//                        @Override
+//                        public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//                        }
+//                    });
                 }
             }
         }
+    }
+
+    private void eventselectfun(final Uri uri) {
+        eventselect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                final String event = (String) adapterView.getItemAtPosition(i);
+                es(uri,event);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void es(final Uri uri, final String event) {
+        posttime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                posttotimeline(uri,event);
+            }
+        });
+        saveg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                savetogallery(uri,event);
+            }
+        });
     }
 
     private void savetogallery(Uri uri, final String event) {
