@@ -44,22 +44,12 @@ public class StoryimageAdapter extends RecyclerView.Adapter<StoryimageAdapter.My
     @Override
     public void onBindViewHolder(final StoryimageAdapter.MyViewHolder holder, int position) {
         if(storyimages.get(position).getMediatype().contains("image")){
-            holder.mimg.setVisibility(View.VISIBLE);
+            holder.picon.setVisibility(View.GONE);
             Glide.with(c).load(storyimages.get(position).getMedialink()).into(holder.mimg);
         }
         else if(storyimages.get(position).getMediatype().contains("video")){
-            holder.vidlayout.setVisibility(View.VISIBLE);
-            MediaController mediaController = new MediaController(c);
-            mediaController.setAnchorView(holder.mvid);
-            holder.mvid.setMediaController(mediaController);
-            holder.mvid.setVideoURI(Uri.parse(storyimages.get(position).getMedialink()));
-            holder.mvid.requestFocus();
-            holder.mvid.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mediaPlayer) {
-                    holder.mvid.start();
-                }
-            });
+            holder.picon.setVisibility(View.VISIBLE);
+            Glide.with(c).load(storyimages.get(position).getMedialink()).into(holder.mimg);
         }
     }
 
@@ -68,16 +58,15 @@ public class StoryimageAdapter extends RecyclerView.Adapter<StoryimageAdapter.My
         return storyimages.size();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        RelativeLayout vidlayout;
+
         ImageView mimg;
-        VideoView mvid;
+        ImageView picon;
         private ItemClickListener mitemClickListener;
         public MyViewHolder(View itemView,ItemClickListener itemClickListener) {
             super(itemView);
             mitemClickListener = itemClickListener;
             mimg = (ImageView)itemView.findViewById(R.id.mediaimg);
-            mvid = (VideoView)itemView.findViewById(R.id.mediavid);
-            vidlayout = (RelativeLayout)itemView.findViewById(R.id.vidlayout);
+            picon = (ImageView)itemView.findViewById(R.id.playicon);
             itemView.setOnClickListener(this);
         }
 

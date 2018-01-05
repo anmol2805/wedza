@@ -49,9 +49,8 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        FragmentManager fm = getFragmentManager();
-        fm.beginTransaction().replace(R.id.content,new gallery()).commit();
-        fm.executePendingTransactions();
+
+        setFragment(new home());
         camera = (Button)findViewById(R.id.camera);
         timeline = (Button)findViewById(R.id.vtimeline);
         guestlist = (Button)findViewById(R.id.vguestlist);
@@ -153,5 +152,6 @@ public class HomeActivity extends AppCompatActivity
     public void setFragment(Fragment fragment) {
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content,fragment).commit();
+        fragmentManager.executePendingTransactions();
     }
 }

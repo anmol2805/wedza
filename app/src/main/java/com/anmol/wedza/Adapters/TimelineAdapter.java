@@ -2,6 +2,7 @@ package com.anmol.wedza.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.annotation.LayoutRes;
@@ -15,8 +16,10 @@ import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import com.anmol.wedza.AlbumActivity;
 import com.anmol.wedza.Model.Timeline;
 import com.anmol.wedza.R;
+import com.anmol.wedza.StoryMediaPreview;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -46,7 +49,7 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if(convertView!=null){
             return convertView;
         }
@@ -55,25 +58,24 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
             //LayoutInflater inflater = context.getLayoutInflater();
             View v = inflater.inflate(resource,null);
             ImageView mediaimg = (ImageView)v.findViewById(R.id.mediaphoto);
-            final VideoView mediavid = (VideoView)v.findViewById(R.id.mediavideo);
+            ImageView playicon = (ImageView)v.findViewById(R.id.playicon);
             if(timelines.get(position).getMediatype().contains("image")){
-                mediaimg.setVisibility(View.VISIBLE);
+                playicon.setVisibility(View.GONE);
                 Glide.with(getContext()).load(timelines.get(position).getMedialink()).into(mediaimg);
             }
             else if(timelines.get(position).getMediatype().contains("video")){
-                mediavid.setVisibility(View.VISIBLE);
-                MediaController mediaController = new MediaController(getContext());
-                mediaController.setAnchorView(mediavid);
-                mediavid.setMediaController(mediaController);
-                mediavid.setVideoURI(Uri.parse(timelines.get(position).getMedialink()));
-                mediavid.requestFocus();
-                mediavid.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mediaPlayer) {
-                        mediavid.start();
-                    }
-                });
+                playicon.setVisibility(View.VISIBLE);
+                Glide.with(getContext()).load(timelines.get(position).getMedialink()).into(mediaimg);
             }
+            mediaimg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, StoryMediaPreview.class);
+                    intent.putExtra("medialink",timelines.get(position).getMedialink());
+                    intent.putExtra("mediatype",timelines.get(position).getMediatype());
+                    context.startActivity(intent);
+                }
+            });
             return v;
         }
 
