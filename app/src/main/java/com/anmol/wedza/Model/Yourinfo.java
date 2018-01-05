@@ -5,18 +5,27 @@ package com.anmol.wedza.Model;
  */
 
 public class Yourinfo {
-    String username,fbpagelink,relation,team,status,profilepicturepath;
+    String username,fbpagelink,relation,team,status,profilepicturepath,currentwedding;
 
     public Yourinfo() {
     }
 
-    public Yourinfo(String username, String fbpagelink, String relation, String team, String status, String profilepicturepath) {
+    public Yourinfo(String username, String fbpagelink, String relation, String team, String status, String profilepicturepath,String currentwedding) {
         this.username = username;
         this.fbpagelink = fbpagelink;
         this.relation = relation;
         this.team = team;
         this.status = status;
         this.profilepicturepath = profilepicturepath;
+        this.currentwedding = currentwedding;
+    }
+
+    public String getCurrentwedding() {
+        return currentwedding;
+    }
+
+    public void setCurrentwedding(String currentwedding) {
+        this.currentwedding = currentwedding;
     }
 
     public String getUsername() {

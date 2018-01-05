@@ -117,7 +117,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                         uname = name.getText().toString().trim();
                         fbpagelink = fbpglnk.getText().toString().trim();
                         if(!relation.contains("Select Relation type")){
-                            Yourinfo yourinfo = new Yourinfo(uname,fbpagelink,relation,team,status,profilePicturePath);
+                            Yourinfo yourinfo = new Yourinfo(uname,fbpagelink,relation,team,status,profilePicturePath,weddingid);
                             db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).set(yourinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -128,7 +128,6 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                                     db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document(id)
                                             .set(map);
                                     Intent intent = new Intent(IntroduceYourselfActivity.this,HomeActivity.class);
-                                    intent.putExtra("weddingid",weddingid);
                                     startActivity(intent);
                                 }
                             });

@@ -1,5 +1,6 @@
 package com.anmol.wedza;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -26,7 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     FirebaseAuth auth = FirebaseAuth.getInstance();
-    Button camera;
+    Button camera,timeline,guestlist,gallery,story;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,14 +53,44 @@ public class HomeActivity extends AppCompatActivity
         fm.beginTransaction().replace(R.id.content,new gallery()).commit();
         fm.executePendingTransactions();
         camera = (Button)findViewById(R.id.camera);
+        timeline = (Button)findViewById(R.id.vtimeline);
+        guestlist = (Button)findViewById(R.id.vguestlist);
+        gallery = (Button)findViewById(R.id.vgallery);
+        story = (Button)findViewById(R.id.vstory);
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(HomeActivity.this,CameraActivity.class));
             }
         });
+        guestlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setFragment(new guestlist());
+            }
+        });
+        timeline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setFragment(new home());
+            }
+        });
+        gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setFragment(new gallery());
+            }
+        });
+        story.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setFragment(new story());
+            }
+        });
 
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -116,5 +147,10 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void setFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content,fragment).commit();
     }
 }
