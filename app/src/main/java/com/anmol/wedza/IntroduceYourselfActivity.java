@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,7 +15,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.anmol.wedza.Model.Yourinfo;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -26,7 +30,6 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
     Spinner spinner;
     Button done;
     ArrayAdapter<CharSequence> arrayAdapter;
-    String relation;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     DocumentReference documentReference = FirebaseFirestore.getInstance().document("weddings/mrxwedsmsy/users/user1");
     String profilePicturePath;
@@ -37,6 +40,10 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
     Button tbr,tgr,single,marrried;
     String team = "groom";
     String status = "single";
+    String uname;
+    String fbpagelink = null;
+    EditText fbpglnk;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +56,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
         tgr = (Button)findViewById(R.id.tgr);
         single = (Button)findViewById(R.id.single);
         marrried = (Button)findViewById(R.id.married);
+        fbpglnk = (EditText)findViewById(R.id.fbpagelink);
         Intent intent = getIntent();
         profilePicturePath = intent.getStringExtra("profilePicturePath");
         username = intent.getStringExtra("username");
@@ -61,7 +69,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                relation = (String) adapterView.getItemAtPosition(i);
+                String relation = (String) adapterView.getItemAtPosition(i);
                 fun(relation);
 
             }
@@ -106,10 +114,24 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
         done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        uname = name.getText().toString().trim();
+                        fbpagelink = fbpglnk.getText().toString().trim();
                         if(!relation.contains("Select Relation type")){
-                            Map<String,Object> map = new HashMap<>();
-                            map.put("relation",relation);
-                            documentReference.set(map);
+                            Yourinfo yourinfo = new Yourinfo(uname,fbpagelink,relation,team,status,profilePicturePath);
+                            db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).set(yourinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Map<String,Object> map = new HashMap<>();
+                                    map.put("weddingid",weddingid);
+                                    DocumentReference ref = db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document();
+                                    String id = ref.getId();
+                                    db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document(id)
+                                            .set(map);
+                                    Intent intent = new Intent(IntroduceYourselfActivity.this,HomeActivity.class);
+                                    intent.putExtra("weddingid",weddingid);
+                                    startActivity(intent);
+                                }
+                            });
                         }
                     }
                 });
