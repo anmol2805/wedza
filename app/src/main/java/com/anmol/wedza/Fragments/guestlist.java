@@ -66,11 +66,11 @@ public class guestlist extends Fragment {
     }
     private void teambride() {
         guests.clear();
-        db.collection("weddings/wedding1/users").whereEqualTo("side","bride").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("weddings/wedding1/users").whereEqualTo("team","bride").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(DocumentSnapshot doc:task.getResult()){
-                    Guest guest = new Guest(doc.getString("name"));
+                    Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath"));
                     guests.add(guest);
                 }
                 guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
@@ -86,11 +86,11 @@ public class guestlist extends Fragment {
 
     private void teamgroom() {
         guests.clear();
-        db.collection("weddings/wedding1/users").whereEqualTo("side","groom").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("weddings/wedding1/users").whereEqualTo("team","groom").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(DocumentSnapshot doc:task.getResult()){
-                    Guest guest = new Guest(doc.getString("name"));
+                    Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath"));
                     guests.add(guest);
                 }
                 guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
@@ -110,7 +110,7 @@ public class guestlist extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(DocumentSnapshot doc:task.getResult()){
-                    Guest guest = new Guest(doc.getString("name"));
+                    Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath"));
                     guests.add(guest);
                 }
                 guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);

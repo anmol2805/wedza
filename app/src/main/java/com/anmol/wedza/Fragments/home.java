@@ -61,7 +61,10 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         db.collection("weddings").document("wedding1").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                Glide.with(getActivity()).load(task.getResult().getString("coverpic")).into(coverpic);
+                if(getActivity()!=null){
+                    Glide.with(getActivity()).load(task.getResult().getString("coverpic")).into(coverpic);
+                }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -78,13 +81,19 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
                     Timeline timeline = new Timeline(doc.getString("medialink"),doc.getString("event"),doc.getString("mediatype"));
                     timelines.add(timeline);
                 }
-                timelineAdapter = new TimelineAdapter(getActivity(),R.layout.timeline,timelines);
-                lv.setAdapter(timelineAdapter);
+                if(getActivity()!=null){
+                    timelineAdapter = new TimelineAdapter(getActivity(),R.layout.timeline,timelines);
+                    lv.setAdapter(timelineAdapter);
+                }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(),""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                if(getActivity()!=null){
+                    Toast.makeText(getActivity(),""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         keypeople.setOnClickListener(new View.OnClickListener() {

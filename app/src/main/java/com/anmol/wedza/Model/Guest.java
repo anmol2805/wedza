@@ -5,13 +5,22 @@ package com.anmol.wedza.Model;
  */
 
 public class Guest {
-    String name;
+    String name,profilepicturepath;
 
     public Guest() {
     }
 
-    public Guest(String name) {
+    public Guest(String name,String profilepicturepath) {
         this.name = name;
+        this.profilepicturepath = profilepicturepath;
+    }
+
+    public String getProfilepicturepath() {
+        return profilepicturepath;
+    }
+
+    public void setProfilepicturepath(String profilepicturepath) {
+        this.profilepicturepath = profilepicturepath;
     }
 
     public String getName() {

@@ -56,6 +56,8 @@ public class GuestAdapter extends ArrayAdapter<Guest> {
             //LayoutInflater inflater = context.getLayoutInflater();
             View v = inflater.inflate(resource,null);
             TextView name = (TextView)v.findViewById(R.id.name);
+            ImageView profpic = (ImageView)v.findViewById(R.id.profilepic);
+            Glide.with(context).load(guests.get(position).getProfilepicturepath()).into(profpic);
             name.setText(guests.get(position).getName());
             return v;
         }
