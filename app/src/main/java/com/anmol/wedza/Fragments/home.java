@@ -105,6 +105,7 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
                 startActivity(new Intent(getActivity(), AlertsActivity.class));
             }
         });
+
         return view;
     }
 
