@@ -1,6 +1,7 @@
 package com.anmol.wedza.Fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,11 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.anmol.wedza.Adapters.TimelineAdapter;
+import com.anmol.wedza.AlertsActivity;
+import com.anmol.wedza.EventsActivity;
+import com.anmol.wedza.KeypeopleActivity;
 import com.anmol.wedza.Model.Timeline;
 import com.anmol.wedza.R;
 import com.bumptech.glide.Glide;
@@ -39,11 +44,15 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
     int lastTopValue = 0;
     List<Timeline> timelines;
     TimelineAdapter timelineAdapter;
+    Button keypeople,alerts,events;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home,container,false);
         lv = (ListView)view.findViewById(R.id.newsfeed);
+        keypeople = (Button)view.findViewById(R.id.keypeople);
+        alerts = (Button)view.findViewById(R.id.alerts);
+        events = (Button)view.findViewById(R.id.events);
         timelines = new ArrayList<>();
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         ViewGroup header = (ViewGroup)layoutInflater.inflate(R.layout.listheader,lv,false);
@@ -76,6 +85,24 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(getActivity(),""+e.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+        keypeople.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), KeypeopleActivity.class));
+            }
+        });
+        events.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), EventsActivity.class));
+            }
+        });
+        alerts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), AlertsActivity.class));
             }
         });
         return view;
