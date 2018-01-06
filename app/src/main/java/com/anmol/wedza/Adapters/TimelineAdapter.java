@@ -95,7 +95,7 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
             like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    
                 }
             });
             comment.setOnClickListener(new View.OnClickListener() {
