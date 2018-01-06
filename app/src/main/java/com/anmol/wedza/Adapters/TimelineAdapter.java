@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.anmol.wedza.AlbumActivity;
@@ -23,6 +24,8 @@ import com.anmol.wedza.R;
 import com.anmol.wedza.StoryMediaPreview;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -66,6 +69,12 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
             Button like = (Button)v.findViewById(R.id.like);
             Button comment = (Button)v.findViewById(R.id.comment);
             Button share = (Button)v.findViewById(R.id.share);
+            TextView uname = (TextView)v.findViewById(R.id.uname);
+            TextView event = (TextView)v.findViewById(R.id.eventname);
+            TextView des = (TextView)v.findViewById(R.id.des);
+            uname.setText(timelines.get(position).getUsername());
+            event.setText(timelines.get(position).getEvent());
+            des.setText(timelines.get(position).getDes());
             if(timelines.get(position).getMediatype().contains("image")){
                 playicon.setVisibility(View.GONE);
                 Glide.with(getContext()).load(timelines.get(position).getMedialink()).into(mediaimg);

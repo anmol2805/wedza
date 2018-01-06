@@ -28,8 +28,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,11 +77,15 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         });
         lv.setOnScrollListener(this);
         timelines.clear();
-        db.collection("weddings/wedding1/timeline").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("weddings/wedding1/timeline").orderBy("time", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(DocumentSnapshot doc:task.getResult()){
-                    Timeline timeline = new Timeline(doc.getString("medialink"),doc.getString("event"),doc.getString("mediatype"));
+                    Timeline timeline = new Timeline(doc.getString("medialink")
+                            ,doc.getString("event")
+                            ,doc.getString("mediatype")
+                            ,doc.getString("des")
+                            ,doc.getString("username"));
                     timelines.add(timeline);
                 }
                 if(getActivity()!=null){
