@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -21,6 +22,7 @@ import com.anmol.wedza.Model.Timeline;
 import com.anmol.wedza.R;
 import com.anmol.wedza.StoryMediaPreview;
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -54,11 +56,16 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
             return convertView;
         }
         else{
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            String userid = auth.getCurrentUser().getUid();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //LayoutInflater inflater = context.getLayoutInflater();
             View v = inflater.inflate(resource,null);
             ImageView mediaimg = (ImageView)v.findViewById(R.id.mediaphoto);
             ImageView playicon = (ImageView)v.findViewById(R.id.playicon);
+            Button like = (Button)v.findViewById(R.id.like);
+            Button comment = (Button)v.findViewById(R.id.comment);
+            Button share = (Button)v.findViewById(R.id.share);
             if(timelines.get(position).getMediatype().contains("image")){
                 playicon.setVisibility(View.GONE);
                 Glide.with(getContext()).load(timelines.get(position).getMedialink()).into(mediaimg);
@@ -74,6 +81,24 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
                     intent.putExtra("medialink",timelines.get(position).getMedialink());
                     intent.putExtra("mediatype",timelines.get(position).getMediatype());
                     context.startActivity(intent);
+                }
+            });
+            like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+            comment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+            share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
                 }
             });
             return v;
