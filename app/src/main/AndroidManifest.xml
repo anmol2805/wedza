@@ -45,6 +45,16 @@
         <activity android:name=".AlbumActivity" />
         <activity android:name=".PhoneVerification" />
         <activity android:name=".EditpersonalinfoActivity"></activity>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.anmol.wedza"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +83,7 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
             ImageView playicon = (ImageView)v.findViewById(R.id.playicon);
             final Button like = (Button)v.findViewById(R.id.like);
             Button comment = (Button)v.findViewById(R.id.comment);
-            Button share = (Button)v.findViewById(R.id.share);
+            final Button share = (Button)v.findViewById(R.id.share);
             TextView uname = (TextView)v.findViewById(R.id.uname);
             TextView event = (TextView)v.findViewById(R.id.eventname);
             TextView des = (TextView)v.findViewById(R.id.des);
@@ -177,11 +179,22 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
             share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    sharepic(timelines.get(position).getMedialink());
                 }
             });
             return v;
         }
 
     }
+
+    private void sharepic(String medialink) {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT,medialink);
+        context.startActivity(Intent.createChooser(shareIntent, "Share..."));
+
+    }
+
+
 }
