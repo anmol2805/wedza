@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.anmol.wedza.AlbumActivity;
+import com.anmol.wedza.CommentsActivity;
 import com.anmol.wedza.Model.Timeline;
 import com.anmol.wedza.R;
 import com.anmol.wedza.StoryMediaPreview;
@@ -65,7 +66,7 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
 
     @NonNull
     @Override
-    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable final View convertView, @NonNull ViewGroup parent) {
         if(convertView!=null){
             return convertView;
         }
@@ -168,7 +169,9 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
             comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Intent intent = new Intent(context, CommentsActivity.class);
+                    intent.putExtra("postid",timelines.get(position).getPostid());
+                    context.startActivity(intent);
                 }
             });
             share.setOnClickListener(new View.OnClickListener() {
