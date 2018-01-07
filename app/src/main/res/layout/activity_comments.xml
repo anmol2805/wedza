@@ -1,9 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.anmol.wedza.CommentsActivity">
+    tools:context="com.anmol.wedza.CommentsActivity"
+    android:padding="16dp"
+    >
 
-</android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="post" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/post"
+        android:layout_toStartOf="@+id/post"
+        android:layout_margin="5dp"
+        android:hint="write a comment"
+        android:textColor="#000"
+        android:id="@+id/comment"
+        />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/comment"
+        android:layout_margin="5dp"
+        android:id="@+id/commentlist"
+        android:divider="@null"
+        />
+
+</RelativeLayout>
