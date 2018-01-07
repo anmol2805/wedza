@@ -27,7 +27,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
@@ -102,25 +104,47 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
                     context.startActivity(intent);
                 }
             });
-            db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                    String weddingid = task.getResult().getString("currentwedding");
+//                    db.collection("weddings")
+//                            .document(weddingid)
+//                            .collection("timeline")
+//                            .document(timelines.get(position).getPostid())
+//                            .collection("likes").get()
+//                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                    for(DocumentSnapshot doc:task.getResult()){
+//                                        if(doc.getId().contains(auth.getCurrentUser().getUid())){
+//                                            like.setVisibility(View.INVISIBLE);
+//                                        }
+//                                    }
+//                                }
+//                            });
+//                }
+//            });
+            db.collection("users").document(auth.getCurrentUser().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    String weddingid = task.getResult().getString("currentwedding");
-                    db.collection("weddings")
-                            .document(weddingid)
-                            .collection("timeline")
-                            .document(timelines.get(position).getPostid())
-                            .collection("likes").get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    for(DocumentSnapshot doc:task.getResult()){
-                                        if(doc.getId().contains(auth.getCurrentUser().getUid())){
-                                            like.setVisibility(View.INVISIBLE);
-                                        }
+                public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                    if(documentSnapshot!=null && documentSnapshot.exists()){
+                        String weddingid = documentSnapshot.getString("currentwedding");
+                        db.collection("weddings")
+                                .document(weddingid)
+                                .collection("timeline")
+                                .document(timelines.get(position).getPostid())
+                                .collection("likes").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                                for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
+                                    if(doc.getId().contains(auth.getCurrentUser().getUid())){
+                                        like.setVisibility(View.INVISIBLE);
                                     }
                                 }
-                            });
+                            }
+                        });
+                    }
                 }
             });
             like.setOnClickListener(new View.OnClickListener() {

@@ -36,56 +36,59 @@ public class HomeActivity extends AppCompatActivity
             startActivity(new Intent(HomeActivity.this,MainActivity.class));
             finish();
         }
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        else {
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
 
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
 
-        setFragment(new home());
-        camera = (Button)findViewById(R.id.camera);
-        timeline = (Button)findViewById(R.id.vtimeline);
-        guestlist = (Button)findViewById(R.id.vguestlist);
-        gallery = (Button)findViewById(R.id.vgallery);
-        story = (Button)findViewById(R.id.vstory);
-        camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(HomeActivity.this,CameraActivity.class));
-            }
-        });
-        guestlist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new guestlist());
-            }
-        });
-        timeline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new home());
-            }
-        });
-        gallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new gallery());
-            }
-        });
-        story.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFragment(new story());
-            }
-        });
+            setFragment(new home());
+            camera = (Button)findViewById(R.id.camera);
+            timeline = (Button)findViewById(R.id.vtimeline);
+            guestlist = (Button)findViewById(R.id.vguestlist);
+            gallery = (Button)findViewById(R.id.vgallery);
+            story = (Button)findViewById(R.id.vstory);
+            camera.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(HomeActivity.this,CameraActivity.class));
+                }
+            });
+            guestlist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setFragment(new guestlist());
+                }
+            });
+            timeline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setFragment(new home());
+                }
+            });
+            gallery.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setFragment(new gallery());
+                }
+            });
+            story.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setFragment(new story());
+                }
+            });
+        }
+
 
     }
 

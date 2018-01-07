@@ -79,6 +79,18 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
 
             }
         });
+        DocumentReference ref = db.collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document();
+        String id = ref.getId();
+        Map<String,Object> cmap = new HashMap<>();
+        cmap.put("weddingid",weddingid);
+        db.collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document(id).set(cmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Map<String,Object> map = new HashMap<>();
+                map.put("currentwedding",weddingid);
+                db.collection("users").document(auth.getCurrentUser().getUid()).set(map);
+            }
+        });
         tbr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,6 +130,8 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                         fbpagelink = fbpglnk.getText().toString().trim();
                         if(!relation.contains("Select Relation type")){
                             Yourinfo yourinfo = new Yourinfo(uname,fbpagelink,relation,team,status,profilePicturePath,weddingid);
+
+
                             db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).set(yourinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -131,6 +145,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                                     startActivity(intent);
                                 }
                             });
+
                         }
                     }
                 });
