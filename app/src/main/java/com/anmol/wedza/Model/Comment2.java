@@ -1,25 +1,20 @@
 package com.anmol.wedza.Model;
 
-
-import java.sql.Timestamp;
-
 /**
  * Created by anmol on 1/7/2018.
  */
 
-public class Comment {
+public class Comment2 {
     String comment,commentedby,profilepic,uid;
-    Timestamp time;
 
-    public Comment(String comment, String commentedby, String profilepic, String uid, Timestamp time) {
+    public Comment2() {
+    }
+
+    public Comment2(String comment, String commentedby, String profilepic, String uid) {
         this.comment = comment;
         this.commentedby = commentedby;
         this.profilepic = profilepic;
         this.uid = uid;
-        this.time = time;
-    }
-
-    public Comment() {
     }
 
     public String getComment() {
@@ -52,13 +47,5 @@ public class Comment {
 
     public void setUid(String uid) {
         this.uid = uid;
-    }
-
-    public Timestamp getTime() {
-        return time;
-    }
-
-    public void setTime(Timestamp time) {
-        this.time = time;
     }
 }
