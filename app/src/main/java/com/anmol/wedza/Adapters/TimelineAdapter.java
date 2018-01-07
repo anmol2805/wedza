@@ -23,11 +23,20 @@ import com.anmol.wedza.Model.Timeline;
 import com.anmol.wedza.R;
 import com.anmol.wedza.StoryMediaPreview;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import droidninja.filepicker.models.Document;
 
 /**
  * Created by anmol on 12/26/2017.
@@ -59,14 +68,15 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
             return convertView;
         }
         else{
-            FirebaseAuth auth = FirebaseAuth.getInstance();
+            final FirebaseAuth auth = FirebaseAuth.getInstance();
+            final FirebaseFirestore db = FirebaseFirestore.getInstance();
             String userid = auth.getCurrentUser().getUid();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //LayoutInflater inflater = context.getLayoutInflater();
             View v = inflater.inflate(resource,null);
             ImageView mediaimg = (ImageView)v.findViewById(R.id.mediaphoto);
             ImageView playicon = (ImageView)v.findViewById(R.id.playicon);
-            Button like = (Button)v.findViewById(R.id.like);
+            final Button like = (Button)v.findViewById(R.id.like);
             Button comment = (Button)v.findViewById(R.id.comment);
             Button share = (Button)v.findViewById(R.id.share);
             TextView uname = (TextView)v.findViewById(R.id.uname);
@@ -92,10 +102,43 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
                     context.startActivity(intent);
                 }
             });
+            db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    String weddingid = task.getResult().getString("currentwedding");
+                    db.collection("weddings")
+                            .document(weddingid)
+                            .collection("timeline")
+                            .document(timelines.get(position).getPostid())
+                            .collection("likes").get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    for(DocumentSnapshot doc:task.getResult()){
+                                        if(doc.getId().contains(auth.getCurrentUser().getUid())){
+                                            like.setVisibility(View.INVISIBLE);
+                                        }
+                                    }
+                                }
+                            });
+                }
+            });
             like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    
+                    db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            Map<String,Object> map = new HashMap<>();
+                            map.put("like",true);
+                            String weddingid = task.getResult().getString("currentwedding");
+                            db.collection("weddings")
+                                    .document(weddingid)
+                                    .collection("timeline")
+                                    .document(timelines.get(position).getPostid())
+                                    .collection("likes").document(auth.getCurrentUser().getUid()).set(map);
+                        }
+                    });
                 }
             });
             comment.setOnClickListener(new View.OnClickListener() {

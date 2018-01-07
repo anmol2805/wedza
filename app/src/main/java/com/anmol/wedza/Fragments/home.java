@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -48,6 +49,7 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
     List<Timeline> timelines;
     TimelineAdapter timelineAdapter;
     Button keypeople,alerts,events;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
@@ -85,7 +87,9 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
                             ,doc.getString("event")
                             ,doc.getString("mediatype")
                             ,doc.getString("des")
-                            ,doc.getString("username"));
+                            ,doc.getString("username")
+                            ,auth.getCurrentUser().getUid()
+                            ,doc.getId());
                     timelines.add(timeline);
                 }
                 if(getActivity()!=null){
