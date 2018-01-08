@@ -5,15 +5,14 @@ package com.anmol.wedza.Model;
  */
 
 public class Keypeople {
-    String name,img,team,contact,work;
+    String name,img,contact,work;
 
     public Keypeople() {
     }
 
-    public Keypeople(String name, String img, String team, String contact, String work) {
+    public Keypeople(String name, String img, String contact, String work) {
         this.name = name;
         this.img = img;
-        this.team = team;
         this.contact = contact;
         this.work = work;
     }
@@ -34,13 +33,6 @@ public class Keypeople {
         this.img = img;
     }
 
-    public String getTeam() {
-        return team;
-    }
-
-    public void setTeam(String team) {
-        this.team = team;
-    }
 
     public String getContact() {
         return contact;
