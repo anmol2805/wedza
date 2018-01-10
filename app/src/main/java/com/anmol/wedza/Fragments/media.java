@@ -1,14 +1,19 @@
 package com.anmol.wedza.Fragments;
 
+import android.Manifest;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,15 +21,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.anmol.wedza.CameraActivity;
 import com.anmol.wedza.R;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import droidninja.filepicker.FilePickerBuilder;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -39,7 +54,15 @@ public class media extends Fragment {
     private static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 200;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
-
+    private static final int MY_PERMISSIONS_REQUEST = 123;
+    Button allow,posttime,saveg;
+    Spinner eventselect;
+    ImageView img;
+    LinearLayout imagelayout,btnlayout;
+    StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    List<String> events = new ArrayList<>();
+    
     // directory name to store captured images and videos
     private static final String IMAGE_DIRECTORY_NAME = "Wedza";
 
@@ -56,7 +79,23 @@ public class media extends Fragment {
         videoPreview = (VideoView)vi.findViewById(R.id.videoPreview);
         btnCapturePicture = (Button)vi.findViewById(R.id.btnCapturePicture);
         btnRecordVideo = (Button)vi.findViewById(R.id.btnRecordVideo);
-
+        imagelayout = (LinearLayout)vi.findViewById(R.id.imglayout);
+        btnlayout = (LinearLayout)vi.findViewById(R.id.btnlayout); 
+        eventselect = (Spinner)vi.findViewById(R.id.eventselect);
+        allow = (Button)vi.findViewById(R.id.allow);
+        posttime = (Button)vi.findViewById(R.id.ptimeline);
+        saveg = (Button)vi.findViewById(R.id.saveg);
+        imagelayout.setVisibility(View.GONE);
+        btnlayout.setVisibility(View.GONE);
+        allow.setVisibility(View.VISIBLE);
+        permissionRequest();
+        allow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                permissionRequest();
+            }
+        });
+        
         /**
          * Capture image button click event
          * */
@@ -220,6 +259,68 @@ public class media extends Fragment {
         }
 
         return mediaFile;
+    }
+    private void permissionRequest() {
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED
+                &&
+                ContextCompat.checkSelfPermission(getActivity(),
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED
+                &&
+                ContextCompat.checkSelfPermission(getActivity(),
+                        android.Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_GRANTED
+                &&
+                ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.RECORD_AUDIO)
+                        ==PackageManager.PERMISSION_GRANTED)
+            imageChooser();
+
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(getActivity(),
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(getActivity(),
+                        android.Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.RECORD_AUDIO)
+                !=PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO},
+                    MY_PERMISSIONS_REQUEST);
+        }
+    }
+    private void imageChooser() {
+        imagelayout.setVisibility(View.VISIBLE);
+        allow.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == MY_PERMISSIONS_REQUEST && grantResults.length > 0) {
+            Log.i("grantresults", grantResults.toString());
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] != PackageManager.PERMISSION_GRANTED ||
+                    grantResults[2] != PackageManager.PERMISSION_GRANTED ||
+                    grantResults[3] !=PackageManager.PERMISSION_GRANTED
+                    ) {
+                Toast.makeText(getActivity(), "Permissions not given!!", Toast.LENGTH_SHORT).show();
+            } else
+                imageChooser();
+
+        }
+
+
+
+
     }
     
 }
