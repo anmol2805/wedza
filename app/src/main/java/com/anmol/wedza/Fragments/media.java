@@ -2,6 +2,7 @@ package com.anmol.wedza.Fragments;
 
 import android.Manifest;
 import android.app.Fragment;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -42,6 +43,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.nbsp.materialfilepicker.MaterialFilePicker;
+import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -52,6 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import droidninja.filepicker.FilePickerBuilder;
 
@@ -69,7 +73,7 @@ public class media extends Fragment {
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     private static final int MY_PERMISSIONS_REQUEST = 123;
-    Button allow,posttime,saveg;
+    Button allow,posttime,saveg,pickfromgallery;
     Spinner eventselect;
     ImageView img;
     LinearLayout imagelayout,btnlayout;
@@ -100,6 +104,7 @@ public class media extends Fragment {
         allow = (Button)vi.findViewById(R.id.allow);
         posttime = (Button)vi.findViewById(R.id.ptimeline);
         saveg = (Button)vi.findViewById(R.id.saveg);
+        pickfromgallery = (Button)vi.findViewById(R.id.btnpicfromgallery);
         imagelayout.setVisibility(View.GONE);
         btnlayout.setVisibility(View.GONE);
         allow.setVisibility(View.VISIBLE);
@@ -135,6 +140,13 @@ public class media extends Fragment {
                 recordVideo();
             }
         });
+        pickfromgallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickmedia();
+            }
+        });
+
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -144,6 +156,16 @@ public class media extends Fragment {
         });
 
         return vi;
+    }
+
+    private void pickmedia() {
+        new MaterialFilePicker()
+                .withActivity(getActivity())
+                .withRequestCode(8)
+                .withFilter(Pattern.compile(".*\\.txt$")) // Filtering files and directories by file name using regexp
+                .withFilterDirectories(true) // Set directories filterable (false by default)
+                .withHiddenFiles(true) // Show hidden files and folders
+                .start();
     }
 
     private void forward(final String weddingid, final String eventname) {
@@ -325,7 +347,40 @@ public class media extends Fragment {
                         .show();
             }
         }
+        else if(requestCode==8){
+            if(resultCode == RESULT_OK){
+                String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+                previewfile(filePath);
+
+            }else if (resultCode == RESULT_CANCELED) {
+                // user cancelled recording
+                Toast.makeText(getApplicationContext(),
+                        "User cancelled the task", Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                // failed to record video
+                Toast.makeText(getApplicationContext(),
+                        "Sorry! Failed to pick file", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
     }
+
+    private void previewfile(String filePath) {
+        Uri uri = FileProvider.getUriForFile(getActivity(),"com.anmol.wedza",new File(filePath));
+        ContentResolver cr = getActivity().getContentResolver();
+        String type = cr.getType(uri);
+        if(type.contains("image")){
+            videoPreview.setVisibility(View.GONE);
+            imgPreview.setVisibility(View.VISIBLE);
+            imgPreview.setImageURI(uri);
+        }else if(type.contains("video")){
+            videoPreview.setVisibility(View.VISIBLE);
+            imgPreview.setVisibility(View.GONE);
+            videoPreview.setVideoURI(uri);
+        }
+    }
+
     private void previewCapturedImage() {
         try {
             // hide video preview

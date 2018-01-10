@@ -45,6 +45,7 @@ dependencies {
     compile 'com.android.support:customtabs:27.+'
     compile 'com.droidninja:filepicker:2.0.8'
     compile 'de.hdodenhof:circleimageview:2.2.0'
+    compile 'com.nbsp:library:1.8'
     testCompile 'junit:junit:4.12'
 }
 
