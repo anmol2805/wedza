@@ -21,6 +21,7 @@ import android.widget.Button;
 import com.anmol.wedza.Fragments.gallery;
 import com.anmol.wedza.Fragments.guestlist;
 import com.anmol.wedza.Fragments.home;
+import com.anmol.wedza.Fragments.media;
 import com.anmol.wedza.Fragments.story;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -60,7 +61,8 @@ public class HomeActivity extends AppCompatActivity
             camera.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(HomeActivity.this,CameraActivity.class));
+                    //startActivity(new Intent(HomeActivity.this,CameraActivity.class));
+                    setFragment(new media());
                 }
             });
             guestlist.setOnClickListener(new View.OnClickListener() {
