@@ -8,120 +8,135 @@
     tools:context=".HomeActivity"
     android:padding="16dp"
     >
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/btnlayout"
-        >
-
-        <Button
-            android:id="@+id/btnCapturePicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Click a Picture"
-            android:layout_weight="1"
-            android:layout_marginBottom="10dp"/>
-        <Button
-            android:id="@+id/btnRecordVideo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Record a Video"
-            android:layout_weight="1"
-            />
-        <Button
-            android:id="@+id/btnpicfromgallery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Choose from gallery"
-            android:layout_weight="1"
-            />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/imglayout"
-        android:layout_below="@+id/btnlayout"
-        >
-        <ImageView
-            android:id="@+id/imgPreview"
-            android:layout_width="wrap_content"
-            android:layout_height="300dp"
-            android:visibility="gone"
-            />
-
-        <!-- To preview video recorded -->
-        <VideoView
-            android:id="@+id/videoPreview"
+        android:layout_height="match_parent">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:visibility="gone"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/btnlayout"
+                >
 
-             />
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:text="Select event"
-            android:textColor="#000"
-            />
+                <Button
+                    android:id="@+id/btnCapturePicture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Click a Picture"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"/>
+                <Button
+                    android:id="@+id/btnRecordVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Record a Video"
+                    android:layout_weight="1"
+                    />
+                <Button
+                    android:id="@+id/btnpicfromgallery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose from gallery"
+                    android:layout_weight="1"
+                    />
 
-        <Spinner
-            android:id="@+id/eventselect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/imglayout"
+                android:layout_below="@+id/btnlayout"
+                >
+                <ImageView
+                    android:id="@+id/imgPreview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="280dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_margin="5dp"
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/description"
-            android:layout_margin="5dp"
-            android:hint="description..."
-            android:textStyle="italic"
-            android:textColor="#000"
-            android:textAlignment="center"
-            />
+                    />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="5dp"
-            >
+                <!-- To preview video recorded -->
+                <VideoView
+                    android:id="@+id/videoPreview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="280dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    />
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:text="Select event"
+                    android:textColor="#000"
+                    />
 
+                <Spinner
+                    android:id="@+id/eventselect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/description"
+                    android:layout_margin="5dp"
+                    android:hint="description..."
+                    android:textStyle="italic"
+                    android:textColor="#000"
+                    android:textAlignment="center"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="5dp"
+                    >
+
+                    <Button
+                        android:id="@+id/ptimeline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="post to timeline" />
+
+                    <Button
+                        android:id="@+id/saveg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="save to albums" />
+                </LinearLayout>
+
+
+            </LinearLayout>
             <Button
-                android:id="@+id/ptimeline"
+                android:id="@+id/allow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="post to timeline" />
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="Allow Permissions"
+                android:layout_margin="10dp"
+                android:layout_below="@+id/imglayout"
 
-            <Button
-                android:id="@+id/saveg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="save to albums" />
-        </LinearLayout>
+                />
 
+        </RelativeLayout>
+    </ScrollView>
 
-    </LinearLayout>
-    <Button
-        android:id="@+id/allow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="Allow Permissions"
-        android:layout_margin="10dp"
-
-        />
 
 
 

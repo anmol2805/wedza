@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,7 +29,12 @@ import android.widget.VideoView;
 
 import com.anmol.wedza.CameraActivity;
 import com.anmol.wedza.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -61,6 +67,7 @@ public class media extends Fragment {
     LinearLayout imagelayout,btnlayout;
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
     List<String> events = new ArrayList<>();
     
     // directory name to store captured images and videos
@@ -119,7 +126,43 @@ public class media extends Fragment {
                 recordVideo();
             }
         });
+        db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                String weddingid = task.getResult().getString("currentwedding");
+                getteam(weddingid);
+            }
+        });
         return vi;
+    }
+
+    private void getteam(final String weddingid) {
+        db.collection("weddings").document(weddingid).collection("users")
+                .document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                getevent(weddingid,task.getResult().getString("team"));
+            }
+        });
+    }
+
+    private void getevent(String weddingid, final String team) {
+        db.collection("weddings").document(weddingid).collection("events").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                events.clear();
+                for(DocumentSnapshot doc:task.getResult()){
+                    if(doc.getString("team").contains(team) || doc.getString("team").contains("both")){
+                        String event = doc.getId();
+                        events.add(event);
+                    }
+
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,events);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                eventselect.setAdapter(adapter);
+            }
+        });
     }
 
     private void recordVideo() {
@@ -298,6 +341,7 @@ public class media extends Fragment {
     }
     private void imageChooser() {
         imagelayout.setVisibility(View.VISIBLE);
+        btnlayout.setVisibility(View.VISIBLE);
         allow.setVisibility(View.GONE);
     }
 
