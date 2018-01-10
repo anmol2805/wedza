@@ -162,7 +162,6 @@ public class media extends Fragment {
         new MaterialFilePicker()
                 .withActivity(getActivity())
                 .withRequestCode(8)
-                .withFilter(Pattern.compile(".*\\.txt$")) // Filtering files and directories by file name using regexp
                 .withFilterDirectories(true) // Set directories filterable (false by default)
                 .withHiddenFiles(true) // Show hidden files and folders
                 .start();
@@ -367,6 +366,7 @@ public class media extends Fragment {
     }
 
     private void previewfile(String filePath) {
+
         Uri uri = FileProvider.getUriForFile(getActivity(),"com.anmol.wedza",new File(filePath));
         ContentResolver cr = getActivity().getContentResolver();
         String type = cr.getType(uri);
