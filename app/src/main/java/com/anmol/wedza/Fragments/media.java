@@ -19,8 +19,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -30,20 +32,26 @@ import android.widget.VideoView;
 import com.anmol.wedza.CameraActivity;
 import com.anmol.wedza.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import droidninja.filepicker.FilePickerBuilder;
 
@@ -69,7 +77,7 @@ public class media extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth auth = FirebaseAuth.getInstance();
     List<String> events = new ArrayList<>();
-    
+    EditText description;
     // directory name to store captured images and videos
     private static final String IMAGE_DIRECTORY_NAME = "Wedza";
 
@@ -95,6 +103,7 @@ public class media extends Fragment {
         imagelayout.setVisibility(View.GONE);
         btnlayout.setVisibility(View.GONE);
         allow.setVisibility(View.VISIBLE);
+        description = (EditText)vi.findViewById(R.id.description);
         permissionRequest();
         allow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +142,84 @@ public class media extends Fragment {
                 getteam(weddingid);
             }
         });
+
         return vi;
+    }
+
+    private void forward(final String weddingid, final String eventname) {
+        posttime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                posttotimeline(weddingid,eventname);
+            }
+        });
+        saveg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                savetogallery(weddingid,eventname);
+            }
+        });
+    }
+
+    private void savetogallery(final String weddingid, final String eventname) {
+        StorageReference reference = storageReference.child("photos").child(fileUri.getLastPathSegment());
+        reference.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(getActivity(), "Saved successfully", Toast.LENGTH_SHORT).show();
+                String medialink = String.valueOf(taskSnapshot.getDownloadUrl());
+                String mediatype = taskSnapshot.getMetadata().getContentType();
+                DocumentReference ref = db.collection("weddings").document(weddingid).collection("gallery").document();
+                String imageid = ref.getId();
+                Map<String, Object> map = new HashMap<>();
+                map.put("medialink", medialink);
+                map.put("mediatype", mediatype);
+                map.put("event", eventname);
+                db.collection("weddings").document(weddingid).collection("gallery").document(imageid).set(map);
+            }
+        });
+
+    }
+
+    private void posttotimeline(final String weddingid, final String eventname) {
+        final String des = description.getText().toString().trim();
+        StorageReference reference = storageReference.child("photos").child(fileUri.getLastPathSegment());
+        reference.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(getActivity(), "Posted successfully", Toast.LENGTH_SHORT).show();
+                final String medialink = String.valueOf(taskSnapshot.getDownloadUrl());
+                final String mediatype = taskSnapshot.getMetadata().getContentType();
+                DocumentReference ref = db.collection("weddings").document(weddingid).collection("gallery").document();
+                String imageid = ref.getId();
+                Map<String, Object> map = new HashMap<>();
+                map.put("medialink", medialink);
+                map.put("mediatype", mediatype);
+                map.put("event", eventname);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String date = sdf.format(new Date());
+                final java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+
+                db.collection("weddings").document(weddingid).collection("gallery").document(imageid).set(map);
+                db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        String name = task.getResult().getString("username");
+                        Map<String,Object> objectMap = new HashMap<>();
+                        objectMap.put("des",des);
+                        objectMap.put("event",eventname);
+                        objectMap.put("medialink",medialink);
+                        objectMap.put("mediatype",mediatype);
+                        objectMap.put("time",timestamp);
+                        objectMap.put("username",name);
+                        DocumentReference documentReference = db.collection("weddings").document(weddingid).collection("timeline").document();
+                        String postid = documentReference.getId();
+                        db.collection("weddings").document(weddingid).collection("timeline").document(postid).set(objectMap);
+                    }
+                });
+            }
+        });
+
     }
 
     private void getteam(final String weddingid) {
@@ -146,7 +232,7 @@ public class media extends Fragment {
         });
     }
 
-    private void getevent(String weddingid, final String team) {
+    private void getevent(final String weddingid, final String team) {
         db.collection("weddings").document(weddingid).collection("events").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -161,6 +247,18 @@ public class media extends Fragment {
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,events);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 eventselect.setAdapter(adapter);
+                eventselect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        String eventname = String.valueOf(adapterView.getItemAtPosition(i));
+                        forward(weddingid,eventname);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
             }
         });
     }
