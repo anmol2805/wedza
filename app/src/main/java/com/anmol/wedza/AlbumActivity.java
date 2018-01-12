@@ -14,8 +14,10 @@ import com.anmol.wedza.Model.Gallery;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class AlbumActivity extends AppCompatActivity {
     List<Gallery> galleries;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     GalleryAdapter galleryAdapter;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,23 +48,30 @@ public class AlbumActivity extends AppCompatActivity {
         });
     }
 
-    private void show(String event) {
+    private void show(final String event) {
         galleries.clear();
-        db.collection("weddings/wedding1/gallery").whereEqualTo("event",event).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for(DocumentSnapshot doc:task.getResult()){
-                    Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"),doc.getString("event"));
-                    galleries.add(gallery);
-                }
-                galleryAdapter = new GalleryAdapter(AlbumActivity.this,R.layout.gallerylayout, (ArrayList<Gallery>) galleries);
-                albumgridview.setAdapter(galleryAdapter);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                String weddingid = task.getResult().getString("currentwedding");
+                db.collection("weddings").document(weddingid).collection("gallery").whereEqualTo("event",event).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for(DocumentSnapshot doc:task.getResult()){
+                            Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"),doc.getString("event"));
+                            galleries.add(gallery);
+                        }
+                        galleryAdapter = new GalleryAdapter(AlbumActivity.this,R.layout.gallerylayout, (ArrayList<Gallery>) galleries);
+                        albumgridview.setAdapter(galleryAdapter);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
 
+                    }
+                });
             }
         });
+
     }
 }
