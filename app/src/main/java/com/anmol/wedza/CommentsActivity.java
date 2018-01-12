@@ -68,17 +68,20 @@ public class CommentsActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                         comment2s.clear();
-                        for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
-                            String username = doc.getString("commentedby");
-                            String uid = doc.getString("uid");
-                            String profilepicturepath = doc.getString("profilepic");
-                            String commenttext = doc.getString("comment");
-                            Comment2 comment2 = new Comment2(commenttext,username,profilepicturepath,uid);
-                            comment2s.add(comment2);
+                        if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
+                            for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
+                                String username = doc.getString("commentedby");
+                                String uid = doc.getString("uid");
+                                String profilepicturepath = doc.getString("profilepic");
+                                String commenttext = doc.getString("comment");
+                                Comment2 comment2 = new Comment2(commenttext,username,profilepicturepath,uid);
+                                comment2s.add(comment2);
+                            }
+                            commentsAdapter = new CommentsAdapter(CommentsActivity.this,R.layout.commentlayout,comment2s);
+                            commentslist.setAdapter(commentsAdapter);
+                            commentslist.setSelection(commentslist.getAdapter().getCount() - 1);
                         }
-                        commentsAdapter = new CommentsAdapter(CommentsActivity.this,R.layout.commentlayout,comment2s);
-                        commentslist.setAdapter(commentsAdapter);
-                        commentslist.setSelection(commentslist.getAdapter().getCount() - 1);
+
                     }
                 });
             }

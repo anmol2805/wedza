@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,28 +41,17 @@ public class EventsActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 String weddingid = task.getResult().getString("currentwedding");
-                getteam(weddingid);
+                getevent(weddingid);
             }
         });
     }
 
-    private void getteam(final String weddingid) {
-        db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                String team = task.getResult().getString("team");
-                getevent(weddingid,team);
-            }
-        });
-    }
-
-    private void getevent(String weddingid, String team) {
+    private void getevent(String weddingid) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = sdf.format(new Date());
         java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
         db.collection("weddings").document(weddingid)
                 .collection("events")
-                .whereEqualTo("team",team)
                 .orderBy("time")
                 .whereGreaterThanOrEqualTo("time",timestamp).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override

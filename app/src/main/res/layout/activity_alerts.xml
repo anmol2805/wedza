@@ -6,11 +6,50 @@
     android:layout_height="match_parent"
     tools:context="com.anmol.wedza.AlertsActivity">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/postauth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
+        app:elevation="@dimen/activity_horizontal_margin"
+        app:fabSize="normal"
+        app:srcCompat="@android:drawable/ic_menu_add"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        />
+
+    <Button
+        android:id="@+id/post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="post"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
+        android:layout_toLeftOf="@+id/post"
+        android:layout_toStartOf="@+id/post"
+        android:hint="write a comment"
+        android:textColor="#000"
+        android:visibility="gone" />
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/alertslist"
+        android:layout_above="@+id/comment"
+        android:layout_margin="5dp"
+        android:id="@+id/alertlist"
         android:divider="@null"
-
         />
+
 </RelativeLayout>
