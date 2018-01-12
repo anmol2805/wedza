@@ -69,7 +69,6 @@ public class AlertsActivity extends AppCompatActivity {
                         if(admin.equals(true) || keypeople.equals(true)){
                             authpost.setVisibility(View.VISIBLE);
                         }
-
                     }
                 });
             }
