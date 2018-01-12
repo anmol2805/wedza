@@ -48,7 +48,7 @@ public class AlertsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alerts);
         comment = (EditText)findViewById(R.id.comment);
         post = (Button)findViewById(R.id.post);
-        alertslist = (ListView)findViewById(R.id.alertslist);
+        alertslist = (ListView)findViewById(R.id.alertlist);
         authpost = (FloatingActionButton)findViewById(R.id.postauth);
         authpost.setVisibility(View.GONE);
         alerts = new ArrayList<>();
@@ -79,6 +79,7 @@ public class AlertsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 comment.setVisibility(View.VISIBLE);
                 post.setVisibility(View.VISIBLE);
+                authpost.setVisibility(View.GONE);
             }
         });
         post.setOnClickListener(new View.OnClickListener() {
@@ -144,6 +145,9 @@ public class AlertsActivity extends AppCompatActivity {
                         String id = documentReference.getId();
                         db.collection("weddings").document(weddingid).collection("alerts").document(id).set(map);
                         comment.getText().clear();
+                        post.setVisibility(View.GONE);
+                        comment.setVisibility(View.GONE);
+                        authpost.setVisibility(View.VISIBLE);
 
                     }
                 });
