@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -70,6 +71,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class media extends Fragment {
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 200;
+    private static final int PICK_REQUEST_CODE = 300;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     private static final int MY_PERMISSIONS_REQUEST = 123;
@@ -159,12 +161,18 @@ public class media extends Fragment {
     }
 
     private void pickmedia() {
-        new MaterialFilePicker()
-                .withActivity(getActivity())
-                .withRequestCode(8)
-                .withFilterDirectories(true) // Set directories filterable (false by default)
-                .withHiddenFiles(true) // Show hidden files and folders
-                .start();
+//
+        final Intent galleryIntent = new Intent();
+        galleryIntent.setType("*/*");
+        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+
+        // Chooser of filesystem options.
+        final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
+
+        // Add the camera options.
+
+        startActivityForResult(chooserIntent, PICK_REQUEST_CODE);
+
     }
 
     private void forward(final String weddingid, final String eventname) {
@@ -192,10 +200,14 @@ public class media extends Fragment {
                 String mediatype = taskSnapshot.getMetadata().getContentType();
                 DocumentReference ref = db.collection("weddings").document(weddingid).collection("gallery").document();
                 String imageid = ref.getId();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String date = sdf.format(new Date());
+                final java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
                 Map<String, Object> map = new HashMap<>();
                 map.put("medialink", medialink);
                 map.put("mediatype", mediatype);
                 map.put("event", eventname);
+                map.put("time",timestamp);
                 db.collection("weddings").document(weddingid).collection("gallery").document(imageid).set(map);
             }
         });
@@ -346,10 +358,10 @@ public class media extends Fragment {
                         .show();
             }
         }
-        else if(requestCode==8){
+        else if(requestCode==PICK_REQUEST_CODE){
             if(resultCode == RESULT_OK){
-                String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-                previewfile(filePath);
+                Uri uri = data.getData();
+                previewfile(uri);
 
             }else if (resultCode == RESULT_CANCELED) {
                 // user cancelled recording
@@ -365,19 +377,19 @@ public class media extends Fragment {
         }
     }
 
-    private void previewfile(String filePath) {
+    private void previewfile(Uri filePath) {
 
-        Uri uri = FileProvider.getUriForFile(getActivity(),"com.anmol.wedza",new File(filePath));
         ContentResolver cr = getActivity().getContentResolver();
-        String type = cr.getType(uri);
+        String type = cr.getType(filePath);
+        fileUri = filePath;
         if(type.contains("image")){
             videoPreview.setVisibility(View.GONE);
             imgPreview.setVisibility(View.VISIBLE);
-            imgPreview.setImageURI(uri);
+            imgPreview.setImageURI(filePath);
         }else if(type.contains("video")){
             videoPreview.setVisibility(View.VISIBLE);
             imgPreview.setVisibility(View.GONE);
-            videoPreview.setVideoURI(uri);
+            videoPreview.setVideoURI(filePath);
         }
     }
 
