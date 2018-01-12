@@ -24,6 +24,7 @@ import com.anmol.wedza.Interfaces.ItemClickListener;
 import com.anmol.wedza.Model.Storyimage;
 import com.anmol.wedza.R;
 import com.anmol.wedza.StoryMediaPreview;
+import com.anmol.wedza.WishesActivity;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -117,7 +118,7 @@ public class story extends Fragment {
         wishes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(getActivity(), WishesActivity.class));
             }
         });
         return vi;
