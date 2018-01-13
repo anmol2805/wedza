@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.anmol.wedza.Adapters.TimelineAdapter;
 import com.anmol.wedza.AlertsActivity;
+import com.anmol.wedza.CreateeventActivity;
 import com.anmol.wedza.EventsActivity;
 import com.anmol.wedza.KeypeopleActivity;
 import com.anmol.wedza.Model.Timeline;
@@ -116,7 +117,7 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         events.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), EventsActivity.class));
+                startActivity(new Intent(getActivity(), CreateeventActivity.class));
             }
         });
         alerts.setOnClickListener(new View.OnClickListener() {
