@@ -58,7 +58,7 @@ public class EventsActivity extends AppCompatActivity {
             public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                 events.clear();
                 for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
-                    String eventname = doc.getString("eventname");
+                    String eventname = doc.getId();
                     String eventdes = doc.getString("eventdes");
                     String eventimg = doc.getString("eventimg");
                     String eventlocation = doc.getString("eventlocation");

@@ -9,12 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anmol.wedza.Model.Comment2;
 import com.anmol.wedza.Model.Event;
 import com.anmol.wedza.R;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.vision.text.Text;
 
 import java.util.List;
 
@@ -52,7 +54,18 @@ public class EventsAdapter extends ArrayAdapter<Event> {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //LayoutInflater inflater = context.getLayoutInflater();
             View v = inflater.inflate(resource,null);
-
+            TextView eventname = (TextView)v.findViewById(R.id.eventname);
+            TextView eventtime = (TextView)v.findViewById(R.id.eventtime);
+            TextView eventloc = (TextView)v.findViewById(R.id.eventloc);
+            TextView eventteam = (TextView)v.findViewById(R.id.eventteam);
+            TextView eventdes = (TextView)v.findViewById(R.id.eventdes);
+            ImageView eventimg = (ImageView)v.findViewById(R.id.eventimg);
+            eventname.setText(events.get(position).getEventname());
+            eventtime.setText(events.get(position).getEventtime());
+            eventloc.setText(events.get(position).getEventlocation());
+            eventteam.setText(events.get(position).getTeam());
+            eventdes.setText(events.get(position).getEventdes());
+            Glide.with(context).load(events.get(position).getEventimg()).into(eventimg);
             return v;
         }
 

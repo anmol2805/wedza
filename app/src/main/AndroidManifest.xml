@@ -10,7 +10,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
@@ -39,31 +41,31 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignupActivity" />
-        <activity android:name=".IntroduceYourselfActivity"></activity>
+        <activity android:name=".IntroduceYourselfActivity" />
         <activity android:name=".CameraActivity" />
         <activity android:name=".StoryMediaPreview" />
         <activity android:name=".WishesActivity" />
-        <activity android:name=".CommentsActivity"
-            android:configChanges="orientation|keyboard|keyboardHidden"
-            >
-
-        </activity>
+        <activity
+            android:name=".CommentsActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden"></activity>
         <activity android:name=".KeypeopleActivity" />
         <activity android:name=".EventsActivity" />
         <activity android:name=".AlertsActivity" />
         <activity android:name=".AlbumActivity" />
         <activity android:name=".PhoneVerification" />
-        <activity android:name=".EditpersonalinfoActivity"></activity>
+        <activity android:name=".EditpersonalinfoActivity" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.anmol.wedza"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
 
+        <activity android:name=".CreateeventActivity"></activity>
     </application>
 
 </manifest>
