@@ -1,8 +1,11 @@
 package com.anmol.wedza;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 import com.anmol.wedza.Adapters.EventsAdapter;
@@ -31,19 +34,38 @@ public class EventsActivity extends AppCompatActivity {
     List<Event> events = new ArrayList<>();
     EventsAdapter eventsAdapter;
     ListView eventlist;
-
+    FloatingActionButton authpost;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
         eventlist = (ListView)findViewById(R.id.eventlist);
+        authpost = (FloatingActionButton)findViewById(R.id.authpost);
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 String weddingid = task.getResult().getString("currentwedding");
                 getevent(weddingid);
+                db.collection("weddings").document(weddingid).collection("users")
+                        .document(auth.getCurrentUser().getUid())
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        Boolean admin = task.getResult().getBoolean("admin");
+                        if(admin.equals(true)){
+                            authpost.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
             }
         });
+        authpost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(EventsActivity.this,CreateeventActivity.class));
+            }
+        });
+
     }
 
     private void getevent(String weddingid) {

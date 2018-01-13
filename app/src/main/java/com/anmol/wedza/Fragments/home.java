@@ -117,7 +117,7 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         events.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), CreateeventActivity.class));
+                startActivity(new Intent(getActivity(), EventsActivity.class));
             }
         });
         alerts.setOnClickListener(new View.OnClickListener() {

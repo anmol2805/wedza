@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.anmol.wedza.Adapters.StoryimageAdapter;
+import com.anmol.wedza.CreateeventActivity;
+import com.anmol.wedza.EventsActivity;
 import com.anmol.wedza.Interfaces.ItemClickListener;
 import com.anmol.wedza.Model.Storyimage;
 import com.anmol.wedza.R;
@@ -55,6 +58,7 @@ public class story extends Fragment {
     List<Storyimage> storyimages;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth auth = FirebaseAuth.getInstance();
+    FloatingActionButton authpost;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -66,6 +70,8 @@ public class story extends Fragment {
         listimg.setHasFixedSize(true);
         listimg.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
         storyimages = new ArrayList<>();
+        authpost = (FloatingActionButton)vi.findViewById(R.id.authpost);
+        authpost.setVisibility(View.GONE);
         itemClickListener = new ItemClickListener() {
             @Override
             public void onItemClick(int pos) {
@@ -82,6 +88,17 @@ public class story extends Fragment {
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if(documentSnapshot!=null && documentSnapshot.exists()){
                     String weddingid = documentSnapshot.getString("currentwedding");
+                    db.collection("weddings").document(weddingid).collection("users")
+                            .document(auth.getCurrentUser().getUid())
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            Boolean admin = task.getResult().getBoolean("admin");
+                            if(admin.equals(true)){
+                                authpost.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
                     db.collection("weddings")
                             .document(weddingid)
                             .collection("storylikes")

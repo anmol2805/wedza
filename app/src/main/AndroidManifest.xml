@@ -47,7 +47,7 @@
         <activity android:name=".WishesActivity" />
         <activity
             android:name=".CommentsActivity"
-            android:configChanges="orientation|keyboard|keyboardHidden"></activity>
+            android:configChanges="orientation|keyboard|keyboardHidden" />
         <activity android:name=".KeypeopleActivity" />
         <activity android:name=".EventsActivity" />
         <activity android:name=".AlertsActivity" />
@@ -65,7 +65,8 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <activity android:name=".CreateeventActivity"></activity>
+        <activity android:name=".CreateeventActivity" />
+        <activity android:name=".StoryeditActivity"></activity>
     </application>
 
 </manifest>
