@@ -7,19 +7,18 @@ import java.sql.Timestamp;
  */
 
 public class Event {
-    String eventname,eventdes,eventimg,eventlocation,team;
-    Timestamp time;
+    String eventname,eventdes,eventimg,eventlocation,team,eventtime;
 
     public Event() {
     }
 
-    public Event(String eventname, String eventdes, String eventimg, String eventlocation, String team, Timestamp time) {
+    public Event(String eventname, String eventdes, String eventimg, String eventlocation, String team, String eventtime) {
         this.eventname = eventname;
         this.eventdes = eventdes;
         this.eventimg = eventimg;
         this.eventlocation = eventlocation;
         this.team = team;
-        this.time = time;
+        this.eventtime = eventtime;
     }
 
     public String getEventname() {
@@ -62,11 +61,11 @@ public class Event {
         this.team = team;
     }
 
-    public Timestamp getTime() {
-        return time;
+    public String getEventtime() {
+        return eventtime;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    public void setEventtime(String eventtime) {
+        this.eventtime = eventtime;
     }
 }

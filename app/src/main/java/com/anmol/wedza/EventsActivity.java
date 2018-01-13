@@ -63,8 +63,8 @@ public class EventsActivity extends AppCompatActivity {
                     String eventimg = doc.getString("eventimg");
                     String eventlocation = doc.getString("eventlocation");
                     String team = doc.getString("team");
-                    Timestamp time = (Timestamp) doc.getDate("time");
-                    Event event = new Event(eventname,eventdes,eventimg,eventlocation,team,time);
+                    String eventtime = doc.getString("eventtime");
+                    Event event = new Event(eventname,eventdes,eventimg,eventlocation,team,eventtime);
                     events.add(event);
                 }
                 eventsAdapter = new EventsAdapter(EventsActivity.this,R.layout.eventlayout,events);
