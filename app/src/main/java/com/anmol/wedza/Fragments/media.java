@@ -277,21 +277,24 @@ public class media extends Fragment {
                     }
 
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,events);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                eventselect.setAdapter(adapter);
-                eventselect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        String eventname = String.valueOf(adapterView.getItemAtPosition(i));
-                        forward(weddingid,eventname);
-                    }
+                if(!events.isEmpty()){
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,events);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    eventselect.setAdapter(adapter);
+                    eventselect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            String eventname = String.valueOf(adapterView.getItemAtPosition(i));
+                            forward(weddingid,eventname);
+                        }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
 
-                    }
-                });
+                        }
+                    });
+                }
+
             }
         });
     }

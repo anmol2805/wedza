@@ -31,8 +31,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,7 +91,7 @@ public class CreateeventActivity extends AppCompatActivity {
                         // TODO Auto-generated method stub
                     /*      Your code   to get date and time    */
                         selectedmonth = selectedmonth + 1;
-                        dateedit.setText("" + selectedday + "-" + selectedmonth + "-" + selectedyear);
+                        dateedit.setText("" + selectedyear + "-" + selectedmonth + "-" + selectedday);
                     }
                 }, mYear, mMonth, mDay);
                 mDatePicker.setTitle("Select Date");
@@ -105,7 +108,7 @@ public class CreateeventActivity extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(CreateeventActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        timeedit.setText( selectedHour + ":" + selectedMinute);
+                        timeedit.setText( selectedHour + ":" + selectedMinute + ":00");
                     }
                 }, hour, minute, false);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -160,41 +163,48 @@ public class CreateeventActivity extends AppCompatActivity {
         createevent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+                DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 final String eventname = eventnameedit.getText().toString().trim();
                 final String eventloc = eventlocedit.getText().toString().trim();
                 String date = dateedit.getText().toString().trim();
                 String time = timeedit.getText().toString().trim();
                 final String des = eventdesedit.getText().toString().trim();
-                final String finaltime = sdf.format(date + " " + time);
-                final Timestamp timestamp = Timestamp.valueOf(finaltime);
-                StorageReference reference = storageReference.child(fileuri.getLastPathSegment());
-                reference.putFile(fileuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        final String medialink = String.valueOf(taskSnapshot.getDownloadUrl());
-                        db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                String weddindid = task.getResult().getString("currentwedding");
-                                Map<String,Object> map = new HashMap<>();
-                                map.put("eventdes",des);
-                                map.put("eventimg",medialink);
-                                map.put("eventlocation",eventloc);
-                                map.put("team",team);
-                                map.put("eventtime",finaltime);
-                                map.put("time",timestamp);
-                                db.collection("weddings").document(weddindid).collection("events").document(eventname).set(map)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                finish();
-                                            }
-                                        });
-                            }
-                        });
-                    }
-                });
+                try {
+                    Date mdate = sdf.parse(date + " " + time);
+                    final String finaltime = sdf.format(mdate);
+                    final Timestamp timestamp = Timestamp.valueOf(finaltime);
+                    StorageReference reference = storageReference.child(fileuri.getLastPathSegment());
+                    reference.putFile(fileuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            final String medialink = String.valueOf(taskSnapshot.getDownloadUrl());
+                            db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    String weddindid = task.getResult().getString("currentwedding");
+                                    Map<String,Object> map = new HashMap<>();
+                                    map.put("eventdes",des);
+                                    map.put("eventimg",medialink);
+                                    map.put("eventlocation",eventloc);
+                                    map.put("team",team);
+                                    map.put("eventtime",finaltime);
+                                    map.put("time",timestamp);
+                                    db.collection("weddings").document(weddindid).collection("events").document(eventname).set(map)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    finish();
+                                                }
+                                            });
+                                }
+                            });
+                        }
+                    });
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
             }
         });
     }
