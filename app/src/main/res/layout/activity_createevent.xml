@@ -91,6 +91,12 @@
                 android:hint="Event Description"
                 android:id="@+id/eventdesedit"
                 />
+
+            <Button
+                android:id="@+id/createevent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create Event" />
         </LinearLayout>
     </ScrollView>
 
