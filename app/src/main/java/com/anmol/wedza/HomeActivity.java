@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.anmol.wedza.Fragments.gallery;
 import com.anmol.wedza.Fragments.guestlist;
@@ -28,7 +29,8 @@ import com.google.firebase.auth.FirebaseAuth;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     FirebaseAuth auth = FirebaseAuth.getInstance();
-    Button camera,timeline,guestlist,gallery,story;
+    Button timeline,guestlist,gallery,story;
+    ImageButton camera;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +55,7 @@ public class HomeActivity extends AppCompatActivity
             navigationView.setNavigationItemSelectedListener(this);
 
             setFragment(new home());
-            camera = (Button)findViewById(R.id.camera);
+            camera = (ImageButton)findViewById(R.id.camera);
             timeline = (Button)findViewById(R.id.vtimeline);
             guestlist = (Button)findViewById(R.id.vguestlist);
             gallery = (Button)findViewById(R.id.vgallery);
@@ -136,13 +138,13 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-
+            startActivity(new Intent(HomeActivity.this,ViewgroupsActivity.class));
         } else if (id == R.id.nav_gallery) {
-
+            startActivity(new Intent(HomeActivity.this,CreateweddingActivity.class));
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
-
+            startActivity(new Intent(HomeActivity.this,SwitchweddingActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -106,7 +106,7 @@ public class StoryeditActivity extends AppCompatActivity {
                         String weddindid = task.getResult().getString("currentwedding");
                         Map<String,Object> map = new HashMap<>();
                         map.put("storycontent",storycon);
-                        db.collection("weddings").document(weddindid).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        db.collection("weddings").document(weddindid).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 finish();
