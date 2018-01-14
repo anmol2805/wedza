@@ -27,6 +27,7 @@ import com.anmol.wedza.Interfaces.ItemClickListener;
 import com.anmol.wedza.Model.Storyimage;
 import com.anmol.wedza.R;
 import com.anmol.wedza.StoryMediaPreview;
+import com.anmol.wedza.StoryeditActivity;
 import com.anmol.wedza.WishesActivity;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -144,8 +145,17 @@ public class story extends Fragment {
     private void loadcontent() {
         db.collection("weddings").document("wedding1").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                storycontent.setText(task.getResult().getString("storycontent"));
+            public void onComplete(@NonNull final Task<DocumentSnapshot> task) {
+                final String st = task.getResult().getString("storycontent");
+                storycontent.setText(st);
+                authpost.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), StoryeditActivity.class);
+                        intent.putExtra("storycontent",st);
+                        startActivity(intent);
+                    }
+                });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
