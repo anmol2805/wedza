@@ -67,7 +67,8 @@
 
         <activity android:name=".CreateeventActivity" />
         <activity android:name=".StoryeditActivity" />
-        <activity android:name=".ViewgroupsActivity"></activity>
+        <activity android:name=".ViewgroupsActivity" />
+        <activity android:name=".CreateweddingActivity"></activity>
     </application>
 
 </manifest>
