@@ -13,27 +13,29 @@
            android:layout_height="wrap_content">
            <Button
                android:id="@+id/keypeople"
-               android:layout_width="40dp"
-               android:layout_height="40dp"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
                android:layout_alignParentLeft="true"
                android:layout_alignParentStart="true"
                android:layout_margin="10dp"
+               android:text="Key people"
                />
            <Button
                android:id="@+id/alerts"
-               android:layout_width="40dp"
-               android:layout_height="40dp"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
                android:layout_alignParentEnd="true"
                android:layout_alignParentRight="true"
                android:layout_margin="10dp"
+               android:text="Alerts"
                />
            <Button
                android:layout_width="wrap_content"
-               android:layout_height="40dp"
+               android:layout_height="wrap_content"
                android:layout_centerInParent="true"
                android:id="@+id/events"
                android:layout_margin="10dp"
-
+               android:text="Events"
                />
        </RelativeLayout>
 
