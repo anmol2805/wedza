@@ -17,6 +17,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,7 +79,8 @@ public class media extends Fragment {
     Button allow,posttime,saveg,pickfromgallery;
     Spinner eventselect;
     ImageView img;
-    LinearLayout imagelayout,btnlayout;
+    LinearLayout imagelayout;
+    CardView btnlayout;
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -101,7 +103,7 @@ public class media extends Fragment {
         btnCapturePicture = (Button)vi.findViewById(R.id.btnCapturePicture);
         btnRecordVideo = (Button)vi.findViewById(R.id.btnRecordVideo);
         imagelayout = (LinearLayout)vi.findViewById(R.id.imglayout);
-        btnlayout = (LinearLayout)vi.findViewById(R.id.btnlayout); 
+        btnlayout = (CardView)vi.findViewById(R.id.btnlayout);
         eventselect = (Spinner)vi.findViewById(R.id.eventselect);
         allow = (Button)vi.findViewById(R.id.allow);
         posttime = (Button)vi.findViewById(R.id.ptimeline);
