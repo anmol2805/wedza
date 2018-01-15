@@ -3,46 +3,166 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#dcdcdc"
+    android:background="#ffe7e7"
     >
-
     <android.support.v7.widget.CardView
+        android:id="@+id/menutop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        >
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:orientation="horizontal"
-            android:padding="5dp"
+
+            >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                >
+
+                <Button
+                    android:id="@+id/likedit"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/unlike1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/likedit"
+                    android:layout_toEndOf="@+id/likedit"
+                    android:layout_centerVertical="true"
+                    android:text="Liked the Story?"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#000"
+                    />
+
+            </RelativeLayout>
+            <View
+
+                android:layout_width="2dp"
+                android:background="@color/red"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="5dp"
+                android:layout_gravity="center"
+                />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                >
+                <Button
+                    android:id="@+id/wishes"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/heartout" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/wishes"
+                    android:layout_toRightOf="@+id/wishes"
+                    android:layout_centerVertical="true"
+                    android:text="Give best wishes"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#000"
+                    />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
             >
 
             <Button
-                android:id="@+id/likedit"
+                android:id="@+id/plikes"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/heartin" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Liked the story?" />
+                android:layout_toRightOf="@+id/plikes"
+                android:layout_toEndOf="@+id/plikes"
+                android:layout_centerVertical="true"
+                android:text="like this story"
+                android:layout_marginLeft="5dp"
+                android:textColor="#000"
+                />
 
+        </RelativeLayout>
+        <!--<View-->
+
+            <!--android:layout_width="2dp"-->
+            <!--android:background="@color/red"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginVertical="5dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--/>-->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            >
             <Button
-                android:id="@+id/wishes"
+                android:id="@+id/pwish"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/redcard" />
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="give Best Wishes" />
-        </LinearLayout>
+                android:layout_toEndOf="@+id/pwish"
+                android:layout_toRightOf="@+id/pwish"
+                android:layout_centerVertical="true"
+                android:text="Best Wishes"
+                android:layout_marginLeft="5dp"
+                android:textColor="#000"
+                />
+        </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
+    </LinearLayout>
+
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
+
         android:layout_marginHorizontal="10dp"
-        >
+        app:cardCornerRadius="8dp">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,24 +180,23 @@
                     android:id="@+id/authpost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
+                    android:clickable="true"
                     android:elevation="16dp"
                     android:visibility="gone"
                     app:srcCompat="@android:drawable/ic_menu_edit" />
 
                 <TextView
+                    android:id="@+id/storycontent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/storycontent"
-                    android:textColor="#000"
-                    android:layout_margin="5dp"
-                    android:textAlignment="center"
-                    android:gravity="center"
                     android:layout_gravity="center"
-                    android:textStyle="italic"
-                    />
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="#000"
+                    android:textStyle="italic" />
             </LinearLayout>
         </ScrollView>
 
