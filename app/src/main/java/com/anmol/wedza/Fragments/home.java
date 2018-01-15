@@ -55,6 +55,7 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home,container,false);
+        getActivity().setTitle("Timeline");
         lv = (ListView)view.findViewById(R.id.newsfeed);
         keypeople = (Button)view.findViewById(R.id.keypeople);
         alerts = (Button)view.findViewById(R.id.alerts);
