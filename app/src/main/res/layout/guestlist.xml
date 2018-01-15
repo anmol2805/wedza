@@ -24,20 +24,21 @@
                 />
             <Button
                 android:id="@+id/teambr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_margin="10dp"
-                android:text="Team Bride"
+                android:background="@drawable/brideblue"
                 />
+
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:id="@+id/teamgr"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
                 android:layout_margin="10dp"
-                android:text="Team groom"
+                android:background="@drawable/groomblue"
                 />
 
         </RelativeLayout>
