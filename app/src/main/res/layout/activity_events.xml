@@ -18,13 +18,16 @@
         android:visibility="gone"
         app:fabSize="normal"
         android:elevation="16dp"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:srcCompat="@drawable/create"
+        android:backgroundTint="@color/colorPrimaryDark"
+        />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/eventlist"
         android:divider="@null"
+        android:background="#ffe7e7"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 </RelativeLayout>

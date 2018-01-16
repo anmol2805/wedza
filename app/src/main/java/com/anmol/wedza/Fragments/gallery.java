@@ -115,8 +115,11 @@ public class gallery extends Fragment {
                                         Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"),doc.getString("event"));
                                         galleries.add(gallery);
                                     }
-                                    galleryAlbumAdapter = new GalleryAlbumAdapter(getActivity(),R.layout.galleryalbumlayout, (ArrayList<Gallery>) galleries);
-                                    gridView.setAdapter(galleryAlbumAdapter);
+                                    if(!galleries.isEmpty()){
+                                        galleryAlbumAdapter = new GalleryAlbumAdapter(getActivity(),R.layout.galleryalbumlayout, (ArrayList<Gallery>) galleries);
+                                        gridView.setAdapter(galleryAlbumAdapter);
+                                    }
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -151,8 +154,11 @@ public class gallery extends Fragment {
                             Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"),doc.getString("event"));
                             galleries.add(gallery);
                         }
-                        galleryAdapter = new GalleryAdapter(getActivity(),R.layout.gallerylayout, (ArrayList<Gallery>) galleries);
-                        gridView.setAdapter(galleryAdapter);
+                        if(!galleries.isEmpty()){
+                            galleryAdapter = new GalleryAdapter(getActivity(),R.layout.gallerylayout, (ArrayList<Gallery>) galleries);
+                            gridView.setAdapter(galleryAdapter);
+                        }
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

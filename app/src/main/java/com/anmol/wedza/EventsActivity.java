@@ -39,6 +39,7 @@ public class EventsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
+        setTitle("Events");
         eventlist = (ListView)findViewById(R.id.eventlist);
         authpost = (FloatingActionButton)findViewById(R.id.authpost);
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

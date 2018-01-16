@@ -18,6 +18,7 @@ import com.anmol.wedza.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -36,6 +37,7 @@ public class guestlist extends Fragment {
     List<Guest> guests;
     GuestAdapter guestAdapter;
     RelativeLayout el,bl,gl;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -49,50 +51,61 @@ public class guestlist extends Fragment {
         bl = (RelativeLayout)vi.findViewById(R.id.tbrl);
         gl = (RelativeLayout)vi.findViewById(R.id.tgrl);
         guests = new ArrayList<>();
-        everyguest();
         everyone.setBackgroundResource(R.drawable.everyonered);
         tgr.setBackgroundResource(R.drawable.groomblue);
         tbr.setBackgroundResource(R.drawable.brideblue);
-        el.setOnClickListener(new View.OnClickListener() {
+        db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onClick(View view) {
-                everyguest();
-                everyone.setBackgroundResource(R.drawable.everyonered);
-                tgr.setBackgroundResource(R.drawable.groomblue);
-                tbr.setBackgroundResource(R.drawable.brideblue);
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                final String weddingid = task.getResult().getString("currentwedding");
+                everyguest(weddingid);
+                el.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        everyguest(weddingid);
+                        everyone.setBackgroundResource(R.drawable.everyonered);
+                        tgr.setBackgroundResource(R.drawable.groomblue);
+                        tbr.setBackgroundResource(R.drawable.brideblue);
+                    }
+                });
+                gl.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        teamgroom(weddingid);
+                        everyone.setBackgroundResource(R.drawable.everyoneblue);
+                        tgr.setBackgroundResource(R.drawable.groomr);
+                        tbr.setBackgroundResource(R.drawable.brideblue);
+                    }
+                });
+                bl.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        teambride(weddingid);
+                        everyone.setBackgroundResource(R.drawable.everyoneblue);
+                        tgr.setBackgroundResource(R.drawable.groomblue);
+                        tbr.setBackgroundResource(R.drawable.brider);
+                    }
+                });
             }
         });
-        gl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                teamgroom();
-                everyone.setBackgroundResource(R.drawable.everyoneblue);
-                tgr.setBackgroundResource(R.drawable.groomr);
-                tbr.setBackgroundResource(R.drawable.brideblue);
-            }
-        });
-        bl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                teambride();
-                everyone.setBackgroundResource(R.drawable.everyoneblue);
-                tgr.setBackgroundResource(R.drawable.groomblue);
-                tbr.setBackgroundResource(R.drawable.brider);
-            }
-        });
+
+
         return vi;
     }
-    private void teambride() {
+    private void teambride(String weddingid) {
         guests.clear();
-        db.collection("weddings/wedding1/users").whereEqualTo("team","bride").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("weddings").document(weddingid).collection("users").whereEqualTo("team","bride").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(DocumentSnapshot doc:task.getResult()){
                     Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath"));
                     guests.add(guest);
                 }
-                guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
-                glv.setAdapter(guestAdapter);
+                if(!guests.isEmpty()){
+                    guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
+                    glv.setAdapter(guestAdapter);
+                }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -102,17 +115,20 @@ public class guestlist extends Fragment {
         });
     }
 
-    private void teamgroom() {
+    private void teamgroom(String weddingid) {
         guests.clear();
-        db.collection("weddings/wedding1/users").whereEqualTo("team","groom").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("weddings").document(weddingid).collection("users").whereEqualTo("team","groom").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(DocumentSnapshot doc:task.getResult()){
                     Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath"));
                     guests.add(guest);
                 }
-                guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
-                glv.setAdapter(guestAdapter);
+                if(!guests.isEmpty()){
+                    guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
+                    glv.setAdapter(guestAdapter);
+                }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -122,17 +138,20 @@ public class guestlist extends Fragment {
         });
     }
 
-    private void everyguest() {
+    private void everyguest(String weddingid) {
         guests.clear();
-        db.collection("weddings/wedding1/users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("weddings").document(weddingid).collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(DocumentSnapshot doc:task.getResult()){
                     Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath"));
                     guests.add(guest);
                 }
-                guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
-                glv.setAdapter(guestAdapter);
+                if(!guests.isEmpty()){
+                    guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
+                    glv.setAdapter(guestAdapter);
+                }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

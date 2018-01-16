@@ -123,8 +123,11 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
                     timelines.add(timeline);
                 }
                 if(getActivity()!=null){
-                    timelineAdapter = new TimelineAdapter(getActivity(),R.layout.timeline,timelines);
-                    lv.setAdapter(timelineAdapter);
+                    if(!timelines.isEmpty()){
+                        timelineAdapter = new TimelineAdapter(getActivity(),R.layout.timeline,timelines);
+                        lv.setAdapter(timelineAdapter);
+                    }
+
                 }
 
             }

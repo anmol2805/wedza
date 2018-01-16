@@ -60,11 +60,22 @@ public class EventsAdapter extends ArrayAdapter<Event> {
             TextView eventteam = (TextView)v.findViewById(R.id.eventteam);
             TextView eventdes = (TextView)v.findViewById(R.id.eventdes);
             ImageView eventimg = (ImageView)v.findViewById(R.id.eventimg);
+            ImageView teamicon = (ImageView)v.findViewById(R.id.teamicon);
             eventname.setText(events.get(position).getEventname());
             eventtime.setText(events.get(position).getEventtime());
             eventloc.setText(events.get(position).getEventlocation());
             eventteam.setText(events.get(position).getTeam());
             eventdes.setText(events.get(position).getEventdes());
+            String team = events.get(position).getTeam();
+            if(team.contains("groom")){
+                teamicon.setBackgroundResource(R.drawable.groomr);
+            }
+            else if(team.contains("bride")){
+                teamicon.setBackgroundResource(R.drawable.brider);
+            }
+            else if(team.contains("both")){
+                teamicon.setBackgroundResource(R.drawable.bothsides);
+            }
             Glide.with(context).load(events.get(position).getEventimg()).into(eventimg);
             return v;
         }

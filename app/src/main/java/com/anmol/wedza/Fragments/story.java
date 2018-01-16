@@ -92,13 +92,14 @@ public class story extends Fragment {
             }
         };
         liked.setBackgroundResource(R.drawable.unlike);
-        loadmedia();
-        loadcontent();
+
         db.collection("users").document(auth.getCurrentUser().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if(documentSnapshot!=null && documentSnapshot.exists()){
                     String weddingid = documentSnapshot.getString("currentwedding");
+                    loadmedia(weddingid);
+                    loadcontent(weddingid);
                     db.collection("weddings").document(weddingid).collection("users")
                             .document(auth.getCurrentUser().getUid())
                             .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -168,8 +169,8 @@ public class story extends Fragment {
         return vi;
     }
 
-    private void loadcontent() {
-        db.collection("weddings").document("wedding1").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    private void loadcontent(String weddingid) {
+        db.collection("weddings").document(weddingid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull final Task<DocumentSnapshot> task) {
                 final String st = task.getResult().getString("storycontent");
@@ -191,17 +192,20 @@ public class story extends Fragment {
         });
     }
 
-    private void loadmedia() {
+    private void loadmedia(String weddingid) {
         storyimages.clear();
-        db.collection("weddings/wedding1/stories").orderBy("time", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("weddings").document(weddingid).collection("stories").orderBy("time", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (DocumentSnapshot doc : task.getResult()){
                     Storyimage storyimage = new Storyimage(doc.getString("medialink"),doc.getString("mediatype"));
                     storyimages.add(storyimage);
                 }
-                storyimageAdapter = new StoryimageAdapter(getActivity(),storyimages,itemClickListener);
-                listimg.setAdapter(storyimageAdapter);
+                if(!storyimages.isEmpty()){
+                    storyimageAdapter = new StoryimageAdapter(getActivity(),storyimages,itemClickListener);
+                    listimg.setAdapter(storyimageAdapter);
+                }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
