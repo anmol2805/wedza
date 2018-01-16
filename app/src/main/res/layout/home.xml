@@ -118,7 +118,7 @@
         android:layout_below="@+id/menutop"
         android:layout_centerHorizontal="true"
         android:divider="@null"
-        android:background="#dcdcdc"
+        android:background="#ffe7e7"
          />
 
 </RelativeLayout>

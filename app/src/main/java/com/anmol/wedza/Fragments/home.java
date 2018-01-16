@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anmol.wedza.Adapters.TimelineAdapter;
@@ -51,6 +52,7 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
     TimelineAdapter timelineAdapter;
     Button keypeople,alerts,events;
     FirebaseAuth auth = FirebaseAuth.getInstance();
+    TextView weddingdate;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         ViewGroup header = (ViewGroup)layoutInflater.inflate(R.layout.listheader,lv,false);
         lv.addHeaderView(header,null,false);
         coverpic = (ImageView)header.findViewById(R.id.listHeaderImage);
+        weddingdate = (TextView)header.findViewById(R.id.date);
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -137,6 +140,7 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(getActivity()!=null){
                     Glide.with(getActivity()).load(task.getResult().getString("coverpic")).into(coverpic);
+                    weddingdate.setText(task.getResult().getString("weddingdate"));
                 }
 
             }
