@@ -8,11 +8,11 @@ import java.util.Date;
  */
 
 public class Timeline {
-    String medialink,event,mediatype,des,username,userid,postid;
+    String medialink,event,mediatype,des,username,userid,postid,userpic;
     public Timeline() {
     }
 
-    public Timeline(String medialink, String event, String mediatype, String des, String username, String userid, String postid) {
+    public Timeline(String medialink, String event, String mediatype, String des, String username, String userid, String postid,String userpic) {
         this.medialink = medialink;
         this.event = event;
         this.mediatype = mediatype;
@@ -20,6 +20,15 @@ public class Timeline {
         this.username = username;
         this.userid = userid;
         this.postid = postid;
+        this.userpic = userpic;
+    }
+
+    public String getUserpic() {
+        return userpic;
+    }
+
+    public void setUserpic(String userpic) {
+        this.userpic = userpic;
     }
 
     public String getUserid() {

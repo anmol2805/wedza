@@ -81,7 +81,9 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
             View v = inflater.inflate(resource,null);
             ImageView mediaimg = (ImageView)v.findViewById(R.id.mediaphoto);
             ImageView playicon = (ImageView)v.findViewById(R.id.playicon);
+            ImageView userpic = (ImageView)v.findViewById(R.id.userpic);
             final Button like = (Button)v.findViewById(R.id.like);
+            final Button unlike = (Button)v.findViewById(R.id.unlike);
             Button comment = (Button)v.findViewById(R.id.comment);
             final Button share = (Button)v.findViewById(R.id.share);
             TextView uname = (TextView)v.findViewById(R.id.uname);
@@ -90,6 +92,8 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
             uname.setText(timelines.get(position).getUsername());
             event.setText(timelines.get(position).getEvent());
             des.setText(timelines.get(position).getDes());
+            unlike.setVisibility(View.INVISIBLE);
+            Glide.with(context).load(timelines.get(position).getUserpic()).into(userpic);
             if(timelines.get(position).getMediatype().contains("image")){
                 playicon.setVisibility(View.GONE);
                 Glide.with(getContext()).load(timelines.get(position).getMedialink()).into(mediaimg);
@@ -143,6 +147,7 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
                                 for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
                                     if(doc.getId().contains(auth.getCurrentUser().getUid())){
                                         like.setVisibility(View.INVISIBLE);
+                                        unlike.setVisibility(View.VISIBLE);
                                     }
                                 }
                             }

@@ -65,50 +65,17 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         ViewGroup header = (ViewGroup)layoutInflater.inflate(R.layout.listheader,lv,false);
         lv.addHeaderView(header,null,false);
         coverpic = (ImageView)header.findViewById(R.id.listHeaderImage);
-        db.collection("weddings").document("wedding1").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(getActivity()!=null){
-                    Glide.with(getActivity()).load(task.getResult().getString("coverpic")).into(coverpic);
-                }
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
+                String weddingid = task.getResult().getString("currentwedding");
+                loadcoverpic(weddingid);
+                loadtimeline(weddingid);
             }
         });
+
         lv.setOnScrollListener(this);
-        timelines.clear();
-        db.collection("weddings/wedding1/timeline").orderBy("time", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for(DocumentSnapshot doc:task.getResult()){
-                    Timeline timeline = new Timeline(doc.getString("medialink")
-                            ,doc.getString("event")
-                            ,doc.getString("mediatype")
-                            ,doc.getString("des")
-                            ,doc.getString("username")
-                            ,auth.getCurrentUser().getUid()
-                            ,doc.getId());
-                    timelines.add(timeline);
-                }
-                if(getActivity()!=null){
-                    timelineAdapter = new TimelineAdapter(getActivity(),R.layout.timeline,timelines);
-                    lv.setAdapter(timelineAdapter);
-                }
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                if(getActivity()!=null){
-                    Toast.makeText(getActivity(),""+e.getMessage(),Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
         keypeople.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,6 +96,56 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         });
 
         return view;
+    }
+
+    private void loadtimeline(String weddingid) {
+        timelines.clear();
+        db.collection("weddings").document(weddingid).collection("timeline").orderBy("time", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(DocumentSnapshot doc:task.getResult()){
+                    Timeline timeline = new Timeline(doc.getString("medialink")
+                            ,doc.getString("event")
+                            ,doc.getString("mediatype")
+                            ,doc.getString("des")
+                            ,doc.getString("username")
+                            ,auth.getCurrentUser().getUid()
+                            ,doc.getId()
+                            ,doc.getString("profilepicturepath"));
+                    timelines.add(timeline);
+                }
+                if(getActivity()!=null){
+                    timelineAdapter = new TimelineAdapter(getActivity(),R.layout.timeline,timelines);
+                    lv.setAdapter(timelineAdapter);
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if(getActivity()!=null){
+                    Toast.makeText(getActivity(),""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+    }
+
+    private void loadcoverpic(String weddingid) {
+        db.collection("weddings").document(weddingid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(getActivity()!=null){
+                    Glide.with(getActivity()).load(task.getResult().getString("coverpic")).into(coverpic);
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 
     @Override

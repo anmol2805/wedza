@@ -239,6 +239,7 @@ public class media extends Fragment {
                 db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        String profilepic = task.getResult().getString("profilepicturepath");
                         String name = task.getResult().getString("username");
                         Map<String,Object> objectMap = new HashMap<>();
                         objectMap.put("des",des);
@@ -247,6 +248,7 @@ public class media extends Fragment {
                         objectMap.put("mediatype",mediatype);
                         objectMap.put("time",timestamp);
                         objectMap.put("username",name);
+                        objectMap.put("profilepicturepath",profilepic);
                         DocumentReference documentReference = db.collection("weddings").document(weddingid).collection("timeline").document();
                         String postid = documentReference.getId();
                         db.collection("weddings").document(weddingid).collection("timeline").document(postid).set(objectMap);

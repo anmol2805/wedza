@@ -87,8 +87,8 @@
                 android:layout_weight="1">
                 <Button
                     android:id="@+id/alerts"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
                     android:background="@drawable/alertsblue"
 
                     android:layout_marginLeft="10dp"
