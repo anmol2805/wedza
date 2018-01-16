@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.anmol.wedza.Adapters.GalleryAdapter;
@@ -45,24 +46,34 @@ public class gallery extends Fragment {
     GalleryAlbumAdapter galleryAlbumAdapter;
     int selectintent;
     FirebaseAuth auth = FirebaseAuth.getInstance();
+    RelativeLayout ail,albuml;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.gallery,container,false);
+        getActivity().setTitle("Gallery");
         gridView = (GridView)vi.findViewById(R.id.gridview);
         galleries = new ArrayList<>();
         allpics = (Button)vi.findViewById(R.id.allpics);
         albums = (Button)vi.findViewById(R.id.albums);
-        allpics.setOnClickListener(new View.OnClickListener() {
+        ail = (RelativeLayout)vi.findViewById(R.id.ail);
+        albuml = (RelativeLayout)vi.findViewById(R.id.albuml);
+        allpics.setBackgroundResource(R.drawable.galleryr);
+        albums.setBackgroundResource(R.drawable.imageblue);
+        ail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 allpicsshow();
+                allpics.setBackgroundResource(R.drawable.galleryr);
+                albums.setBackgroundResource(R.drawable.imageblue);
             }
         });
-        albums.setOnClickListener(new View.OnClickListener() {
+        albuml.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 albumshow();
+                allpics.setBackgroundResource(R.drawable.galleryblue);
+                albums.setBackgroundResource(R.drawable.image   );
             }
         });
         allpicsshow();

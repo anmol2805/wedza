@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,7 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
     Button keypeople,alerts,events;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     TextView weddingdate;
+    RelativeLayout kpl,evl,alrl;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
@@ -62,6 +64,9 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         keypeople = (Button)view.findViewById(R.id.keypeople);
         alerts = (Button)view.findViewById(R.id.alerts);
         events = (Button)view.findViewById(R.id.events);
+        kpl = (RelativeLayout)view.findViewById(R.id.kpl);
+        evl = (RelativeLayout)view.findViewById(R.id.evl);
+        alrl = (RelativeLayout)view.findViewById(R.id.alrl);
         timelines = new ArrayList<>();
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         ViewGroup header = (ViewGroup)layoutInflater.inflate(R.layout.listheader,lv,false);
@@ -79,19 +84,19 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
 
         lv.setOnScrollListener(this);
 
-        keypeople.setOnClickListener(new View.OnClickListener() {
+        kpl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), KeypeopleActivity.class));
             }
         });
-        events.setOnClickListener(new View.OnClickListener() {
+        evl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), EventsActivity.class));
             }
         });
-        alerts.setOnClickListener(new View.OnClickListener() {
+        alrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), AlertsActivity.class));

@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -94,10 +95,12 @@ public class media extends Fragment {
     private ImageView imgPreview;
     private VideoView videoPreview;
     private Button btnCapturePicture, btnRecordVideo;
+    RelativeLayout cp,cv,pg,pt,sg;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.media,container,false);
+        getActivity().setTitle("Capture");
         imgPreview = (ImageView)vi.findViewById(R.id.imgPreview);
         videoPreview = (VideoView)vi.findViewById(R.id.videoPreview);
         btnCapturePicture = (Button)vi.findViewById(R.id.btnCapturePicture);
@@ -109,6 +112,12 @@ public class media extends Fragment {
         posttime = (Button)vi.findViewById(R.id.ptimeline);
         saveg = (Button)vi.findViewById(R.id.saveg);
         pickfromgallery = (Button)vi.findViewById(R.id.btnpicfromgallery);
+        cp = (RelativeLayout)vi.findViewById(R.id.cp);
+        cv = (RelativeLayout)vi.findViewById(R.id.cv);
+        pg = (RelativeLayout)vi.findViewById(R.id.pg);
+        pt = (RelativeLayout)vi.findViewById(R.id.pt);
+        sg = (RelativeLayout)vi.findViewById(R.id.sg);
+
         imagelayout.setVisibility(View.GONE);
         btnlayout.setVisibility(View.GONE);
         allow.setVisibility(View.VISIBLE);
@@ -124,7 +133,7 @@ public class media extends Fragment {
         /**
          * Capture image button click event
          * */
-        btnCapturePicture.setOnClickListener(new View.OnClickListener() {
+        cp.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -136,7 +145,7 @@ public class media extends Fragment {
         /**
          * Record video button click event
          */
-        btnRecordVideo.setOnClickListener(new View.OnClickListener() {
+        cv.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -144,7 +153,7 @@ public class media extends Fragment {
                 recordVideo();
             }
         });
-        pickfromgallery.setOnClickListener(new View.OnClickListener() {
+        pg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pickmedia();
@@ -178,13 +187,13 @@ public class media extends Fragment {
     }
 
     private void forward(final String weddingid, final String eventname) {
-        posttime.setOnClickListener(new View.OnClickListener() {
+        pt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 posttotimeline(weddingid,eventname);
             }
         });
-        saveg.setOnClickListener(new View.OnClickListener() {
+        sg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 savetogallery(weddingid,eventname);

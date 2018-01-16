@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -60,19 +61,27 @@ public class story extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FloatingActionButton authpost;
+    RelativeLayout likel,bwl;
+    TextView nlikes,likestatus,nwishes;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.story,container,false);
+        getActivity().setTitle("Story");
         liked = (Button)vi.findViewById(R.id.likedit);
         wishes = (Button)vi.findViewById(R.id.wishes);
         storycontent = (TextView)vi.findViewById(R.id.storycontent);
         listimg = (RecyclerView)vi.findViewById(R.id.listimg);
+        likel = (RelativeLayout)vi.findViewById(R.id.likel);
+        bwl = (RelativeLayout)vi.findViewById(R.id.bwl);
         listimg.setHasFixedSize(true);
         listimg.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
         storyimages = new ArrayList<>();
         authpost = (FloatingActionButton)vi.findViewById(R.id.authpost);
         authpost.setVisibility(View.GONE);
+        nlikes = (TextView)vi.findViewById(R.id.nlikes);
+        nwishes = (TextView)vi.findViewById(R.id.nwishes);
+        likestatus = (TextView)vi.findViewById(R.id.likestatus);
         itemClickListener = new ItemClickListener() {
             @Override
             public void onItemClick(int pos) {
@@ -82,6 +91,7 @@ public class story extends Fragment {
                 getActivity().startActivity(intent);
             }
         };
+        liked.setBackgroundResource(R.drawable.unlike);
         loadmedia();
         loadcontent();
         db.collection("users").document(auth.getCurrentUser().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -106,17 +116,33 @@ public class story extends Fragment {
                             .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+
                             for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
                                 if(doc.getId().contains(auth.getCurrentUser().getUid())){
-                                    liked.setVisibility(View.INVISIBLE);
+                                    liked.setBackgroundResource(R.drawable.like);
+                                    likestatus.setText("You loved it!");
                                 }
                             }
+                            String size = String.valueOf(documentSnapshots.size());
+                            nlikes.setText(size + " loved this story");
                         }
                     });
+                    db.collection("weddings")
+                            .document(weddingid)
+                            .collection("storycomments")
+                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                @Override
+                                public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+
+
+                                    String size = String.valueOf(documentSnapshots.size());
+                                    nwishes.setText(size + " Best Wishes");
+                                }
+                            });
                 }
             }
         });
-        liked.setOnClickListener(new View.OnClickListener() {
+        likel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -133,7 +159,7 @@ public class story extends Fragment {
                 });
             }
         });
-        wishes.setOnClickListener(new View.OnClickListener() {
+        bwl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), WishesActivity.class));

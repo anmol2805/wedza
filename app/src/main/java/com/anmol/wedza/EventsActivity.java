@@ -89,8 +89,11 @@ public class EventsActivity extends AppCompatActivity {
                     Event event = new Event(eventname,eventdes,eventimg,eventlocation,team,eventtime);
                     events.add(event);
                 }
-                eventsAdapter = new EventsAdapter(EventsActivity.this,R.layout.eventlayout,events);
-                eventlist.setAdapter(eventsAdapter);
+                if(!events.isEmpty()){
+                    eventsAdapter = new EventsAdapter(EventsActivity.this,R.layout.eventlayout,events);
+                    eventlist.setAdapter(eventsAdapter);
+                }
+
 
             }
         });

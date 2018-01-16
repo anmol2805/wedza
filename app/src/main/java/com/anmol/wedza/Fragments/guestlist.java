@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.anmol.wedza.Adapters.GuestAdapter;
@@ -34,32 +35,49 @@ public class guestlist extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     List<Guest> guests;
     GuestAdapter guestAdapter;
+    RelativeLayout el,bl,gl;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View vi = inflater.inflate(R.layout.guestlist,container,false);
+        getActivity().setTitle("Guests");
         glv = (ListView)vi.findViewById(R.id.guestlv);
         everyone = (Button)vi.findViewById(R.id.everyone);
         tgr = (Button)vi.findViewById(R.id.teamgr);
         tbr = (Button)vi.findViewById(R.id.teambr);
+        el = (RelativeLayout)vi.findViewById(R.id.everyonel);
+        bl = (RelativeLayout)vi.findViewById(R.id.tbrl);
+        gl = (RelativeLayout)vi.findViewById(R.id.tgrl);
         guests = new ArrayList<>();
         everyguest();
-        everyone.setOnClickListener(new View.OnClickListener() {
+        everyone.setBackgroundResource(R.drawable.everyonered);
+        tgr.setBackgroundResource(R.drawable.groomblue);
+        tbr.setBackgroundResource(R.drawable.brideblue);
+        el.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 everyguest();
+                everyone.setBackgroundResource(R.drawable.everyonered);
+                tgr.setBackgroundResource(R.drawable.groomblue);
+                tbr.setBackgroundResource(R.drawable.brideblue);
             }
         });
-        tgr.setOnClickListener(new View.OnClickListener() {
+        gl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 teamgroom();
+                everyone.setBackgroundResource(R.drawable.everyoneblue);
+                tgr.setBackgroundResource(R.drawable.groomr);
+                tbr.setBackgroundResource(R.drawable.brideblue);
             }
         });
-        tbr.setOnClickListener(new View.OnClickListener() {
+        bl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 teambride();
+                everyone.setBackgroundResource(R.drawable.everyoneblue);
+                tgr.setBackgroundResource(R.drawable.groomblue);
+                tbr.setBackgroundResource(R.drawable.brider);
             }
         });
         return vi;
