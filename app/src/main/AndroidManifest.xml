@@ -43,7 +43,9 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".IntroduceYourselfActivity" />
         <activity android:name=".CameraActivity" />
-        <activity android:name=".StoryMediaPreview" />
+        <activity android:name=".StoryMediaPreview"
+            
+            />
         <activity android:name=".WishesActivity" />
         <activity
             android:name=".CommentsActivity"
@@ -51,7 +53,8 @@
         <activity android:name=".KeypeopleActivity" />
         <activity android:name=".EventsActivity" />
         <activity android:name=".AlertsActivity" />
-        <activity android:name=".AlbumActivity" />
+        <activity android:name=".AlbumActivity"
+            ></activity>
         <activity android:name=".PhoneVerification" />
         <activity android:name=".EditpersonalinfoActivity" />
 

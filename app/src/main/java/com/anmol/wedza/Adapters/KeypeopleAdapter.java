@@ -67,7 +67,7 @@ public class KeypeopleAdapter extends ArrayAdapter<Keypeople> {
             Glide.with(context).load(keypeoples.get(position).getImg()).into(circleImageView);
             name.setText(keypeoples.get(position).getName());
             contact.setText("+91" + keypeoples.get(position).getContact());
-            work.setText(keypeoples.get(position).getWork());
+            work.setText("(" + keypeoples.get(position).getWork() + ")");
             call.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
