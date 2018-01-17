@@ -92,7 +92,7 @@ public class media extends Fragment {
 
     private Uri fileUri; // file url to store image/video
 
-    private ImageView imgPreview;
+    private ImageView imgPreview,prev;
     private VideoView videoPreview;
     private Button btnCapturePicture, btnRecordVideo;
     RelativeLayout cp,cv,pg,pt,sg;
@@ -103,6 +103,7 @@ public class media extends Fragment {
         getActivity().setTitle("Capture");
         imgPreview = (ImageView)vi.findViewById(R.id.imgPreview);
         videoPreview = (VideoView)vi.findViewById(R.id.videoPreview);
+        prev = (ImageView)vi.findViewById(R.id.prev);
         btnCapturePicture = (Button)vi.findViewById(R.id.btnCapturePicture);
         btnRecordVideo = (Button)vi.findViewById(R.id.btnRecordVideo);
         imagelayout = (LinearLayout)vi.findViewById(R.id.imglayout);
@@ -243,7 +244,7 @@ public class media extends Fragment {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String date = sdf.format(new Date());
                 final java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
-
+                map.put("time",timestamp);
                 db.collection("weddings").document(weddingid).collection("gallery").document(imageid).set(map);
                 db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -400,10 +401,12 @@ public class media extends Fragment {
         fileUri = filePath;
         if(type.contains("image")){
             videoPreview.setVisibility(View.GONE);
+            prev.setVisibility(View.GONE);
             imgPreview.setVisibility(View.VISIBLE);
             imgPreview.setImageURI(filePath);
         }else if(type.contains("video")){
             videoPreview.setVisibility(View.VISIBLE);
+            prev.setVisibility(View.GONE);
             imgPreview.setVisibility(View.GONE);
             videoPreview.setVideoURI(filePath);
         }
@@ -413,7 +416,7 @@ public class media extends Fragment {
         try {
             // hide video preview
             videoPreview.setVisibility(View.GONE);
-
+            prev.setVisibility(View.GONE);
             imgPreview.setVisibility(View.VISIBLE);
             imgPreview.setImageURI(fileUri);
             // bimatp factory
@@ -434,6 +437,7 @@ public class media extends Fragment {
     private void previewVideo() {
         try {
             // hide image preview
+            prev.setVisibility(View.GONE);
             imgPreview.setVisibility(View.GONE);
             videoPreview.setVideoURI(fileUri);
             videoPreview.setVisibility(View.VISIBLE);
