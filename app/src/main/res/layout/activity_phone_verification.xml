@@ -4,52 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.anmol.wedza.PhoneVerification">
-
+    tools:context="com.anmol.wedza.PhoneVerification"
+    android:background="#fff"
+    >
 
     <ImageView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/clip"
+        android:scaleType="fitXY"
+        android:alpha="0.50"
+        />
+
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_picture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="25dp"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/username"
+        android:textStyle="italic"
+        android:textColor="#000"
         android:layout_below="@+id/profile_picture"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="10dp"/>
 
     <Button
+        android:id="@+id/sign_out"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="sign out"
-        android:id="@+id/sign_out" />
+        android:visibility="gone" />
 
     <EditText
         android:id="@+id/phone_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Enter your phone number"
+        android:hint="+91-Enter your phone number"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:ems="10"
+        android:layout_marginTop="60dp"
         android:inputType="phone"
+        android:background="@drawable/round_button4"
+        android:textAlignment="center"
+        android:elevation="4dp"
+        android:textColor="#E92004"
+        android:textColorHint="#FF8806"
         android:layout_centerInParent="true"
+        android:text="+91"
         android:layout_below="@+id/username"/>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/get_verification_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get Code"
-        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/phone_number"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:elevation="4dp"
         android:src="@drawable/ic_send_white_24dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/phone_number"
-        android:id="@+id/get_verification_code"
-        android:layout_alignParentRight="true" />
+        android:text="Get Code"
+        app:fabSize="normal" />
 
     <EditText
         android:layout_width="100dp"
@@ -57,6 +77,11 @@
         android:id="@+id/verification_code_ET"
         android:inputType="number"
         android:hint="Code"
+        android:background="@drawable/round_button4"
+        android:textAlignment="center"
+        android:elevation="4dp"
+        android:textColor="#E92004"
+        android:textColorHint="#FF8806"
         android:translationX="4000dp"
         android:gravity="center"
         android:layout_marginTop="26dp"
@@ -64,39 +89,69 @@
         android:layout_centerHorizontal="true" />
 
     <TextView
+        android:id="@+id/goBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/get_verification_code"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="20dp"
+        android:elevation="4dp"
+        android:layout_toLeftOf="@+id/get_verification_code"
+        android:layout_toStartOf="@+id/get_verification_code"
         android:background="@drawable/ic_arrow_back_black_24dp"
-        android:layout_marginLeft="10dp"
-        android:id="@+id/goBack"
-        android:translationX="4000dp"
-        android:layout_marginBottom="10dp"
-        android:layout_alignBottom="@+id/phone_number"/>
+        android:translationX="4000dp" />
 
     <TextView
+        android:id="@+id/refreshTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_refresh_black_24dp"
-        android:layout_alignBottom="@+id/phone_number"
-        android:layout_marginBottom="10dp"
-        android:layout_toLeftOf="@+id/verifyCode"
+        android:layout_alignBaseline="@+id/goBack"
+        android:layout_alignBottom="@+id/goBack"
+        android:layout_toEndOf="@+id/get_verification_code"
+        android:layout_toRightOf="@+id/get_verification_code"
         android:alpha="0"
-        android:layout_marginRight="10dp"
-        android:id="@+id/refreshTV"
+        android:elevation="4dp"
+        android:background="@drawable/ic_refresh_black_24dp"
+        android:layout_marginLeft="20dp"
         />
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/verifyCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/phone_number"
+        android:layout_marginTop="20dp"
         android:scaleX="0"
         android:scaleY="0"
-        android:text="VERIFY"
         android:src="@drawable/ic_done_white_24dp"
-        android:layout_alignEnd="@+id/get_verification_code"
-        android:layout_alignBottom="@+id/verification_code_ET"
+        android:text="VERIFY"
         android:visibility="invisible"
-        android:id="@+id/verifyCode"
-        android:layout_marginTop="10dp"
-        android:layout_alignRight="@+id/get_verification_code" />
+        app:fabSize="normal"
+        android:elevation="4dp"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/colorPrimaryDark"
+
+        />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+
+        android:layout_marginBottom="85dp"
+        app:srcCompat="@drawable/rings"
+        android:alpha="0.2"
+        android:layout_centerInParent="true"
+        />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:srcCompat="@drawable/love" />
+
 
 </RelativeLayout>

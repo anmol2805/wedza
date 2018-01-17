@@ -34,10 +34,12 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class PhoneVerification extends AppCompatActivity {
 
     //Views
-    private ImageView profilePictureIV;
+    private CircleImageView profilePictureIV;
 
     private TextView usernameTV;
     private TextView goBackTV;
@@ -77,7 +79,8 @@ public class PhoneVerification extends AppCompatActivity {
         public void onVerificationFailed(FirebaseException e) {
             Log.w(TAG, "onVerificationFailed", e);
             if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                phone_number.setError("Invalid phone number.");
+                phone_number.setError("Your number should start with +91");
+                showToast("Invalid Phone number");
             } else if (e instanceof FirebaseTooManyRequestsException) {
 
             }
@@ -99,7 +102,7 @@ public class PhoneVerification extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_verification);
-
+        setTitle("Verify");
         //Retrieve all the values from the previous activity
         Intent intent = getIntent();
         profilePicturePath = intent.getStringExtra("profilePicturePath");
@@ -107,7 +110,7 @@ public class PhoneVerification extends AppCompatActivity {
         weddingid = intent.getStringExtra("weddingid");
 
         //Instantiate All the views
-        profilePictureIV = (ImageView) findViewById(R.id.profile_picture);
+        profilePictureIV = (CircleImageView) findViewById(R.id.profile_picture);
 
         usernameTV = (TextView) findViewById(R.id.username);
         goBackTV = (TextView) findViewById(R.id.goBack);
