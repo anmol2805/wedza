@@ -72,9 +72,12 @@ public class WishesActivity extends AppCompatActivity {
                                 Wish wish = new Wish(wishtext,username,profilepicturepath,uid);
                                 wishes.add(wish);
                             }
-                            wishesAdapter = new WishesAdapter(WishesActivity.this,R.layout.commentlayout,wishes);
-                            wisheslist.setAdapter(wishesAdapter);
-                            wisheslist.setSelection(wisheslist.getAdapter().getCount() - 1);
+                            if(!wishes.isEmpty()){
+                                wishesAdapter = new WishesAdapter(WishesActivity.this,R.layout.commentlayout,wishes);
+                                wisheslist.setAdapter(wishesAdapter);
+                                wisheslist.setSelection(wisheslist.getAdapter().getCount() - 1);
+                            }
+
                         }
 
                     }

@@ -8,7 +8,6 @@
     android:baselineAligned="false"
     tools:context=".HomeActivity"
     android:padding="8dp"
-    android:background="@drawable/backgradient1"
     >
     <ScrollView
         android:layout_width="match_parent"
@@ -23,6 +22,7 @@
                 app:cardBackgroundColor="#fff"
                 android:id="@+id/btnlayout"
                 app:cardCornerRadius="4dp"
+                app:cardElevation="8dp"
                 >
 
                 <LinearLayout
@@ -181,26 +181,28 @@
                     android:textColor="#000"
                     android:textAlignment="center"
                     />
+
                 <android.support.v7.widget.CardView
                     android:id="@+id/menutop"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#fff"
                     app:cardCornerRadius="4dp"
-                    >
+                    app:cardElevation="@dimen/activity_horizontal_margin">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:orientation="horizontal"
 
                         >
+
                         <RelativeLayout
+                            android:id="@+id/pt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:id="@+id/pt"
                             android:layout_gravity="center"
-                            >
+                            android:layout_weight="1">
 
                             <Button
                                 android:id="@+id/ptimeline"
@@ -214,46 +216,46 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_toRightOf="@+id/ptimeline"
-                                android:layout_toEndOf="@+id/ptimeline"
                                 android:layout_centerVertical="true"
-                                android:text="Post to Timeline"
                                 android:layout_marginLeft="5dp"
-                                android:textColor="#000"
-                                />
+                                android:layout_toEndOf="@+id/ptimeline"
+                                android:layout_toRightOf="@+id/ptimeline"
+                                android:text="Post to Timeline"
+                                android:textColor="#000" />
 
                         </RelativeLayout>
+
                         <View
 
                             android:layout_width="2dp"
-                            android:background="@color/red"
                             android:layout_height="match_parent"
-                            android:layout_marginVertical="5dp"
                             android:layout_gravity="center"
-                            />
+                            android:layout_marginVertical="5dp"
+                            android:background="@color/red" />
+
                         <RelativeLayout
+                            android:id="@+id/sg"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:id="@+id/sg"
                             android:layout_gravity="center"
-                            >
+                            android:layout_weight="1">
+
                             <Button
                                 android:id="@+id/saveg"
                                 android:layout_width="35dp"
                                 android:layout_height="35dp"
                                 android:layout_marginLeft="10dp"
                                 android:background="@drawable/album" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="5dp"
                                 android:layout_toEndOf="@+id/saveg"
                                 android:layout_toRightOf="@+id/saveg"
-                                android:layout_centerVertical="true"
                                 android:text="Save to albums"
-                                android:layout_marginLeft="5dp"
-                                android:textColor="#000"
-                                />
+                                android:textColor="#000" />
                         </RelativeLayout>
 
                     </LinearLayout>

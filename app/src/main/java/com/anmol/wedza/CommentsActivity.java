@@ -77,9 +77,12 @@ public class CommentsActivity extends AppCompatActivity {
                                 Comment2 comment2 = new Comment2(commenttext,username,profilepicturepath,uid);
                                 comment2s.add(comment2);
                             }
-                            commentsAdapter = new CommentsAdapter(CommentsActivity.this,R.layout.commentlayout,comment2s);
-                            commentslist.setAdapter(commentsAdapter);
-                            commentslist.setSelection(commentslist.getAdapter().getCount() - 1);
+                            if(!comment2s.isEmpty()){
+                                commentsAdapter = new CommentsAdapter(CommentsActivity.this,R.layout.commentlayout,comment2s);
+                                commentslist.setAdapter(commentsAdapter);
+                                commentslist.setSelection(commentslist.getAdapter().getCount() - 1);
+                            }
+
                         }
 
                     }

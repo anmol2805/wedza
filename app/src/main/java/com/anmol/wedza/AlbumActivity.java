@@ -61,8 +61,11 @@ public class AlbumActivity extends AppCompatActivity {
                             Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"),doc.getString("event"));
                             galleries.add(gallery);
                         }
-                        galleryAdapter = new GalleryAdapter(AlbumActivity.this,R.layout.gallerylayout, (ArrayList<Gallery>) galleries);
-                        albumgridview.setAdapter(galleryAdapter);
+                        if(!galleries.isEmpty()){
+                            galleryAdapter = new GalleryAdapter(AlbumActivity.this,R.layout.gallerylayout, (ArrayList<Gallery>) galleries);
+                            albumgridview.setAdapter(galleryAdapter);
+                        }
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

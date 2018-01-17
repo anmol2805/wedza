@@ -107,8 +107,11 @@ public class AlertsActivity extends AppCompatActivity {
                                 Alert alert = new Alert(username,team,alerttext,uid);
                                 alerts.add(alert);
                             }
-                            alertsAdapter = new AlertsAdapter(AlertsActivity.this,R.layout.alertlayout,alerts);
-                            alertslist.setAdapter(alertsAdapter);
+                            if(!alerts.isEmpty()){
+                                alertsAdapter = new AlertsAdapter(AlertsActivity.this,R.layout.alertlayout,alerts);
+                                alertslist.setAdapter(alertsAdapter);
+                            }
+
                         }
 
                     }
