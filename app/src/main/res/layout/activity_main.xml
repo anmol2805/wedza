@@ -7,11 +7,22 @@
     tools:context="com.anmol.wedza.MainActivity"
     android:background="#fff"
     >
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="330dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/heart"
+        android:alpha="0.2"
+        android:scaleType="center"
+        />
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="155dp"
-        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView2"
+        android:layout_marginTop="40dp"
         android:scaleType="center"
         android:src="@drawable/moment1" />
 
@@ -26,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:src="@drawable/wed"
+        android:elevation="4dp"
         android:id="@+id/imageView2" />
     <ImageView
         android:layout_width="wrap_content"
@@ -47,6 +59,7 @@
         android:src="@drawable/bridegroom" />
 
     <ImageView
+        android:id="@+id/hands"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/imageView2"
@@ -89,8 +102,8 @@
         android:textColor="#FCE4B6"
         android:textStyle="bold"
         android:background="@drawable/round_button3"
-
-        android:layout_below="@id/wedid"
+        android:elevation="8dp"
+        android:layout_below="@id/imageView2"
         />
     <EditText
         android:layout_width="wrap_content"
@@ -98,13 +111,14 @@
         android:id="@+id/wedid"
         android:layout_marginBottom="10dp"
         android:layout_centerHorizontal="true"
-        android:background="#FFF0CA"
+        android:background="@drawable/round_button4"
         android:hint="Enter Wedding ID"
         android:textAlignment="center"
-        android:padding="10dp"
+
         android:textColor="#E92004"
         android:textColorHint="#FF8806"
-        android:layout_below="@+id/imageView2"
+        android:layout_above="@+id/hands"
+        android:elevation="4dp"
         />
 
     <TextView

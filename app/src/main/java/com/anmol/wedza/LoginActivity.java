@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTitle("Login");
         weddingid = getIntent().getStringExtra("weddingid");
         instantiateFacebookLogin();
 
