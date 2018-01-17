@@ -6,11 +6,11 @@ package com.anmol.wedza.Model;
 
 public class Yourinfo {
     String username,fbpagelink,relation,team,status,profilepicturepath,currentwedding;
-
+    Boolean admin,keypeople;
     public Yourinfo() {
     }
 
-    public Yourinfo(String username, String fbpagelink, String relation, String team, String status, String profilepicturepath,String currentwedding) {
+    public Yourinfo(String username, String fbpagelink, String relation, String team, String status, String profilepicturepath, String currentwedding, Boolean admin, Boolean keypeople) {
         this.username = username;
         this.fbpagelink = fbpagelink;
         this.relation = relation;
@@ -18,6 +18,24 @@ public class Yourinfo {
         this.status = status;
         this.profilepicturepath = profilepicturepath;
         this.currentwedding = currentwedding;
+        this.admin = admin;
+        this.keypeople = keypeople;
+    }
+
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
+
+    public Boolean getKeypeople() {
+        return keypeople;
+    }
+
+    public void setKeypeople(Boolean keypeople) {
+        this.keypeople = keypeople;
     }
 
     public String getCurrentwedding() {

@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.anmol.wedza.IntroduceYourselfActivity"
-    android:padding="16dp"
+
+
     >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:alpha="0.25"
+        android:src="@drawable/clip"
+        />
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        >
 
 
 
@@ -33,7 +43,10 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:hint="Name"
+            android:textColor="#000"
+            android:textStyle="italic"
             android:layout_margin="5dp"
+            android:elevation="4dp"
             />
 
         <TextView
@@ -49,7 +62,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="web"
+            android:textColor="#000"
+            android:textStyle="italic"
             android:layout_margin="5dp"
+            android:elevation="4dp"
             android:hint="eg:https://www.facebook.com/canopydevelopers" />
 
         <TextView
@@ -82,19 +98,23 @@
             android:layout_margin="5dp"
             >
 
-            <Button
+
+            <RadioButton
                 android:id="@+id/tbr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Team Bride" />
 
-            <Button
+            <RadioButton
                 android:id="@+id/tgr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Team Groom" />
+
+
+
         </LinearLayout>
         <TextView
             android:layout_width="match_parent"
@@ -108,20 +128,20 @@
             android:orientation="horizontal"
             android:layout_margin="5dp"
             >
-
-            <Button
+            <RadioButton
                 android:id="@+id/single"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Single" />
 
-            <Button
+            <RadioButton
                 android:id="@+id/married"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Married" />
+
 
 
         </LinearLayout>
@@ -141,11 +161,14 @@
                 android:layout_gravity="center"
                 android:text="Upload your photo" />
 
-            <ImageButton
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="125dp"
                 android:layout_height="125dp"
                 android:id="@+id/userimage"
                 android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:background="@drawable/userpic"
+
                 />
         </LinearLayout>
         <Button
@@ -154,8 +177,11 @@
             android:id="@+id/done"
             android:layout_margin="5dp"
             android:text="I'm done!!!"
+            android:textColor="#FCE4B6"
+            android:background="@drawable/round_button3"
+            android:textStyle="bold"
             />
     </LinearLayout>
 
     </ScrollView>
-</LinearLayout>
+</RelativeLayout>

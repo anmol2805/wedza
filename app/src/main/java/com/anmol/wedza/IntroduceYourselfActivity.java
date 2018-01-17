@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -25,6 +26,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class IntroduceYourselfActivity extends AppCompatActivity {
 
     Spinner spinner;
@@ -36,8 +39,8 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
     String username;
     String weddingid;
     EditText name;
-    ImageButton uppic;
-    Button tbr,tgr,single,marrried;
+    CircleImageView uppic;
+    RadioButton tbr,tgr,single,marrried;
     String team = "groom";
     String status = "single";
     String uname;
@@ -51,11 +54,11 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
         spinner = (Spinner)findViewById(R.id.relation);
         done =  (Button)findViewById(R.id.done);
         name = (EditText)findViewById(R.id.name);
-        uppic = (ImageButton)findViewById(R.id.userimage);
-        tbr = (Button)findViewById(R.id.tbr);
-        tgr = (Button)findViewById(R.id.tgr);
-        single = (Button)findViewById(R.id.single);
-        marrried = (Button)findViewById(R.id.married);
+        uppic = (CircleImageView) findViewById(R.id.userimage);
+        tbr = (RadioButton)findViewById(R.id.tbr);
+        tgr = (RadioButton)findViewById(R.id.tgr);
+        single = (RadioButton)findViewById(R.id.single);
+        marrried = (RadioButton)findViewById(R.id.married);
         fbpglnk = (EditText)findViewById(R.id.fbpagelink);
         Intent intent = getIntent();
         profilePicturePath = intent.getStringExtra("profilePicturePath");
@@ -91,10 +94,14 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                 db.collection("users").document(auth.getCurrentUser().getUid()).set(map);
             }
         });
+        tbr.setChecked(true);
+        single.setChecked(true);
         tbr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 team = "bride";
+                tbr.setChecked(true);
+                tgr.setChecked(false);
                 showToast(team);
             }
         });
@@ -102,6 +109,8 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 team = "groom";
+                tbr.setChecked(false);
+                tgr.setChecked(true);
                 showToast(team);
             }
         });
@@ -109,6 +118,8 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 status = "single";
+                single.setChecked(true);
+                marrried.setChecked(false);
                 showToast(status);
             }
         });
@@ -116,6 +127,8 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 status = "married";
+                single.setChecked(false);
+                marrried.setChecked(true);
                 showToast(status);
             }
         });
@@ -128,8 +141,10 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         uname = name.getText().toString().trim();
                         fbpagelink = fbpglnk.getText().toString().trim();
+                        Boolean admin = false;
+                        Boolean keypeople = false;
                         if(!relation.contains("Select Relation type")){
-                            Yourinfo yourinfo = new Yourinfo(uname,fbpagelink,relation,team,status,profilePicturePath,weddingid);
+                            Yourinfo yourinfo = new Yourinfo(uname,fbpagelink,relation,team,status,profilePicturePath,weddingid,admin,keypeople);
 
 
                             db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).set(yourinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
