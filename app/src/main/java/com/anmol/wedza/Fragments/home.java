@@ -33,7 +33,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -70,14 +72,15 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         kpl = (RelativeLayout)view.findViewById(R.id.kpl);
         evl = (RelativeLayout)view.findViewById(R.id.evl);
         alrl = (RelativeLayout)view.findViewById(R.id.alrl);
-        editcoverpic = (FloatingActionButton)view.findViewById(R.id.editcover);
-        editcoverpic.setVisibility(View.GONE);
+
         timelines = new ArrayList<>();
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         ViewGroup header = (ViewGroup)layoutInflater.inflate(R.layout.listheader,lv,false);
         lv.addHeaderView(header,null,false);
         coverpic = (ImageView)header.findViewById(R.id.listHeaderImage);
         weddingdate = (TextView)header.findViewById(R.id.date);
+        editcoverpic = (FloatingActionButton)header.findViewById(R.id.editcover);
+        editcoverpic.setVisibility(View.GONE);
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -89,12 +92,7 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         });
 
         lv.setOnScrollListener(this);
-        editcoverpic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), EditcoverpicActivity.class));
-            }
-        });
+
         kpl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -166,19 +164,22 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
     }
 
     private void loadcoverpic(String weddingid) {
-        db.collection("weddings").document(weddingid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("weddings").document(weddingid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            public void onEvent(final DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if(getActivity()!=null){
-                    Glide.with(getActivity()).load(task.getResult().getString("coverpic")).into(coverpic);
-                    weddingdate.setText(task.getResult().getString("weddingdate"));
+                    Glide.with(getActivity()).load(documentSnapshot.getString("coverpic")).into(coverpic);
+                    weddingdate.setText(documentSnapshot.getString("weddingdate"));
+                    editcoverpic.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), EditcoverpicActivity.class);
+                            intent.putExtra("coverpic",documentSnapshot.getString("coverpic"));
+                            intent.putExtra("weddate",documentSnapshot.getString("weddingdate"));
+                            startActivity(intent);
+                        }
+                    });
                 }
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
             }
         });
     }

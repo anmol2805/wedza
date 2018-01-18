@@ -12,47 +12,83 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditcoverpicActivity extends AppCompatActivity {
     ImageButton uploadpic;
-    EditText weddate;
+    Button weddate;
     private static final int MY_PERMISSIONS_REQUEST = 123;
     private static final int PICK_REQUEST_CODE = 300;
     Uri fileuri = null;
+    Button update;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+    String wedte,coverpic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editcoverpic);
         uploadpic = (ImageButton)findViewById(R.id.uploadpic);
-        weddate = (EditText)findViewById(R.id.weddate);
+        weddate = (Button) findViewById(R.id.weddate);
+        update = (Button)findViewById(R.id.update);
+        wedte = getIntent().getStringExtra("weddate");
+        coverpic = getIntent().getStringExtra("coverpic");
+        Glide.with(this).load(coverpic).into(uploadpic);
+        weddate.setText(wedte);
         permissionRequest();
-        weddate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        weddate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if(!b){
-                    Calendar mcurrentDate = Calendar.getInstance();
-                    int mYear = mcurrentDate.get(Calendar.YEAR);
-                    int mMonth = mcurrentDate.get(Calendar.MONTH);
-                    int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+            public void onClick(View view) {
+                Calendar mcurrentDate = Calendar.getInstance();
+                int mYear = mcurrentDate.get(Calendar.YEAR);
+                int mMonth = mcurrentDate.get(Calendar.MONTH);
+                int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-                    DatePickerDialog mDatePicker;
-                    mDatePicker = new DatePickerDialog(EditcoverpicActivity.this, new DatePickerDialog.OnDateSetListener() {
-                        public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-                            // TODO Auto-generated method stub
+                DatePickerDialog mDatePicker;
+                mDatePicker = new DatePickerDialog(EditcoverpicActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                        // TODO Auto-generated method stub
                     /*      Your code   to get date and time    */
-                            selectedmonth = selectedmonth + 1;
-                            weddate.setText("" + selectedday + "." + selectedmonth + "." + selectedyear);
-                        }
-                    }, mYear, mMonth, mDay);
-                    mDatePicker.setTitle("Select Date");
-                    mDatePicker.show();
-                }
+                        selectedmonth = selectedmonth + 1;
+                        weddate.setText("" + selectedday + "." + selectedmonth + "." + selectedyear);
+                    }
+                }, mYear, mMonth, mDay);
+                mDatePicker.setTitle("Select Date");
+                mDatePicker.show();
+            }
+        });
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        String weddingid = task.getResult().getString("currentwedding");
+                        updateimg(weddingid);
+                        updatedate(weddingid);
+                    }
+                });
+
             }
         });
         uploadpic.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +98,51 @@ public class EditcoverpicActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void updatedate(String weddingid) {
+        if(weddate.getText()!=null){
+            String udate = weddate.getText().toString();
+            Map<String,Object> map = new HashMap<>();
+            map.put("weddingdate",udate);
+            db.collection("weddings").document(weddingid).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(EditcoverpicActivity.this,"Wedding date updated successfully",Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else {
+            Toast.makeText(EditcoverpicActivity.this,"Please mention a wedding date",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void updateimg(final String weddingid) {
+        if(fileuri!=null){
+            StorageReference reference = storageReference.child(fileuri.getLastPathSegment());
+            reference.putFile(fileuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    final String medialink = String.valueOf(taskSnapshot.getDownloadUrl());
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("coverpic",medialink);
+                    db.collection("weddings").document(weddingid).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(EditcoverpicActivity.this,"Coverpic Updated Successfully",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        }
+        else if(coverpic!=null || !coverpic.isEmpty()){
+            Toast.makeText(EditcoverpicActivity.this,"Changes updated successfully",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(EditcoverpicActivity.this,"Please select an image to upload!!!",Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void permissionRequest() {
         if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE)

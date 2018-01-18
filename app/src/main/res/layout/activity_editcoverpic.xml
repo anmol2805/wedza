@@ -15,18 +15,18 @@
         android:layout_margin="5dp"
         android:layout_below="@+id/imageView8"
         app:srcCompat="@android:drawable/ic_menu_upload_you_tube" />
-    <EditText
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/weddate"
         android:background="@drawable/round_button4"
         android:layout_below="@+id/uploadpic"
-        android:hint="Enter Date"
+        android:text="Enter Date"
         android:layout_centerHorizontal="true"
         android:textAlignment="center"
 
         android:textColor="#E92004"
-        android:textColorHint="#FF8806"
+
         />
 
     <ImageView
@@ -46,4 +46,16 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         app:srcCompat="@drawable/index" />
+
+    <Button
+        android:id="@+id/update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/weddate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/round_button3"
+        android:text="Update changes"
+        android:textColor="#FCE4B6"
+        />
 </RelativeLayout>
