@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="250dp"
     android:orientation="vertical">
@@ -40,5 +41,21 @@
             android:textColor="#8e44ad"
             />
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/editcover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linlat"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:clickable="true"
+        android:elevation="16dp"
+        android:visibility="gone"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/editpic" />
+
 
 </RelativeLayout>

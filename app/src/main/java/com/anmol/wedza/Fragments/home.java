@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
     FirebaseAuth auth = FirebaseAuth.getInstance();
     TextView weddingdate;
     RelativeLayout kpl,evl,alrl;
+    FloatingActionButton editcoverpic;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
@@ -67,6 +69,8 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         kpl = (RelativeLayout)view.findViewById(R.id.kpl);
         evl = (RelativeLayout)view.findViewById(R.id.evl);
         alrl = (RelativeLayout)view.findViewById(R.id.alrl);
+        editcoverpic = (FloatingActionButton)view.findViewById(R.id.editcover);
+        editcoverpic.setVisibility(View.GONE);
         timelines = new ArrayList<>();
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         ViewGroup header = (ViewGroup)layoutInflater.inflate(R.layout.listheader,lv,false);
@@ -79,6 +83,7 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
                 String weddingid = task.getResult().getString("currentwedding");
                 loadcoverpic(weddingid);
                 loadtimeline(weddingid);
+                checkadmin(weddingid);
             }
         });
 
@@ -104,6 +109,18 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         });
 
         return view;
+    }
+
+    private void checkadmin(String weddingid) {
+        db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.getResult().getBoolean("admin")){
+                            editcoverpic.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
     }
 
     private void loadtimeline(String weddingid) {
