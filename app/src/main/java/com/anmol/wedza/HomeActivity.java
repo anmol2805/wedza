@@ -182,6 +182,7 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_like) {
             Uri uri = Uri.parse("market://details?id=" + "com.anmol.hibiscus");
+
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
             // To count with Play market backstack, After pressing back button,
             // to taken back to our application, we need to add following flags to intent.
