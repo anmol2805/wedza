@@ -23,9 +23,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-            />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity android:name=".LoginActivity" />
 
         <meta-data
@@ -45,9 +45,9 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".IntroduceYourselfActivity" />
         <activity android:name=".CameraActivity" />
-        <activity android:name=".StoryMediaPreview"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-            />
+        <activity
+            android:name=".StoryMediaPreview"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity android:name=".WishesActivity" />
         <activity
             android:name=".CommentsActivity"
@@ -55,8 +55,7 @@
         <activity android:name=".KeypeopleActivity" />
         <activity android:name=".EventsActivity" />
         <activity android:name=".AlertsActivity" />
-        <activity android:name=".AlbumActivity"
-            ></activity>
+        <activity android:name=".AlbumActivity" />
         <activity android:name=".PhoneVerification" />
         <activity android:name=".EditpersonalinfoActivity" />
 
@@ -74,7 +73,8 @@
         <activity android:name=".StoryeditActivity" />
         <activity android:name=".ViewgroupsActivity" />
         <activity android:name=".CreateweddingActivity" />
-        <activity android:name=".SwitchweddingActivity"></activity>
+        <activity android:name=".SwitchweddingActivity" />
+        <activity android:name=".EditcoverpicActivity"></activity>
     </application>
 
 </manifest>

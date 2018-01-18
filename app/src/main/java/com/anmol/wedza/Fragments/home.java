@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.anmol.wedza.Adapters.TimelineAdapter;
 import com.anmol.wedza.AlertsActivity;
 import com.anmol.wedza.CreateeventActivity;
+import com.anmol.wedza.EditcoverpicActivity;
 import com.anmol.wedza.EventsActivity;
 import com.anmol.wedza.KeypeopleActivity;
 import com.anmol.wedza.Model.Timeline;
@@ -88,7 +89,12 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         });
 
         lv.setOnScrollListener(this);
-
+        editcoverpic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), EditcoverpicActivity.class));
+            }
+        });
         kpl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
