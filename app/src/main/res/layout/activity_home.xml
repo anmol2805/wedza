@@ -20,6 +20,15 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_home"
-        app:menu="@menu/activity_home_drawer" />
+        app:menu="@menu/activity_home_drawer" >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/navback2"
+            android:rotation="180"
+            android:scaleType="fitStart"
+            android:alpha="0.25"
+            />
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>
