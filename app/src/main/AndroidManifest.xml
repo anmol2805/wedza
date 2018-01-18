@@ -74,7 +74,9 @@
         <activity android:name=".ViewgroupsActivity" />
         <activity android:name=".CreateweddingActivity" />
         <activity android:name=".SwitchweddingActivity" />
-        <activity android:name=".EditcoverpicActivity"></activity>
+        <activity android:name=".EditcoverpicActivity" />
+        <activity android:name=".Editpersonalinfo" />
+        <activity android:name=".Weddingsettings"></activity>
     </application>
 
 </manifest>

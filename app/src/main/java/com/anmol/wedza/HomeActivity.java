@@ -168,14 +168,18 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            startActivity(new Intent(HomeActivity.this,ViewgroupsActivity.class));
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_edtpersonalinfo) {
+            startActivity(new Intent(HomeActivity.this,Editpersonalinfo.class));
+        }
+        else if(id == R.id.nav_wedset){
+            startActivity(new Intent(HomeActivity.this,Weddingsettings.class));
+        }
+        else if (id == R.id.nav_createwed) {
             startActivity(new Intent(HomeActivity.this,CreateweddingActivity.class));
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_contactwed) {
 
-        } else if (id == R.id.nav_manage) {
-            startActivity(new Intent(HomeActivity.this,SwitchweddingActivity.class));
+        } else if (id == R.id.nav_like) {
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

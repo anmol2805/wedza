@@ -34,7 +34,6 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
     Button done;
     ArrayAdapter<CharSequence> arrayAdapter;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    DocumentReference documentReference = FirebaseFirestore.getInstance().document("weddings/mrxwedsmsy/users/user1");
     String profilePicturePath;
     String username;
     String weddingid;

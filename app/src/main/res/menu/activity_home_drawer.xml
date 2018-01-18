@@ -1,24 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="View your groups" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Create Your Wedding" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Join another wedding" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Switch weddings" />
-    </group>
+    <item android:title="Wedding Related">
+        <menu>
+            <group
+                android:id="@+id/menu_top"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_wedset"
+                    android:icon="@drawable/settings"
+                    android:title="Wedding Settings" />
+
+            </group>
+        </menu>
+    </item>
+    <item android:title="Personal Settings">
+        <menu>
+            <group
+                android:id="@+id/menumy"
+                android:checkableBehavior="single"
+                >
+                <item
+                    android:id="@+id/nav_edtpersonalinfo"
+                    android:icon="@drawable/editperinfo"
+                    android:title="Edit Personal Info" />
+                <item
+                    android:id="@+id/nav_createwed"
+                    android:icon="@drawable/ring"
+                    android:title="Create Your Wedding" />
+
+
+            </group>
+
+        </menu>
+    </item>
+    <item android:title="Support Settings">
+        <menu>
+            <group android:checkableBehavior="single"
+                android:id="@+id/menuapps">
+                <item
+                    android:id="@+id/nav_contactwed"
+                    android:icon="@drawable/contactdev"
+                    android:title="Contact Developers" />
+                <!--<item-->
+                <!--android:id="@+id/nav_elib"-->
+                <!--android:icon="@drawable/ebook"-->
+                <!--android:title="E-books" />-->
+                <item
+                    android:id="@+id/nav_like"
+                    android:icon="@drawable/likeapp"
+                    android:title="Like Wedza" />
+
+
+
+
+            </group>
+
+        </menu>
+
+
+    </item>
+
+
 
 
 
