@@ -11,17 +11,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.anmol.wedza.Model.Guest;
+import com.anmol.wedza.Model.Keypeople;
 import com.anmol.wedza.Model.Timeline;
 import com.anmol.wedza.R;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by anmol on 12/27/2017.
@@ -52,11 +62,60 @@ public class GuestAdapter extends ArrayAdapter<Guest> {
             return convertView;
         }
         else{
+            final FirebaseAuth auth = FirebaseAuth.getInstance();
+            final FirebaseFirestore db = FirebaseFirestore.getInstance();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //LayoutInflater inflater = context.getLayoutInflater();
             View v = inflater.inflate(resource,null);
             TextView name = (TextView)v.findViewById(R.id.name);
-            ImageView profpic = (ImageView)v.findViewById(R.id.profilepic);
+            CircleImageView profpic = (CircleImageView) v.findViewById(R.id.profilepic);
+            CircleImageView teamstatus = (CircleImageView)v.findViewById(R.id.teamicon);
+            final LinearLayout adminlayout = (LinearLayout)v.findViewById(R.id.adminlayout);
+            Button btnmk = (Button)v.findViewById(R.id.btnmk);
+            Button btnmad = (Button)v.findViewById(R.id.btnmad);
+            TextView txtmk = (TextView)v.findViewById(R.id.txtmk);
+            TextView txtmad = (TextView)v.findViewById(R.id.txtmad);
+            String team = guests.get(position).getTeam();
+            if(team.contains("groom")){
+                teamstatus.setBackgroundResource(R.drawable.groomblue);
+            }
+            else if(team.contains("bride")){
+                teamstatus.setBackgroundResource(R.drawable.brider);
+            }
+            Boolean keypeople = guests.get(position).getKeypeople();
+            Boolean admin = guests.get(position).getAdmin();
+            if(keypeople){
+                btnmk.setBackgroundResource(R.drawable.keypeopleblue);
+                txtmk.setText("Already a Keyperson");
+            }
+            else {
+                btnmk.setBackgroundResource(R.drawable.keypin);
+                txtmk.setText("Make a Keyperson");
+            }
+            if(admin){
+                btnmad.setBackgroundResource(R.drawable.admin);
+                txtmad.setText("Already an Admin");
+            }
+            else{
+                btnmad.setBackgroundResource(R.drawable.adminin);
+                txtmad.setText("Make an admin");
+            }
+            db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    String weddingid = task.getResult().getString("currentwedding");
+                    db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    Boolean admin = task.getResult().getBoolean("admin");
+                                    if(admin){
+                                        adminlayout.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            });
+                }
+            });
             Glide.with(context).load(guests.get(position).getProfilepicturepath()).into(profpic);
             name.setText(guests.get(position).getName());
             return v;

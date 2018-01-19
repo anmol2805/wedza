@@ -20,7 +20,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -94,70 +96,121 @@ public class guestlist extends Fragment {
     }
     private void teambride(String weddingid) {
         guests.clear();
-        db.collection("weddings").document(weddingid).collection("users").whereEqualTo("team","bride").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for(DocumentSnapshot doc:task.getResult()){
-                    Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath"));
-                    guests.add(guest);
-                }
-                if(!guests.isEmpty()){
-                    guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
-                    glv.setAdapter(guestAdapter);
-                }
+        db.collection("weddings").document(weddingid).collection("users").whereEqualTo("team","bride")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                             for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
+                                 Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
+                                         ,doc.getString("team"),doc.getBoolean("keypeople"),doc.getBoolean("admin"));
+                                 guests.add(guest);
+                             }
+                        if(!guests.isEmpty()){
+                            guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
+                            glv.setAdapter(guestAdapter);
+                        }
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(),""+e.getMessage(),Toast.LENGTH_SHORT).show();
-            }
-        });
+                    }
+                });
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                for(DocumentSnapshot doc:task.getResult()){
+//                    Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
+//                    ,doc.getString("team"),doc.getBoolean("keypeople"),doc.getBoolean("admin"));
+//                    guests.add(guest);
+//                }
+//                if(!guests.isEmpty()){
+//                    guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
+//                    glv.setAdapter(guestAdapter);
+//                }
+//
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(getActivity(),""+e.getMessage(),Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     private void teamgroom(String weddingid) {
         guests.clear();
-        db.collection("weddings").document(weddingid).collection("users").whereEqualTo("team","groom").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for(DocumentSnapshot doc:task.getResult()){
-                    Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath"));
-                    guests.add(guest);
-                }
-                if(!guests.isEmpty()){
-                    guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
-                    glv.setAdapter(guestAdapter);
-                }
+        db.collection("weddings").document(weddingid).collection("users").whereEqualTo("team","groom")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                        for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
+                            Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
+                                    ,doc.getString("team"),doc.getBoolean("keypeople"),doc.getBoolean("admin"));
+                            guests.add(guest);
+                        }
+                        if(!guests.isEmpty()){
+                            guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
+                            glv.setAdapter(guestAdapter);
+                        }
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(),""+e.getMessage(),Toast.LENGTH_SHORT).show();
-            }
-        });
+                    }
+                });
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                for(DocumentSnapshot doc:task.getResult()){
+//                    Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
+//                            ,doc.getString("team"),doc.getBoolean("keypeople"),doc.getBoolean("admin"));
+//                    guests.add(guest);
+//                }
+//                if(!guests.isEmpty()){
+//                    guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
+//                    glv.setAdapter(guestAdapter);
+//                }
+//
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(getActivity(),""+e.getMessage(),Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     private void everyguest(String weddingid) {
         guests.clear();
-        db.collection("weddings").document(weddingid).collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for(DocumentSnapshot doc:task.getResult()){
-                    Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath"));
-                    guests.add(guest);
-                }
-                if(!guests.isEmpty()){
-                    guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
-                    glv.setAdapter(guestAdapter);
-                }
+        db.collection("weddings").document(weddingid).collection("users")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                        for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
+                            Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
+                                    ,doc.getString("team"),doc.getBoolean("keypeople"),doc.getBoolean("admin"));
+                            guests.add(guest);
+                        }
+                        if(!guests.isEmpty()){
+                            guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
+                            glv.setAdapter(guestAdapter);
+                        }
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(),""+e.getMessage(),Toast.LENGTH_SHORT).show();
-            }
-        });
+                    }
+                });
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                for(DocumentSnapshot doc:task.getResult()){
+//                    Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
+//                            ,doc.getString("team"),doc.getBoolean("keypeople"),doc.getBoolean("admin"));
+//                    guests.add(guest);
+//                }
+//                if(!guests.isEmpty()){
+//                    guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
+//                    glv.setAdapter(guestAdapter);
+//                }
+//
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(getActivity(),""+e.getMessage(),Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 }

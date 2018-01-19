@@ -8,19 +8,88 @@
         android:layout_height="50dp"
         android:id="@+id/profilepic"
         android:layout_margin="2dp"
+        android:layout_centerVertical="true"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/profilepic"
         android:layout_toRightOf="@+id/profilepic"
+        android:layout_toStartOf="@+id/adminlayout"
+        android:layout_toLeftOf="@+id/adminlayout"
         android:layout_margin="10dp"
         android:layout_centerVertical="true"
         android:textColor="#000"
         android:text="name"
         android:id="@+id/name"
         android:textStyle="italic"
-        android:textSize="17dp"
+        android:textSize="17sp"
         />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/teamicon"
 
+        />
+    <LinearLayout
+        android:id="@+id/adminlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/teamicon"
+        android:layout_toStartOf="@+id/teamicon"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+        <LinearLayout
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:id="@+id/keylayout"
+            >
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/btnmk"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Make Keyperson"
+                android:textAlignment="center"
+                android:id="@+id/txtmk"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:id="@+id/adlayout"
+            >
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/btnmad"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Make Admin"
+                android:textAlignment="center"
+                android:id="@+id/txtmad"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
 </RelativeLayout>
