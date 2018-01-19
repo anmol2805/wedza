@@ -5,18 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.anmol.wedza.WishesActivity"
-    android:padding="16dp"
+    android:padding="4dp"
     >
 
 
-    <Button
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/wish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:text="wish" />
+        android:backgroundTint="@color/colorPrimaryDark"
+        app:fabSize="normal"
+        android:elevation="16dp"
+        app:srcCompat="@drawable/wish1" />
 
     <EditText
         android:layout_width="match_parent"
