@@ -1,6 +1,7 @@
 package com.anmol.wedza.Adapters;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -57,7 +58,7 @@ public class GuestAdapter extends ArrayAdapter<Guest> {
     }
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, @Nullable final View convertView, @NonNull ViewGroup parent) {
         if(convertView!=null){
             return convertView;
         }
@@ -71,8 +72,8 @@ public class GuestAdapter extends ArrayAdapter<Guest> {
             CircleImageView profpic = (CircleImageView) v.findViewById(R.id.profilepic);
             CircleImageView teamstatus = (CircleImageView)v.findViewById(R.id.teamicon);
             final LinearLayout adminlayout = (LinearLayout)v.findViewById(R.id.adminlayout);
-            Button btnmk = (Button)v.findViewById(R.id.btnmk);
-            Button btnmad = (Button)v.findViewById(R.id.btnmad);
+            final Button btnmk = (Button)v.findViewById(R.id.btnmk);
+            final Button btnmad = (Button)v.findViewById(R.id.btnmad);
             TextView txtmk = (TextView)v.findViewById(R.id.txtmk);
             TextView txtmad = (TextView)v.findViewById(R.id.txtmad);
             String team = guests.get(position).getTeam();
@@ -82,8 +83,8 @@ public class GuestAdapter extends ArrayAdapter<Guest> {
             else if(team.contains("bride")){
                 teamstatus.setBackgroundResource(R.drawable.brider);
             }
-            Boolean keypeople = guests.get(position).getKeypeople();
-            Boolean admin = guests.get(position).getAdmin();
+            final Boolean keypeople = guests.get(position).getKeypeople();
+            final Boolean admin = guests.get(position).getAdmin();
             if(keypeople){
                 btnmk.setBackgroundResource(R.drawable.keypeopleblue);
                 txtmk.setText("Already a Keyperson");
@@ -100,6 +101,7 @@ public class GuestAdapter extends ArrayAdapter<Guest> {
                 btnmad.setBackgroundResource(R.drawable.adminin);
                 txtmad.setText("Make an admin");
             }
+
             db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -114,6 +116,28 @@ public class GuestAdapter extends ArrayAdapter<Guest> {
                                     }
                                 }
                             });
+                    btnmk.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(!keypeople){
+                                final Dialog dialog = new Dialog(context);
+                                dialog.setTitle("Add Key Person Details");
+                                dialog.setContentView(R.layout.editkey);
+                                dialog.show();
+                            }
+                        }
+                    });
+                    btnmad.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(!admin){
+                                final Dialog dialog = new Dialog(context);
+                                dialog.setTitle("Confirm admin details");
+                                dialog.setContentView(R.layout.editad);
+                                dialog.show();
+                            }
+                        }
+                    });
                 }
             });
             Glide.with(context).load(guests.get(position).getProfilepicturepath()).into(profpic);
