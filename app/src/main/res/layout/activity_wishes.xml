@@ -8,6 +8,21 @@
     android:padding="4dp"
     >
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/clip"
+        android:alpha="0.1"
+        />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/clip"
+        android:alpha="0.1"
+        android:rotation="180"
+        />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/wish"
@@ -28,7 +43,7 @@
         android:layout_toLeftOf="@+id/wish"
         android:layout_toStartOf="@+id/wish"
         android:layout_margin="5dp"
-        android:hint="give wishes"
+        android:hint="Wish the couple...!"
         android:textColor="#000"
         android:id="@+id/wishtext"
         />

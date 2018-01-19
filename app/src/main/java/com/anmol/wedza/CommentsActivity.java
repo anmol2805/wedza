@@ -2,6 +2,7 @@ package com.anmol.wedza;
 
 import android.content.SyncRequest;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,7 +32,7 @@ import java.util.List;
 
 public class CommentsActivity extends AppCompatActivity {
     ListView commentslist;
-    Button post;
+    FloatingActionButton post;
     EditText comment;
     List<Comment> comments;
     List<Comment2> comment2s;
@@ -43,8 +44,9 @@ public class CommentsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
+        setTitle("Comments");
         comment = (EditText)findViewById(R.id.comment);
-        post = (Button)findViewById(R.id.post);
+        post = (FloatingActionButton) findViewById(R.id.post);
         commentslist = (ListView)findViewById(R.id.commentlist);
         comments = new ArrayList<>();
         comment2s = new ArrayList<>();

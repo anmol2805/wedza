@@ -8,6 +8,23 @@
     android:padding="4dp"
     >
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/clip"
+        android:alpha="0.1"
+        />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/clip"
+        android:alpha="0.1"
+        android:rotation="180"
+        />
+
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/post"
@@ -28,7 +45,7 @@
         android:layout_toLeftOf="@+id/post"
         android:layout_toStartOf="@+id/post"
         android:layout_margin="5dp"
-        android:hint="write a comment"
+        android:hint="Comments...!"
         android:textColor="#000"
         android:id="@+id/comment"
         />

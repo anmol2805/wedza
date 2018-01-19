@@ -1,6 +1,7 @@
 package com.anmol.wedza;
 
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,7 +32,7 @@ import java.util.List;
 public class WishesActivity extends AppCompatActivity {
 
     ListView wisheslist;
-    Button wish;
+    FloatingActionButton wish;
     EditText wishtext;
     List<Wish> wishes;
     WishesAdapter wishesAdapter;
@@ -41,8 +42,9 @@ public class WishesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishes);
+        setTitle("Wishes");
         wishtext = (EditText)findViewById(R.id.wishtext);
-        wish = (Button)findViewById(R.id.wish);
+        wish = (FloatingActionButton) findViewById(R.id.wish);
         wisheslist = (ListView)findViewById(R.id.wishlist);
         wishes = new ArrayList<>();
         loadcomments();
