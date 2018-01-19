@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.anmol.wedza.WishesActivity"
     android:padding="4dp"
+    android:background="#fff"
     >
 
     <ImageView
@@ -55,6 +56,16 @@
         android:layout_margin="5dp"
         android:id="@+id/wishlist"
         android:divider="@null"
+        android:elevation="8dp"
         />
+
+    <ImageView
+        android:id="@+id/imageView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:alpha="0.5"
+        app:srcCompat="@drawable/leavenote" />
 
 </RelativeLayout>
