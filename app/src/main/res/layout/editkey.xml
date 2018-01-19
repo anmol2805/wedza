@@ -41,8 +41,6 @@
             android:inputType="phone"
             android:textAlignment="center"
             android:textColor="#000"
-
-
             />
 
     </android.support.design.widget.TextInputLayout>

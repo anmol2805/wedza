@@ -5,18 +5,36 @@ package com.anmol.wedza.Model;
  */
 
 public class Guest {
-    String name,profilepicturepath,team;
+    String name,profilepicturepath,team,relation,uid;
     Boolean keypeople,admin;
 
     public Guest() {
     }
 
-    public Guest(String name, String profilepicturepath, String team, Boolean keypeople, Boolean admin) {
+    public Guest(String name, String profilepicturepath, String team, String relation, Boolean keypeople, Boolean admin,String uid) {
         this.name = name;
         this.profilepicturepath = profilepicturepath;
         this.team = team;
+        this.relation = relation;
         this.keypeople = keypeople;
         this.admin = admin;
+        this.uid = uid;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getRelation() {
+        return relation;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
     }
 
     public String getTeam() {

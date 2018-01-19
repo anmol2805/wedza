@@ -102,7 +102,7 @@ public class guestlist extends Fragment {
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                              for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
                                  Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
-                                         ,doc.getString("team"),doc.getBoolean("keypeople"),doc.getBoolean("admin"));
+                                         ,doc.getString("team"),doc.getString("relation"),doc.getBoolean("keypeople"),doc.getBoolean("admin"),doc.getId());
                                  guests.add(guest);
                              }
                         if(!guests.isEmpty()){
@@ -142,7 +142,7 @@ public class guestlist extends Fragment {
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                         for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
                             Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
-                                    ,doc.getString("team"),doc.getBoolean("keypeople"),doc.getBoolean("admin"));
+                                    ,doc.getString("team"),doc.getString("relation"),doc.getBoolean("keypeople"),doc.getBoolean("admin"),doc.getId());
                             guests.add(guest);
                         }
                         if(!guests.isEmpty()){
@@ -182,7 +182,7 @@ public class guestlist extends Fragment {
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                         for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
                             Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
-                                    ,doc.getString("team"),doc.getBoolean("keypeople"),doc.getBoolean("admin"));
+                                    ,doc.getString("team"),doc.getString("relation"),doc.getBoolean("keypeople"),doc.getBoolean("admin"),doc.getId());
                             guests.add(guest);
                         }
                         if(!guests.isEmpty()){
