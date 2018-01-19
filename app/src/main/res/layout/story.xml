@@ -183,7 +183,9 @@
                     android:clickable="true"
                     android:elevation="16dp"
                     android:visibility="gone"
-                    app:srcCompat="@android:drawable/ic_menu_edit" />
+                    app:fabSize="normal"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    app:srcCompat="@drawable/editstory" />
 
                 <TextView
                     android:id="@+id/storycontent"

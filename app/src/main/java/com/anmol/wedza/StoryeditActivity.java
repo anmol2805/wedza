@@ -50,6 +50,7 @@ public class StoryeditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storyedit);
+        setTitle("Edit Story");
         upload = (Button)findViewById(R.id.upload);
         save = (Button)findViewById(R.id.savestory);
         browse = (ImageButton) findViewById(R.id.browse);
