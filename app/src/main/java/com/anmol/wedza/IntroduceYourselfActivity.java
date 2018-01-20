@@ -173,6 +173,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                             Toast.makeText(IntroduceYourselfActivity.this,"network error",Toast.LENGTH_SHORT).show();
+
                                         }
                                     });
 
