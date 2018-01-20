@@ -109,6 +109,7 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
                     intent.putExtra("medialink",timelines.get(position).getMedialink());
                     intent.putExtra("mediatype",timelines.get(position).getMediatype());
                     context.startActivity(intent);
+                    context.overridePendingTransition(R.anim.slide_left_in,R.anim.still);
                 }
             });
 //            db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

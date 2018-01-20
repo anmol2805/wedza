@@ -26,12 +26,12 @@
 
                 <Button
                     android:id="@+id/keypeople"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_marginLeft="10dp"
-                    android:background="@drawable/keypeopleblue" />
+                    android:background="@drawable/group64" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -40,6 +40,7 @@
                     android:layout_toEndOf="@+id/keypeople"
                     android:layout_centerVertical="true"
                     android:text="Key People"
+                    android:layout_marginLeft="5dp"
                     android:textColor="#000"
                     />
 
@@ -54,10 +55,10 @@
                 >
                 <Button
                     android:id="@+id/events"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="10dp"
-                    android:background="@drawable/eventsblue" />
+                    android:background="@drawable/event64" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -65,6 +66,7 @@
                     android:layout_toRightOf="@+id/events"
                     android:layout_centerVertical="true"
                     android:text="Events"
+                    android:layout_marginLeft="5dp"
                     android:textColor="#000"
                     />
             </RelativeLayout>
@@ -79,7 +81,7 @@
                     android:id="@+id/alerts"
                     android:layout_width="27dp"
                     android:layout_height="27dp"
-                    android:background="@drawable/alertsblue"
+                    android:background="@drawable/alarm6"
 
                     android:layout_marginLeft="10dp"
                     />
@@ -91,6 +93,7 @@
                     android:layout_toEndOf="@+id/alerts"
                     android:layout_centerVertical="true"
                     android:text="Alerts"
+                    android:layout_marginLeft="5dp"
                     android:textColor="#000"
                     />
             </RelativeLayout>

@@ -65,19 +65,19 @@ public class HomeActivity extends AppCompatActivity
             guestlist = (Button)findViewById(R.id.vguestlist);
             gallery = (Button)findViewById(R.id.vgallery);
             story = (Button)findViewById(R.id.vstory);
-            timeline.setBackgroundResource(R.drawable.homer);
-            guestlist.setBackgroundResource(R.drawable.familyblue);
+            timeline.setBackgroundResource(R.drawable.homeredfilled);
+            guestlist.setBackgroundResource(R.drawable.barratgrey);
             camera.setBackgroundResource(R.drawable.round_button);
-            gallery.setBackgroundResource(R.drawable.galleryblue);
-            story.setBackgroundResource(R.drawable.storyblue);
+            gallery.setBackgroundResource(R.drawable.gallerygreyfilled);
+            story.setBackgroundResource(R.drawable.storygrey);
             camera.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    timeline.setBackgroundResource(R.drawable.homeb);
-                    guestlist.setBackgroundResource(R.drawable.familyblue);
+                    timeline.setBackgroundResource(R.drawable.homegrey);
+                    guestlist.setBackgroundResource(R.drawable.barratgrey);
                     camera.setBackgroundResource(R.drawable.round_button1);
-                    gallery.setBackgroundResource(R.drawable.galleryblue);
-                    story.setBackgroundResource(R.drawable.storyblue);
+                    gallery.setBackgroundResource(R.drawable.gallerygreyfilled);
+                    story.setBackgroundResource(R.drawable.storygrey);
                     //startActivity(new Intent(HomeActivity.this,CameraActivity.class));
                     setFragment(new media());
                 }
@@ -85,43 +85,43 @@ public class HomeActivity extends AppCompatActivity
             guestlist.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    timeline.setBackgroundResource(R.drawable.homeb);
-                    guestlist.setBackgroundResource(R.drawable.familyred);
+                    timeline.setBackgroundResource(R.drawable.homegrey);
+                    guestlist.setBackgroundResource(R.drawable.barratred);
                     camera.setBackgroundResource(R.drawable.round_button);
-                    gallery.setBackgroundResource(R.drawable.galleryblue);
-                    story.setBackgroundResource(R.drawable.storyblue);
+                    gallery.setBackgroundResource(R.drawable.gallerygreyfilled);
+                    story.setBackgroundResource(R.drawable.storygrey);
                     setFragment(new guestlist());
                 }
             });
             timeline.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    timeline.setBackgroundResource(R.drawable.homer);
-                    guestlist.setBackgroundResource(R.drawable.familyblue);
+                    timeline.setBackgroundResource(R.drawable.homeredfilled);
+                    guestlist.setBackgroundResource(R.drawable.barratgrey);
                     camera.setBackgroundResource(R.drawable.round_button);
-                    gallery.setBackgroundResource(R.drawable.galleryblue);
-                    story.setBackgroundResource(R.drawable.storyblue);
+                    gallery.setBackgroundResource(R.drawable.gallerygreyfilled);
+                    story.setBackgroundResource(R.drawable.storygrey);
                     setFragment(new home());
                 }
             });
             gallery.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    timeline.setBackgroundResource(R.drawable.homeb);
-                    guestlist.setBackgroundResource(R.drawable.familyblue);
+                    timeline.setBackgroundResource(R.drawable.homegrey);
+                    guestlist.setBackgroundResource(R.drawable.barratgrey);
                     camera.setBackgroundResource(R.drawable.round_button);
                     gallery.setBackgroundResource(R.drawable.galleryr);
-                    story.setBackgroundResource(R.drawable.storyblue);
+                    story.setBackgroundResource(R.drawable.storygrey);
                     setFragment(new gallery());
                 }
             });
             story.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    timeline.setBackgroundResource(R.drawable.homeb);
-                    guestlist.setBackgroundResource(R.drawable.familyblue);
+                    timeline.setBackgroundResource(R.drawable.homegrey);
+                    guestlist.setBackgroundResource(R.drawable.barratgrey);
                     camera.setBackgroundResource(R.drawable.round_button);
-                    gallery.setBackgroundResource(R.drawable.galleryblue);
+                    gallery.setBackgroundResource(R.drawable.gallerygreyfilled);
                     story.setBackgroundResource(R.drawable.storyred);
                     setFragment(new story());
                 }

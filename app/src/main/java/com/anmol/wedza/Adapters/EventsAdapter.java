@@ -68,13 +68,13 @@ public class EventsAdapter extends ArrayAdapter<Event> {
             eventdes.setText(events.get(position).getEventdes());
             String team = events.get(position).getTeam();
             if(team.contains("groom")){
-                teamicon.setBackgroundResource(R.drawable.groomr);
+                teamicon.setBackgroundResource(R.drawable.suit);
             }
             else if(team.contains("bride")){
-                teamicon.setBackgroundResource(R.drawable.brider);
+                teamicon.setBackgroundResource(R.drawable.gown);
             }
             else if(team.contains("both")){
-                teamicon.setBackgroundResource(R.drawable.bothsides);
+                teamicon.setBackgroundResource(R.drawable.bothred);
             }
             Glide.with(context).load(events.get(position).getEventimg()).into(eventimg);
             return v;

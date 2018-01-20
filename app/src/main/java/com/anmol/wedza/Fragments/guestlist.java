@@ -53,9 +53,9 @@ public class guestlist extends Fragment {
         bl = (RelativeLayout)vi.findViewById(R.id.tbrl);
         gl = (RelativeLayout)vi.findViewById(R.id.tgrl);
         guests = new ArrayList<>();
-        everyone.setBackgroundResource(R.drawable.everyonered);
-        tgr.setBackgroundResource(R.drawable.groomblue);
-        tbr.setBackgroundResource(R.drawable.brideblue);
+        everyone.setBackgroundResource(R.drawable.bothred);
+        tgr.setBackgroundResource(R.drawable.tiegrey);
+        tbr.setBackgroundResource(R.drawable.heelgrey);
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -65,54 +65,54 @@ public class guestlist extends Fragment {
                     @Override
                     public void onClick(View view) {
                         everyguest(weddingid);
-                        everyone.setBackgroundResource(R.drawable.everyonered);
-                        tgr.setBackgroundResource(R.drawable.groomblue);
-                        tbr.setBackgroundResource(R.drawable.brideblue);
+                        everyone.setBackgroundResource(R.drawable.bothred);
+                        tgr.setBackgroundResource(R.drawable.tiegrey);
+                        tbr.setBackgroundResource(R.drawable.heelgrey);
                     }
                 });
                 gl.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         teamgroom(weddingid);
-                        everyone.setBackgroundResource(R.drawable.everyoneblue);
-                        tgr.setBackgroundResource(R.drawable.groomr);
-                        tbr.setBackgroundResource(R.drawable.brideblue);
+                        everyone.setBackgroundResource(R.drawable.bothgrey);
+                        tgr.setBackgroundResource(R.drawable.tiered);
+                        tbr.setBackgroundResource(R.drawable.heelgrey);
                     }
                 });
                 bl.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         teambride(weddingid);
-                        everyone.setBackgroundResource(R.drawable.everyoneblue);
-                        tgr.setBackgroundResource(R.drawable.groomblue);
-                        tbr.setBackgroundResource(R.drawable.brider);
+                        everyone.setBackgroundResource(R.drawable.bothgrey);
+                        tgr.setBackgroundResource(R.drawable.tiegrey);
+                        tbr.setBackgroundResource(R.drawable.heelred);
                     }
                 });
                 everyone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         everyguest(weddingid);
-                        everyone.setBackgroundResource(R.drawable.everyonered);
-                        tgr.setBackgroundResource(R.drawable.groomblue);
-                        tbr.setBackgroundResource(R.drawable.brideblue);
+                        everyone.setBackgroundResource(R.drawable.bothred);
+                        tgr.setBackgroundResource(R.drawable.tiegrey);
+                        tbr.setBackgroundResource(R.drawable.heelgrey);
                     }
                 });
                 tgr.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         teamgroom(weddingid);
-                        everyone.setBackgroundResource(R.drawable.everyoneblue);
-                        tgr.setBackgroundResource(R.drawable.groomr);
-                        tbr.setBackgroundResource(R.drawable.brideblue);
+                        everyone.setBackgroundResource(R.drawable.bothgrey);
+                        tgr.setBackgroundResource(R.drawable.tiered);
+                        tbr.setBackgroundResource(R.drawable.heelgrey);
                     }
                 });
                 tbr.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         teambride(weddingid);
-                        everyone.setBackgroundResource(R.drawable.everyoneblue);
-                        tgr.setBackgroundResource(R.drawable.groomblue);
-                        tbr.setBackgroundResource(R.drawable.brider);
+                        everyone.setBackgroundResource(R.drawable.bothgrey);
+                        tgr.setBackgroundResource(R.drawable.tiegrey);
+                        tbr.setBackgroundResource(R.drawable.heelred);
                     }
                 });
             }

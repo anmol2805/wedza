@@ -85,10 +85,10 @@ public class GuestAdapter extends ArrayAdapter<Guest> {
             TextView txtmad = (TextView)v.findViewById(R.id.txtmad);
             String team = guests.get(position).getTeam();
             if(team.contains("groom")){
-                teamstatus.setBackgroundResource(R.drawable.groomblue);
+                teamstatus.setBackgroundResource(R.drawable.suit);
             }
             else if(team.contains("bride")){
-                teamstatus.setBackgroundResource(R.drawable.brider);
+                teamstatus.setBackgroundResource(R.drawable.gown);
             }
             final Boolean keypeople = guests.get(position).getKeypeople();
             final Boolean admin = guests.get(position).getAdmin();

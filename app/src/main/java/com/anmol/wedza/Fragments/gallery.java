@@ -58,38 +58,38 @@ public class gallery extends Fragment {
         albums = (Button)vi.findViewById(R.id.albums);
         ail = (RelativeLayout)vi.findViewById(R.id.ail);
         albuml = (RelativeLayout)vi.findViewById(R.id.albuml);
-        allpics.setBackgroundResource(R.drawable.galleryr);
-        albums.setBackgroundResource(R.drawable.imageblue);
+        allpics.setBackgroundResource(R.drawable.picsred);
+        albums.setBackgroundResource(R.drawable.albumgreyun);
         ail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 allpicsshow();
-                allpics.setBackgroundResource(R.drawable.galleryr);
-                albums.setBackgroundResource(R.drawable.imageblue);
+                allpics.setBackgroundResource(R.drawable.picsred);
+                albums.setBackgroundResource(R.drawable.albumgreyun);
             }
         });
         albuml.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 albumshow();
-                allpics.setBackgroundResource(R.drawable.galleryblue);
-                albums.setBackgroundResource(R.drawable.image   );
+                allpics.setBackgroundResource(R.drawable.picgrey);
+                albums.setBackgroundResource(R.drawable.albumredun);
             }
         });
         allpics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 allpicsshow();
-                allpics.setBackgroundResource(R.drawable.galleryr);
-                albums.setBackgroundResource(R.drawable.imageblue);
+                allpics.setBackgroundResource(R.drawable.picsred);
+                albums.setBackgroundResource(R.drawable.albumgreyun);
             }
         });
         albums.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 albumshow();
-                allpics.setBackgroundResource(R.drawable.galleryblue);
-                albums.setBackgroundResource(R.drawable.image   );
+                allpics.setBackgroundResource(R.drawable.picgrey);
+                albums.setBackgroundResource(R.drawable.albumredun);
             }
         });
         allpicsshow();

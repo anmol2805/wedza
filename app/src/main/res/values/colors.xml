@@ -8,5 +8,7 @@
     <color name="lightestblue">#dce4eb</color>
     <color name="blue">#bbcedd</color>
     <color name="red">#be5960</color>
+    <color name="grey">#95a5a6</color>
+    <color name="iconred">#e74c3c</color>
 </resources>
 
