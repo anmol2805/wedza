@@ -146,4 +146,14 @@
         android:textSize="12sp"
         android:visibility="gone" />
 
+    <ProgressBar
+        android:id="@+id/prgbr"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/joinwed"
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
