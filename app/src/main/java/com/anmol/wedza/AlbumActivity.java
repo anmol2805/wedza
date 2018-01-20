@@ -35,6 +35,7 @@ public class AlbumActivity extends AppCompatActivity {
         setContentView(R.layout.activity_album);
         albumgridview = (GridView)findViewById(R.id.albumgridview);
         String event = getIntent().getStringExtra("event");
+        setTitle(event);
         galleries = new ArrayList<>();
         show(event);
         albumgridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -44,6 +45,7 @@ public class AlbumActivity extends AppCompatActivity {
                 intent.putExtra("medialink",galleries.get(i).getUrl());
                 intent.putExtra("mediatype",galleries.get(i).getMediatype());
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_left_in,R.anim.still);
             }
         });
     }
@@ -76,5 +78,11 @@ public class AlbumActivity extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.still,R.anim.slide_out_down);
     }
 }

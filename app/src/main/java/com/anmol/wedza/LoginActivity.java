@@ -218,6 +218,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             intent.putExtra("username",username);
             intent.putExtra("weddingid",weddingid);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_left_in,R.anim.slide_left_out);
 
         }
         else
@@ -257,5 +258,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.still,R.anim.slide_out_down);
     }
 }

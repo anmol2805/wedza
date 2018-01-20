@@ -97,21 +97,44 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), KeypeopleActivity.class));
+                getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
             }
         });
         evl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), EventsActivity.class));
+                getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
             }
         });
         alrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), AlertsActivity.class));
+                getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
             }
         });
-
+        keypeople.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), KeypeopleActivity.class));
+                getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
+            }
+        });
+        events.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), EventsActivity.class));
+                getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
+            }
+        });
+        alerts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), AlertsActivity.class));
+                getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
+            }
+        });
         return view;
     }
 

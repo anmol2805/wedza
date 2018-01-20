@@ -43,4 +43,10 @@ public class StoryMediaPreview extends AppCompatActivity {
             });
         }
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.still,R.anim.slide_left_out);
+    }
 }

@@ -390,6 +390,7 @@ public class PhoneVerification extends AppCompatActivity {
                             intent.putExtra("username",username);
                             intent.putExtra("weddingid",weddingid);
                             startActivity(intent);
+                            overridePendingTransition(R.anim.slide_left_in,R.anim.slide_left_out);
                             showToast("Successfully Verified and Logged in !");
                             Log.d(TAG, "signInWithCredential:success");
                         } else {
@@ -400,6 +401,12 @@ public class PhoneVerification extends AppCompatActivity {
     }
     private void showToast(String toast){
         Toast.makeText(this,toast, Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.still,R.anim.slide_out_down);
     }
 }
 

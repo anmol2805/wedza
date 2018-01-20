@@ -89,6 +89,7 @@ public class story extends Fragment {
                 intent.putExtra("medialink",storyimages.get(pos).getMedialink());
                 intent.putExtra("mediatype",storyimages.get(pos).getMediatype());
                 getActivity().startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_left_in,R.anim.still);
             }
         };
         liked.setBackgroundResource(R.drawable.unlike);
@@ -166,6 +167,30 @@ public class story extends Fragment {
                 startActivity(new Intent(getActivity(), WishesActivity.class));
             }
         });
+        liked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        Map<String,Object> map = new HashMap<>();
+                        map.put("like",true);
+                        String weddingid = task.getResult().getString("currentwedding");
+                        db.collection("weddings")
+                                .document(weddingid)
+                                .collection("storylikes")
+                                .document(auth.getCurrentUser().getUid()).set(map);
+                    }
+                });
+            }
+        });
+        wishes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), WishesActivity.class));
+                getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
+            }
+        });
         return vi;
     }
 
@@ -181,6 +206,7 @@ public class story extends Fragment {
                         Intent intent = new Intent(getActivity(), StoryeditActivity.class);
                         intent.putExtra("storycontent",st);
                         startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.slide_left_in,R.anim.still);
                     }
                 });
             }

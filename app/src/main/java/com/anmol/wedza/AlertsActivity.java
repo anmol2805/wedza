@@ -46,6 +46,7 @@ public class AlertsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alerts);
+        setTitle("Alerts");
         comment = (EditText)findViewById(R.id.comment);
         post = (Button)findViewById(R.id.post);
         alertslist = (ListView)findViewById(R.id.alertlist);
@@ -155,5 +156,11 @@ public class AlertsActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.still,R.anim.slide_out_down);
     }
 }

@@ -64,6 +64,7 @@ public class EventsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(EventsActivity.this,CreateeventActivity.class));
+                overridePendingTransition(R.anim.slide_in_up,R.anim.still);
             }
         });
 
@@ -98,5 +99,11 @@ public class EventsActivity extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.still,R.anim.slide_out_down);
     }
 }

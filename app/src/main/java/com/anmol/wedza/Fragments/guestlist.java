@@ -88,6 +88,33 @@ public class guestlist extends Fragment {
                         tbr.setBackgroundResource(R.drawable.brider);
                     }
                 });
+                everyone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        everyguest(weddingid);
+                        everyone.setBackgroundResource(R.drawable.everyonered);
+                        tgr.setBackgroundResource(R.drawable.groomblue);
+                        tbr.setBackgroundResource(R.drawable.brideblue);
+                    }
+                });
+                tgr.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        teamgroom(weddingid);
+                        everyone.setBackgroundResource(R.drawable.everyoneblue);
+                        tgr.setBackgroundResource(R.drawable.groomr);
+                        tbr.setBackgroundResource(R.drawable.brideblue);
+                    }
+                });
+                tbr.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        teambride(weddingid);
+                        everyone.setBackgroundResource(R.drawable.everyoneblue);
+                        tgr.setBackgroundResource(R.drawable.groomblue);
+                        tbr.setBackgroundResource(R.drawable.brider);
+                    }
+                });
             }
         });
 

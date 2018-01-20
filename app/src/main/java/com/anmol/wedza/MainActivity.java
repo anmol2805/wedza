@@ -46,11 +46,15 @@ public class MainActivity extends AppCompatActivity {
                                     Intent intent = new Intent(MainActivity.this,HomeActivity.class);
                                     intent.putExtra("weddingid",weddingid);
                                     startActivity(intent);
+                                    overridePendingTransition(R.anim.slide_left_in,R.anim.slide_left_out);
+                                    finish();
                                 }
                                 else {
                                     Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                                     intent.putExtra("weddingid",weddingid);
                                     startActivity(intent);
+                                    overridePendingTransition(R.anim.slide_left_in,R.anim.slide_left_out);
+                                    finish();
                                 }
                             }
                             else{
@@ -62,5 +66,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.still,R.anim.slide_out_down);
     }
 }

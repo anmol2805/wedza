@@ -160,6 +160,32 @@ public class media extends Fragment {
                 pickmedia();
             }
         });
+        btnCapturePicture.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // capture picture
+                captureImage();
+            }
+        });
+
+        /**
+         * Record video button click event
+         */
+        btnRecordVideo.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // record video
+                recordVideo();
+            }
+        });
+        pickfromgallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickmedia();
+            }
+        });
 
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -184,6 +210,7 @@ public class media extends Fragment {
         // Add the camera options.
 
         startActivityForResult(chooserIntent, PICK_REQUEST_CODE);
+        getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
 
     }
 
@@ -195,6 +222,18 @@ public class media extends Fragment {
             }
         });
         sg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                savetogallery(weddingid,eventname);
+            }
+        });
+        posttime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                posttotimeline(weddingid,eventname);
+            }
+        });
+        saveg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 savetogallery(weddingid,eventname);
@@ -326,6 +365,7 @@ public class media extends Fragment {
 
         // start the video capture Intent
         startActivityForResult(intent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
+        getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
     }
 
     private void captureImage() {
@@ -337,6 +377,7 @@ public class media extends Fragment {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         // start the image capture Intent
         startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+        getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

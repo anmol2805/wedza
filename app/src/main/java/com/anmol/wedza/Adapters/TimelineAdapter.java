@@ -179,6 +179,7 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
                     Intent intent = new Intent(context, CommentsActivity.class);
                     intent.putExtra("postid",timelines.get(position).getPostid());
                     context.startActivity(intent);
+                    context.overridePendingTransition(R.anim.slide_left_in,R.anim.still);
                 }
             });
             share.setOnClickListener(new View.OnClickListener() {

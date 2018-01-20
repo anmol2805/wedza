@@ -157,6 +157,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                                             .set(map);
                                     Intent intent = new Intent(IntroduceYourselfActivity.this,HomeActivity.class);
                                     startActivity(intent);
+                                    overridePendingTransition(R.anim.slide_left_in,R.anim.slide_left_out);
                                 }
                             });
 
@@ -167,5 +168,11 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
     }
     private void showToast(String toast){
         Toast.makeText(this,toast, Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.still,R.anim.slide_out_down);
     }
 }

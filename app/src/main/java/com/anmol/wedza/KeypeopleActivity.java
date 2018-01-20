@@ -29,6 +29,7 @@ public class KeypeopleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_keypeople);
+        setTitle("Key People");
         keypeoplelist = (ListView)findViewById(R.id.keypeoplelist);
         keypeoples = new ArrayList<>();
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -68,5 +69,11 @@ public class KeypeopleActivity extends AppCompatActivity {
                     keypeoplelist.setAdapter(keypeopleAdapter);
                 }
             });
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.still,R.anim.slide_out_down);
     }
 }

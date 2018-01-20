@@ -211,5 +211,11 @@ public class StoryeditActivity extends AppCompatActivity {
             }
         }
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.still,R.anim.slide_left_out);
+    }
 
 }

@@ -76,6 +76,22 @@ public class gallery extends Fragment {
                 albums.setBackgroundResource(R.drawable.image   );
             }
         });
+        allpics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                allpicsshow();
+                allpics.setBackgroundResource(R.drawable.galleryr);
+                albums.setBackgroundResource(R.drawable.imageblue);
+            }
+        });
+        albums.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                albumshow();
+                allpics.setBackgroundResource(R.drawable.galleryblue);
+                albums.setBackgroundResource(R.drawable.image   );
+            }
+        });
         allpicsshow();
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -85,11 +101,13 @@ public class gallery extends Fragment {
                     intent.putExtra("medialink",galleries.get(i).getUrl());
                     intent.putExtra("mediatype",galleries.get(i).getMediatype());
                     getActivity().startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_left_in,R.anim.still);
                 }
                 else if(selectintent == 1){
                     Intent intent = new Intent(getActivity(), AlbumActivity.class);
                     intent.putExtra("event",galleries.get(i).getEvent());
                     getActivity().startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_in_up,R.anim.still);
                 }
             }
         });

@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.anmol.wedza.Fragments.gallery;
 import com.anmol.wedza.Fragments.guestlist;
@@ -33,6 +34,7 @@ public class HomeActivity extends AppCompatActivity
     FirebaseAuth auth = FirebaseAuth.getInstance();
     Button timeline,guestlist,gallery,story;
     ImageButton camera;
+    private static long back_pressed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,8 +139,15 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if(back_pressed + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
+            finish();
+            overridePendingTransition(R.anim.still,R.anim.slide_out_down);
+        }else {
+            FragmentManager fm = getFragmentManager();
+            fm.beginTransaction().replace(R.id.content,new home()).commit();
+            Toast.makeText(getBaseContext(), "Double tap to exit!", Toast.LENGTH_SHORT).show();
+            back_pressed = System.currentTimeMillis();
         }
     }
 
