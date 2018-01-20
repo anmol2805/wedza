@@ -2,6 +2,7 @@ package com.anmol.wedza;
 
 import android.content.Intent;
 import android.media.Image;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,12 +13,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.anmol.wedza.Model.Yourinfo;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -46,6 +49,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
     String fbpagelink = null;
     EditText fbpglnk;
     FirebaseAuth auth = FirebaseAuth.getInstance();
+    ProgressBar prgbr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +63,8 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
         single = (RadioButton)findViewById(R.id.single);
         marrried = (RadioButton)findViewById(R.id.married);
         fbpglnk = (EditText)findViewById(R.id.fbpagelink);
+        prgbr = (ProgressBar)findViewById(R.id.prgbr);
+        prgbr.setVisibility(View.GONE);
         Intent intent = getIntent();
         profilePicturePath = intent.getStringExtra("profilePicturePath");
         username = intent.getStringExtra("username");
@@ -138,6 +144,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
         done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        prgbr.setVisibility(View.VISIBLE);
                         uname = name.getText().toString().trim();
                         fbpagelink = fbpglnk.getText().toString().trim();
                         Boolean admin = false;
@@ -154,10 +161,21 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                                     DocumentReference ref = db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document();
                                     String id = ref.getId();
                                     db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document(id)
-                                            .set(map);
-                                    Intent intent = new Intent(IntroduceYourselfActivity.this,HomeActivity.class);
-                                    startActivity(intent);
-                                    overridePendingTransition(R.anim.slide_left_in,R.anim.slide_left_out);
+                                            .set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            prgbr.setVisibility(View.GONE);
+                                            Intent intent = new Intent(IntroduceYourselfActivity.this,HomeActivity.class);
+                                            startActivity(intent);
+                                            overridePendingTransition(R.anim.slide_left_in,R.anim.slide_left_out);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(IntroduceYourselfActivity.this,"network error",Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
                                 }
                             });
 
