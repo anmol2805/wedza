@@ -153,5 +153,18 @@
         android:layout_alignParentTop="true"
         app:srcCompat="@drawable/love" />
 
+    <TextView
+        android:id="@+id/autoverify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/get_verification_code"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:text="We will auto verify your password"
+        android:textColor="#000"
+        android:textStyle="italic"
+        android:visibility="gone"
+        />
+
 
 </RelativeLayout>

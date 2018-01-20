@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onClick(View v) {
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
+                Toast.makeText(LoginActivity.this,"Please wait while we are authenticating your credentials",Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -98,6 +99,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View v) {
                 startFacebookLogin();
+                Toast.makeText(LoginActivity.this,"Please wait while we are authenticating your credentials",Toast.LENGTH_LONG).show();
             }
         });
 

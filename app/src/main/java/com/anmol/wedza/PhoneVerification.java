@@ -65,6 +65,7 @@ public class PhoneVerification extends AppCompatActivity {
     //Values for verification onCodeSent
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private String mVerificationId;
+    TextView autotext;
 
     //Callback for phone verification
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -115,7 +116,7 @@ public class PhoneVerification extends AppCompatActivity {
         usernameTV = (TextView) findViewById(R.id.username);
         goBackTV = (TextView) findViewById(R.id.goBack);
         refreshTV = (TextView) findViewById(R.id.refreshTV);
-
+        autotext = (TextView)findViewById(R.id.autoverify);
         signOut = (Button) findViewById(R.id.sign_out);
 
 
@@ -179,6 +180,7 @@ public class PhoneVerification extends AppCompatActivity {
     }
 
     private void goBackAnimation() {
+        autotext.setVisibility(View.GONE);
         goBackTV.animate()
                 .translationX(4000f)
                 .setDuration(300)
@@ -217,6 +219,7 @@ public class PhoneVerification extends AppCompatActivity {
     }
 
     private void goForwardAnimation(){
+        autotext.setVisibility(View.VISIBLE);
 
         goBackTV.animate()
                 .translationX(0f)
