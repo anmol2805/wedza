@@ -58,6 +58,7 @@ public class CreateeventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_createevent);
+        setTitle("Create Event");
         eventnameedit = (EditText)findViewById(R.id.eventnameedit);
         eventlocedit = (EditText)findViewById(R.id.eventlocationedit);
         dateedit = (Button) findViewById(R.id.dateedit);

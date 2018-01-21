@@ -83,6 +83,17 @@
 
                         />
 
+                    <ImageButton
+                        android:id="@+id/edit"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        app:srcCompat="editeve"
+                        android:background="#00000000"
+                        android:visibility="gone"
+                        />
+
                 </LinearLayout>
             </LinearLayout>
 

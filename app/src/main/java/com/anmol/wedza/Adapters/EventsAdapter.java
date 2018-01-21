@@ -1,7 +1,9 @@
 package com.anmol.wedza.Adapters;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,14 +11,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.anmol.wedza.CreateeventActivity;
 import com.anmol.wedza.Model.Comment2;
 import com.anmol.wedza.Model.Event;
 import com.anmol.wedza.R;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.text.Text;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -51,7 +60,7 @@ public class EventsAdapter extends ArrayAdapter<Event> {
             return convertView;
         }
         else{
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //LayoutInflater inflater = context.getLayoutInflater();
             View v = inflater.inflate(resource,null);
             TextView eventname = (TextView)v.findViewById(R.id.eventname);
@@ -61,6 +70,33 @@ public class EventsAdapter extends ArrayAdapter<Event> {
             TextView eventdes = (TextView)v.findViewById(R.id.eventdes);
             ImageView eventimg = (ImageView)v.findViewById(R.id.eventimg);
             ImageView teamicon = (ImageView)v.findViewById(R.id.teamicon);
+//            final ImageButton edit = (ImageButton)v.findViewById(R.id.edit);
+//            final FirebaseAuth auth = FirebaseAuth.getInstance();
+//            final FirebaseFirestore db = FirebaseFirestore.getInstance();
+//            db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                    String weddingid = task.getResult().getString("currentwedding");
+//                    db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid())
+//                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                            Boolean admin = task.getResult().getBoolean("admin");
+//                            if(admin){
+//                                edit.setVisibility(View.VISIBLE);
+//                            }
+//                        }
+//                    });
+//                }
+//            });
+//            edit.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    final Dialog dialog = new Dialog(context);
+//                    dialog.setTitle("Edit ");
+//                    dialog.setContentView(R.layout.editkey);
+//                }
+//            });
             eventname.setText(events.get(position).getEventname());
             eventtime.setText(events.get(position).getEventtime());
             eventloc.setText(events.get(position).getEventlocation());

@@ -7,7 +7,9 @@
     tools:context="com.anmol.wedza.CreateeventActivity">
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:elevation="8dp"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,6 +39,11 @@
                     android:layout_weight="1"
                     android:hint="Select Date"
                     android:id="@+id/dateedit"
+                    android:background="@drawable/round_button4"
+                    android:textColor="#E92004"
+                    android:textColorHint="#FF8806"
+
+
                     />
                 <Button
                     android:layout_width="match_parent"
@@ -44,6 +51,11 @@
                     android:layout_weight="1"
                     android:hint="Select time"
                     android:id="@+id/timeedit"
+                    android:background="@drawable/round_button4"
+                    android:textColor="#E92004"
+                    android:textColorHint="#FF8806"
+
+
                     />
 
             </LinearLayout>
@@ -57,7 +69,9 @@
                 android:id="@+id/eventimgedit"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                app:srcCompat="@android:drawable/ic_menu_upload_you_tube" />
+                app:srcCompat="@android:drawable/ic_menu_upload_you_tube"
+                android:background="@drawable/uploadimg"
+                />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,8 +110,26 @@
                 android:id="@+id/createevent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Create Event" />
+                android:background="@drawable/round_button4"
+                android:text="Create Event"
+                android:textStyle="bold"
+                android:textColor="#E92004"
+                />
         </LinearLayout>
     </ScrollView>
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/clip"
+        android:scaleType="fitXY"
+        android:alpha="0.2"
+        />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/clip"
+        android:rotation="180"
+        android:scaleType="fitXY"
+        android:alpha="0.2"
+        />
 </RelativeLayout>
