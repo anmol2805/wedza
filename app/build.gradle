@@ -47,6 +47,7 @@ dependencies {
     compile 'com.droidninja:filepicker:2.0.8'
     compile 'de.hdodenhof:circleimageview:2.2.0'
     compile 'com.nbsp:library:1.8'
+    compile 'id.zelory:compressor:2.1.0'
     testCompile 'junit:junit:4.12'
 }
 

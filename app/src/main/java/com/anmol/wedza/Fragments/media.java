@@ -61,6 +61,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import droidninja.filepicker.FilePickerBuilder;
+import id.zelory.compressor.Compressor;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -96,6 +97,7 @@ public class media extends Fragment {
     private VideoView videoPreview;
     private Button btnCapturePicture, btnRecordVideo;
     RelativeLayout cp,cv,pg,pt,sg;
+    Compressor compressor;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
