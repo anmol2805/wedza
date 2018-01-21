@@ -16,9 +16,10 @@
         android:clickable="true"
         app:elevation="@dimen/activity_horizontal_margin"
         app:fabSize="normal"
-        app:srcCompat="@android:drawable/ic_menu_add"
+        android:src="@drawable/add1"
         android:layout_margin="16dp"
         android:visibility="gone"
+        android:backgroundTint="@color/colorPrimaryDark"
         />
 
     <Button

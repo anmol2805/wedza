@@ -99,7 +99,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                 db.collection("users").document(auth.getCurrentUser().getUid()).set(map);
             }
         });
-        tbr.setChecked(true);
+        tgr.setChecked(true);
         single.setChecked(true);
         tbr.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,7 +173,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                             Toast.makeText(IntroduceYourselfActivity.this,"network error",Toast.LENGTH_SHORT).show();
-
+                                            prgbr.setVisibility(View.GONE);
                                         }
                                     });
 

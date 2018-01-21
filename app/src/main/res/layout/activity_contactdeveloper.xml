@@ -5,11 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.anmol.wedza.ContactdeveloperActivity">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/devsup"
+        android:alpha="0.2"
+        android:scaleType="fitEnd"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp"
+        android:elevation="8dp"
         >
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

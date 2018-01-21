@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ import android.widget.VideoView;
 import com.anmol.wedza.CameraActivity;
 import com.anmol.wedza.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -98,6 +100,7 @@ public class media extends Fragment {
     private Button btnCapturePicture, btnRecordVideo;
     RelativeLayout cp,cv,pg,pt,sg;
     Compressor compressor;
+    ProgressBar prgbr;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -120,7 +123,8 @@ public class media extends Fragment {
         pg = (RelativeLayout)vi.findViewById(R.id.pg);
         pt = (RelativeLayout)vi.findViewById(R.id.pt);
         sg = (RelativeLayout)vi.findViewById(R.id.sg);
-
+        prgbr = (ProgressBar)vi.findViewById(R.id.prgbr);
+        prgbr.setVisibility(View.GONE);
         imagelayout.setVisibility(View.GONE);
         btnlayout.setVisibility(View.GONE);
         allow.setVisibility(View.VISIBLE);
@@ -244,6 +248,7 @@ public class media extends Fragment {
     }
 
     private void savetogallery(final String weddingid, final String eventname) {
+        prgbr.setVisibility(View.VISIBLE);
         StorageReference reference = storageReference.child("photos").child(fileUri.getLastPathSegment());
         reference.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -261,13 +266,25 @@ public class media extends Fragment {
                 map.put("mediatype", mediatype);
                 map.put("event", eventname);
                 map.put("time",timestamp);
-                db.collection("weddings").document(weddingid).collection("gallery").document(imageid).set(map);
+                db.collection("weddings").document(weddingid).collection("gallery").document(imageid).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        prgbr.setVisibility(View.GONE);
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                prgbr.setVisibility(View.GONE);
+                Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
     private void posttotimeline(final String weddingid, final String eventname) {
+        prgbr.setVisibility(View.VISIBLE);
         final String des = description.getText().toString().trim();
         StorageReference reference = storageReference.child("photos").child(fileUri.getLastPathSegment());
         reference.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -302,9 +319,20 @@ public class media extends Fragment {
                         objectMap.put("profilepicturepath",profilepic);
                         DocumentReference documentReference = db.collection("weddings").document(weddingid).collection("timeline").document();
                         String postid = documentReference.getId();
-                        db.collection("weddings").document(weddingid).collection("timeline").document(postid).set(objectMap);
+                        db.collection("weddings").document(weddingid).collection("timeline").document(postid).set(objectMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                prgbr.setVisibility(View.GONE);
+                            }
+                        });
                     }
                 });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                prgbr.setVisibility(View.GONE);
+                Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
             }
         });
 
