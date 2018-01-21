@@ -62,6 +62,9 @@ public class CreateweddingActivity extends AppCompatActivity {
                         }
                     });
                 }
+                else{
+                    Toast.makeText(CreateweddingActivity.this,"Please fill out all the details",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
