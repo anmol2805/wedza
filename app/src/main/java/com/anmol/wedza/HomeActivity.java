@@ -188,7 +188,7 @@ public class HomeActivity extends AppCompatActivity
         else if (id == R.id.nav_createwed) {
             startActivity(new Intent(HomeActivity.this,CreateweddingActivity.class));
         } else if (id == R.id.nav_contactwed) {
-
+            startActivity(new Intent(HomeActivity.this,ContactdeveloperActivity.class));
         } else if (id == R.id.nav_like) {
             Uri uri = Uri.parse("market://details?id=" + "com.anmol.hibiscus");
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);

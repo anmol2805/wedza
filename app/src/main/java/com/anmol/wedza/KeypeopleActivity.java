@@ -1,9 +1,17 @@
 package com.anmol.wedza;
 
+import android.*;
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.anmol.wedza.Adapters.KeypeopleAdapter;
 import com.anmol.wedza.Model.Keypeople;
@@ -25,6 +33,7 @@ public class KeypeopleActivity extends AppCompatActivity {
     ListView keypeoplelist;
     List<Keypeople> keypeoples;
     KeypeopleAdapter keypeopleAdapter;
+    private static final int MY_PERMISSIONS_REQUEST = 123;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +48,39 @@ public class KeypeopleActivity extends AppCompatActivity {
                 getteam(weddingid);
             }
         });
+        permissionRequest();
+
     }
+    private void permissionRequest() {
+
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    MY_PERMISSIONS_REQUEST);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == MY_PERMISSIONS_REQUEST && grantResults.length > 0) {
+            Log.i("grantresults", grantResults.toString());
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED
+                    ) {
+                Toast.makeText(this, "Permissions not given!!", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+
+
+
+    }
+
 
     private void getteam(final String weddingid) {
         db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
