@@ -59,19 +59,27 @@ public class AlertsActivity extends AppCompatActivity {
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                final String weddingid = task.getResult().getString("currentwedding");
-                db.collection("weddings").document(weddingid).collection("users")
-                        .document(auth.getCurrentUser().getUid())
-                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        Boolean admin = task.getResult().getBoolean("admin");
-                        Boolean keypeople = task.getResult().getBoolean("keypeople");
-                        if(admin.equals(true) || keypeople.equals(true)){
-                            authpost.setVisibility(View.VISIBLE);
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    final String weddingid = snapshot.getString("currentwedding");
+                    db.collection("weddings").document(weddingid).collection("users")
+                            .document(auth.getCurrentUser().getUid())
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot snapshot1 = task.getResult();
+                            if(snapshot1.exists()){
+                                Boolean admin = snapshot1.getBoolean("admin");
+                                Boolean keypeople = snapshot1.getBoolean("keypeople");
+                                if(admin.equals(true) || keypeople.equals(true)){
+                                    authpost.setVisibility(View.VISIBLE);
+                                }    
+                            }
+                            
                         }
-                    }
-                });
+                    });    
+                }
+                
             }
         });
         authpost.setOnClickListener(new View.OnClickListener() {
@@ -94,29 +102,36 @@ public class AlertsActivity extends AppCompatActivity {
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                final String weddingid = task.getResult().getString("currentwedding");
-                db.collection("weddings").document(weddingid).collection("alerts").orderBy("time", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                        alerts.clear();
-                        if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
-                            for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
-                                String username = doc.getString("postedby");
-                                String uid = doc.getString("uid");
-                                String alerttext = doc.getString("alerttext");
-                                String team = doc.getString("team");
-                                Alert alert = new Alert(username,team,alerttext,uid);
-                                alerts.add(alert);
-                            }
-                            if(!alerts.isEmpty()){
-                                alertsAdapter = new AlertsAdapter(AlertsActivity.this,R.layout.alertlayout,alerts);
-                                alertslist.setAdapter(alertsAdapter);
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    final String weddingid = snapshot.getString("currentwedding");
+                    db.collection("weddings").document(weddingid).collection("alerts").orderBy("time", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                            alerts.clear();
+                            if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
+                                for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
+                                    if(doc.exists()){
+                                        String username = doc.getString("postedby");
+                                        String uid = doc.getString("uid");
+                                        String alerttext = doc.getString("alerttext");
+                                        String team = doc.getString("team");
+                                        Alert alert = new Alert(username,team,alerttext,uid);
+                                        alerts.add(alert);    
+                                    }
+                                    
+                                }
+                                if(!alerts.isEmpty()){
+                                    alertsAdapter = new AlertsAdapter(AlertsActivity.this,R.layout.alertlayout,alerts);
+                                    alertslist.setAdapter(alertsAdapter);
+                                }
+
                             }
 
                         }
-
-                    }
-                });
+                    });    
+                }
+                
             }
         });
     }
@@ -125,35 +140,43 @@ public class AlertsActivity extends AppCompatActivity {
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                final String weddingid = task.getResult().getString("currentwedding");
-                db.collection("weddings").document(weddingid).collection("users")
-                        .document(auth.getCurrentUser().getUid())
-                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        String team = task.getResult().getString("team");
-                        String username = task.getResult().getString("username");
-                        String commenttext = comment.getText().toString().trim();
-                        String uid = auth.getCurrentUser().getUid();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        String date = sdf.format(new Date());
-                        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
-                        Map<String,Object> map = new HashMap<>();
-                        map.put("postedby",username);
-                        map.put("uid",uid);
-                        map.put("alerttext",commenttext);
-                        map.put("team",team);
-                        map.put("time",timestamp);
-                        DocumentReference documentReference = db.collection("weddings").document(weddingid).collection("alerts").document();
-                        String id = documentReference.getId();
-                        db.collection("weddings").document(weddingid).collection("alerts").document(id).set(map);
-                        comment.getText().clear();
-                        post.setVisibility(View.GONE);
-                        comment.setVisibility(View.GONE);
-                        authpost.setVisibility(View.VISIBLE);
+                final DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    final String weddingid = snapshot.getString("currentwedding");
+                    db.collection("weddings").document(weddingid).collection("users")
+                            .document(auth.getCurrentUser().getUid())
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot snapshot1 = task.getResult();
+                            if(snapshot1.exists()){
+                                String team = snapshot1.getString("team");
+                                String username = snapshot1.getString("username");
+                                String commenttext = comment.getText().toString().trim();
+                                String uid = auth.getCurrentUser().getUid();
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                String date = sdf.format(new Date());
+                                java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+                                Map<String,Object> map = new HashMap<>();
+                                map.put("postedby",username);
+                                map.put("uid",uid);
+                                map.put("alerttext",commenttext);
+                                map.put("team",team);
+                                map.put("time",timestamp);
+                                DocumentReference documentReference = db.collection("weddings").document(weddingid).collection("alerts").document();
+                                String id = documentReference.getId();
+                                db.collection("weddings").document(weddingid).collection("alerts").document(id).set(map);
+                                comment.getText().clear();
+                                post.setVisibility(View.GONE);
+                                comment.setVisibility(View.GONE);
+                                authpost.setVisibility(View.VISIBLE);    
+                            }
+                            
 
-                    }
-                });
+                        }
+                    });
+                }
+                
             }
         });
     }

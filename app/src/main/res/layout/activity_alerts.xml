@@ -13,14 +13,13 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:clickable="true"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:clickable="true"
+        android:visibility="gone"
         app:elevation="@dimen/activity_horizontal_margin"
         app:fabSize="normal"
-        android:src="@drawable/add1"
-        android:layout_margin="16dp"
-        android:visibility="gone"
-        android:backgroundTint="@color/colorPrimaryDark"
-        />
+        app:srcCompat="@drawable/add1" />
 
     <Button
         android:id="@+id/post"

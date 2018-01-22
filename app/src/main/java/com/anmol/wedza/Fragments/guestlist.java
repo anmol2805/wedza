@@ -127,15 +127,21 @@ public class guestlist extends Fragment {
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                             for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
-                                 Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
-                                         ,doc.getString("team"),doc.getString("relation"),doc.getBoolean("keypeople"),doc.getBoolean("admin"),doc.getId());
-                                 guests.add(guest);
-                             }
-                        if(!guests.isEmpty()){
-                            guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
-                            glv.setAdapter(guestAdapter);
+                        if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
+                            for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
+                                if(doc.exists()){
+                                    Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
+                                            ,doc.getString("team"),doc.getString("relation"),doc.getBoolean("keypeople"),doc.getBoolean("admin"),doc.getId());
+                                    guests.add(guest);
+                                }
+
+                            }
+                            if(!guests.isEmpty()){
+                                guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
+                                glv.setAdapter(guestAdapter);
+                            }
                         }
+
 
                     }
                 });
@@ -167,15 +173,21 @@ public class guestlist extends Fragment {
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                        for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
-                            Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
-                                    ,doc.getString("team"),doc.getString("relation"),doc.getBoolean("keypeople"),doc.getBoolean("admin"),doc.getId());
-                            guests.add(guest);
+                        if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
+                            for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
+                                if(doc.exists()){
+                                    Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
+                                            ,doc.getString("team"),doc.getString("relation"),doc.getBoolean("keypeople"),doc.getBoolean("admin"),doc.getId());
+                                    guests.add(guest);
+                                }
+
+                            }
+                            if(!guests.isEmpty()){
+                                guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
+                                glv.setAdapter(guestAdapter);
+                            }
                         }
-                        if(!guests.isEmpty()){
-                            guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
-                            glv.setAdapter(guestAdapter);
-                        }
+
 
                     }
                 });
@@ -207,15 +219,21 @@ public class guestlist extends Fragment {
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                        for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
-                            Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
-                                    ,doc.getString("team"),doc.getString("relation"),doc.getBoolean("keypeople"),doc.getBoolean("admin"),doc.getId());
-                            guests.add(guest);
+                        if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
+                            for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
+                                if(doc.exists()){
+                                    Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
+                                            ,doc.getString("team"),doc.getString("relation"),doc.getBoolean("keypeople"),doc.getBoolean("admin"),doc.getId());
+                                    guests.add(guest);
+                                }
+
+                            }
+                            if(!guests.isEmpty()){
+                                guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
+                                glv.setAdapter(guestAdapter);
+                            }
                         }
-                        if(!guests.isEmpty()){
-                            guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
-                            glv.setAdapter(guestAdapter);
-                        }
+
 
                     }
                 });

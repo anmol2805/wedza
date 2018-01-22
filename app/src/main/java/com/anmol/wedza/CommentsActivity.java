@@ -64,31 +64,38 @@ public class CommentsActivity extends AppCompatActivity {
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                final String weddingid = task.getResult().getString("currentwedding");
-                db.collection("weddings").document(weddingid).collection("timeline").document(postid)
-                        .collection("comments").orderBy("time").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                        comment2s.clear();
-                        if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
-                            for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
-                                String username = doc.getString("commentedby");
-                                String uid = doc.getString("uid");
-                                String profilepicturepath = doc.getString("profilepic");
-                                String commenttext = doc.getString("comment");
-                                Comment2 comment2 = new Comment2(commenttext,username,profilepicturepath,uid);
-                                comment2s.add(comment2);
-                            }
-                            if(!comment2s.isEmpty()){
-                                commentsAdapter = new CommentsAdapter(CommentsActivity.this,R.layout.commentlayout,comment2s);
-                                commentslist.setAdapter(commentsAdapter);
-                                commentslist.setSelection(commentslist.getAdapter().getCount() - 1);
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    final String weddingid = snapshot.getString("currentwedding");
+                    db.collection("weddings").document(weddingid).collection("timeline").document(postid)
+                            .collection("comments").orderBy("time").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                            comment2s.clear();
+                            if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
+                                for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
+                                    if(doc.exists()){
+                                        String username = doc.getString("commentedby");
+                                        String uid = doc.getString("uid");
+                                        String profilepicturepath = doc.getString("profilepic");
+                                        String commenttext = doc.getString("comment");
+                                        Comment2 comment2 = new Comment2(commenttext,username,profilepicturepath,uid);
+                                        comment2s.add(comment2);
+                                    }
+
+                                }
+                                if(!comment2s.isEmpty()){
+                                    commentsAdapter = new CommentsAdapter(CommentsActivity.this,R.layout.commentlayout,comment2s);
+                                    commentslist.setAdapter(commentsAdapter);
+                                    commentslist.setSelection(commentslist.getAdapter().getCount() - 1);
+                                }
+
                             }
 
                         }
+                    });
+                }
 
-                    }
-                });
             }
         });
     }
@@ -97,29 +104,37 @@ public class CommentsActivity extends AppCompatActivity {
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                final String weddingid = task.getResult().getString("currentwedding");
-                db.collection("weddings").document(weddingid).collection("users")
-                        .document(auth.getCurrentUser().getUid())
-                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        String profilepicturepath = task.getResult().getString("profilepicturepath");
-                        String username = task.getResult().getString("username");
-                        String commenttext = comment.getText().toString().trim();
-                        String uid = auth.getCurrentUser().getUid();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        String date = sdf.format(new Date());
-                        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
-                        Comment mcomment = new Comment(commenttext,username,profilepicturepath,uid,timestamp);
-                        DocumentReference documentReference = db.collection("weddings").document(weddingid).collection("timeline").document(postid)
-                                .collection("comments").document();
-                        String id = documentReference.getId();
-                        db.collection("weddings").document(weddingid).collection("timeline").document(postid)
-                                .collection("comments").document(id).set(mcomment);
-                        comment.getText().clear();
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    final String weddingid = snapshot.getString("currentwedding");
+                    db.collection("weddings").document(weddingid).collection("users")
+                            .document(auth.getCurrentUser().getUid())
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot snapshot1 =  task.getResult();
+                            if(snapshot1.exists()){
+                                String profilepicturepath = snapshot1.getString("profilepicturepath");
+                                String username = snapshot1.getString("username");
+                                String commenttext = comment.getText().toString().trim();
+                                String uid = auth.getCurrentUser().getUid();
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                String date = sdf.format(new Date());
+                                java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+                                Comment mcomment = new Comment(commenttext,username,profilepicturepath,uid,timestamp);
+                                DocumentReference documentReference = db.collection("weddings").document(weddingid).collection("timeline").document(postid)
+                                        .collection("comments").document();
+                                String id = documentReference.getId();
+                                db.collection("weddings").document(weddingid).collection("timeline").document(postid)
+                                        .collection("comments").document(id).set(mcomment);
+                                comment.getText().clear();
+                            }
 
-                    }
-                });
+
+                        }
+                    });
+                }
+
             }
         });
     }

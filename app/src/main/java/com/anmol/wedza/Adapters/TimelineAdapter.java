@@ -145,12 +145,18 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
                                 .collection("likes").addSnapshotListener(new EventListener<QuerySnapshot>() {
                             @Override
                             public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                                for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
-                                    if(doc.getId().contains(auth.getCurrentUser().getUid())){
-                                        like.setVisibility(View.INVISIBLE);
-                                        unlike.setVisibility(View.VISIBLE);
+                                if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
+                                    for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
+                                        if(doc.exists()){
+                                            if(doc.getId().contains(auth.getCurrentUser().getUid())){
+                                                like.setVisibility(View.INVISIBLE);
+                                                unlike.setVisibility(View.VISIBLE);
+                                            }
+                                        }
+
                                     }
                                 }
+
                             }
                         });
                     }

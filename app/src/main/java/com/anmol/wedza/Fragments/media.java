@@ -196,8 +196,12 @@ public class media extends Fragment {
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                String weddingid = task.getResult().getString("currentwedding");
-                getteam(weddingid);
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    String weddingid = snapshot.getString("currentwedding");
+                    getteam(weddingid);
+                }
+
             }
         });
 
@@ -248,93 +252,111 @@ public class media extends Fragment {
     }
 
     private void savetogallery(final String weddingid, final String eventname) {
-        prgbr.setVisibility(View.VISIBLE);
-        StorageReference reference = storageReference.child("photos").child(fileUri.getLastPathSegment());
-        reference.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(getActivity(), "Saved successfully", Toast.LENGTH_SHORT).show();
-                String medialink = String.valueOf(taskSnapshot.getDownloadUrl());
-                String mediatype = taskSnapshot.getMetadata().getContentType();
-                DocumentReference ref = db.collection("weddings").document(weddingid).collection("gallery").document();
-                String imageid = ref.getId();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String date = sdf.format(new Date());
-                final java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
-                Map<String, Object> map = new HashMap<>();
-                map.put("medialink", medialink);
-                map.put("mediatype", mediatype);
-                map.put("event", eventname);
-                map.put("time",timestamp);
-                db.collection("weddings").document(weddingid).collection("gallery").document(imageid).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        prgbr.setVisibility(View.GONE);
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                prgbr.setVisibility(View.GONE);
-                Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
-            }
-        });
+
+        if(fileUri!=null){
+            prgbr.setVisibility(View.VISIBLE);
+            StorageReference reference = storageReference.child("photos").child(fileUri.getLastPathSegment());
+            reference.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(getActivity(), "Saved successfully", Toast.LENGTH_SHORT).show();
+                    String medialink = String.valueOf(taskSnapshot.getDownloadUrl());
+                    String mediatype = taskSnapshot.getMetadata().getContentType();
+                    DocumentReference ref = db.collection("weddings").document(weddingid).collection("gallery").document();
+                    String imageid = ref.getId();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String date = sdf.format(new Date());
+                    final java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("medialink", medialink);
+                    map.put("mediatype", mediatype);
+                    map.put("event", eventname);
+                    map.put("time",timestamp);
+                    db.collection("weddings").document(weddingid).collection("gallery").document(imageid).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            prgbr.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    prgbr.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else{
+            Toast.makeText(getActivity(),"Please select an image or a video",Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
     private void posttotimeline(final String weddingid, final String eventname) {
-        prgbr.setVisibility(View.VISIBLE);
+
         final String des = description.getText().toString().trim();
-        StorageReference reference = storageReference.child("photos").child(fileUri.getLastPathSegment());
-        reference.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(getActivity(), "Posted successfully", Toast.LENGTH_SHORT).show();
-                final String medialink = String.valueOf(taskSnapshot.getDownloadUrl());
-                final String mediatype = taskSnapshot.getMetadata().getContentType();
-                DocumentReference ref = db.collection("weddings").document(weddingid).collection("gallery").document();
-                String imageid = ref.getId();
-                Map<String, Object> map = new HashMap<>();
-                map.put("medialink", medialink);
-                map.put("mediatype", mediatype);
-                map.put("event", eventname);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String date = sdf.format(new Date());
-                final java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
-                map.put("time",timestamp);
-                db.collection("weddings").document(weddingid).collection("gallery").document(imageid).set(map);
-                db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        String profilepic = task.getResult().getString("profilepicturepath");
-                        String name = task.getResult().getString("username");
-                        Map<String,Object> objectMap = new HashMap<>();
-                        objectMap.put("des",des);
-                        objectMap.put("event",eventname);
-                        objectMap.put("medialink",medialink);
-                        objectMap.put("mediatype",mediatype);
-                        objectMap.put("time",timestamp);
-                        objectMap.put("username",name);
-                        objectMap.put("profilepicturepath",profilepic);
-                        DocumentReference documentReference = db.collection("weddings").document(weddingid).collection("timeline").document();
-                        String postid = documentReference.getId();
-                        db.collection("weddings").document(weddingid).collection("timeline").document(postid).set(objectMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                prgbr.setVisibility(View.GONE);
+        if(fileUri!=null){
+            prgbr.setVisibility(View.VISIBLE);
+            StorageReference reference = storageReference.child("photos").child(fileUri.getLastPathSegment());
+            reference.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(getActivity(), "Posted successfully", Toast.LENGTH_SHORT).show();
+                    final String medialink = String.valueOf(taskSnapshot.getDownloadUrl());
+                    final String mediatype = taskSnapshot.getMetadata().getContentType();
+                    DocumentReference ref = db.collection("weddings").document(weddingid).collection("gallery").document();
+                    String imageid = ref.getId();
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("medialink", medialink);
+                    map.put("mediatype", mediatype);
+                    map.put("event", eventname);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String date = sdf.format(new Date());
+                    final java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
+                    map.put("time",timestamp);
+                    db.collection("weddings").document(weddingid).collection("gallery").document(imageid).set(map);
+                    db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot snapshot = task.getResult();
+                            if(snapshot.exists()){
+                                String profilepic = snapshot.getString("profilepicturepath");
+                                String name = snapshot.getString("username");
+                                Map<String,Object> objectMap = new HashMap<>();
+                                objectMap.put("des",des);
+                                objectMap.put("event",eventname);
+                                objectMap.put("medialink",medialink);
+                                objectMap.put("mediatype",mediatype);
+                                objectMap.put("time",timestamp);
+                                objectMap.put("username",name);
+                                objectMap.put("profilepicturepath",profilepic);
+                                DocumentReference documentReference = db.collection("weddings").document(weddingid).collection("timeline").document();
+                                String postid = documentReference.getId();
+                                db.collection("weddings").document(weddingid).collection("timeline").document(postid).set(objectMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        prgbr.setVisibility(View.GONE);
+                                    }
+                                });
                             }
-                        });
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                prgbr.setVisibility(View.GONE);
-                Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
-            }
-        });
+
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    prgbr.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(),"Network Error!!!",Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+        else{
+            Toast.makeText(getActivity(),"Please select an image or a video",Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -343,7 +365,11 @@ public class media extends Fragment {
                 .document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                getevent(weddingid,task.getResult().getString("team"));
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    getevent(weddingid,snapshot.getString("team"));
+                }
+
             }
         });
     }
@@ -354,10 +380,13 @@ public class media extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 events.clear();
                 for(DocumentSnapshot doc:task.getResult()){
-                    if(doc.getString("team").contains(team) || doc.getString("team").contains("both")){
-                        String event = doc.getId();
-                        events.add(event);
+                    if(doc.exists()){
+                        if(doc.getString("team").contains(team) || doc.getString("team").contains("both")){
+                            String event = doc.getId();
+                            events.add(event);
+                        }
                     }
+
 
                 }
                 if(!events.isEmpty()){

@@ -45,19 +45,27 @@ public class EventsActivity extends AppCompatActivity {
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                String weddingid = task.getResult().getString("currentwedding");
-                getevent(weddingid);
-                db.collection("weddings").document(weddingid).collection("users")
-                        .document(auth.getCurrentUser().getUid())
-                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        Boolean admin = task.getResult().getBoolean("admin");
-                        if(admin.equals(true)){
-                            authpost.setVisibility(View.VISIBLE);
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    String weddingid = snapshot.getString("currentwedding");
+                    getevent(weddingid);
+                    db.collection("weddings").document(weddingid).collection("users")
+                            .document(auth.getCurrentUser().getUid())
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot snapshot1 = task.getResult();
+                            if(snapshot1.exists()){
+                                Boolean admin = task.getResult().getBoolean("admin");
+                                if(admin.equals(true)){
+                                    authpost.setVisibility(View.VISIBLE);
+                                }
+                            }
+
                         }
-                    }
-                });
+                    });
+                }
+
             }
         });
         authpost.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +80,7 @@ public class EventsActivity extends AppCompatActivity {
 
     private void getevent(String weddingid) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = sdf.format(new Date());
+        final String date = sdf.format(new Date());
         java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
         db.collection("weddings").document(weddingid)
                 .collection("events")
@@ -81,20 +89,26 @@ public class EventsActivity extends AppCompatActivity {
             @Override
             public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                 events.clear();
-                for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
-                    String eventname = doc.getId();
-                    String eventdes = doc.getString("eventdes");
-                    String eventimg = doc.getString("eventimg");
-                    String eventlocation = doc.getString("eventlocation");
-                    String team = doc.getString("team");
-                    String eventtime = doc.getString("eventtime");
-                    Event event = new Event(eventname,eventdes,eventimg,eventlocation,team,eventtime);
-                    events.add(event);
+                if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
+                    for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
+                        if(doc.exists()){
+                            String eventname = doc.getId();
+                            String eventdes = doc.getString("eventdes");
+                            String eventimg = doc.getString("eventimg");
+                            String eventlocation = doc.getString("eventlocation");
+                            String team = doc.getString("team");
+                            String eventtime = doc.getString("eventtime");
+                            Event event = new Event(eventname,eventdes,eventimg,eventlocation,team,eventtime);
+                            events.add(event);
+                        }
+
+                    }
+                    if(!events.isEmpty()){
+                        eventsAdapter = new EventsAdapter(EventsActivity.this,R.layout.eventlayout,events);
+                        eventlist.setAdapter(eventsAdapter);
+                    }
                 }
-                if(!events.isEmpty()){
-                    eventsAdapter = new EventsAdapter(EventsActivity.this,R.layout.eventlayout,events);
-                    eventlist.setAdapter(eventsAdapter);
-                }
+
 
 
             }

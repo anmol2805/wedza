@@ -14,12 +14,12 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        android:clickable="true"
+        app:clickable="true"
         android:visibility="gone"
         app:fabSize="normal"
-        android:elevation="16dp"
+        app:elevation="16dp"
         app:srcCompat="@drawable/create"
-        android:backgroundTint="@color/colorPrimaryDark"
+        app:backgroundTint="@color/colorPrimaryDark"
         />
 
     <ListView
