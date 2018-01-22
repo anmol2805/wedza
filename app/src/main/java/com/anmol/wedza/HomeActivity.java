@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -28,7 +29,11 @@ import com.anmol.wedza.Fragments.guestlist;
 import com.anmol.wedza.Fragments.home;
 import com.anmol.wedza.Fragments.media;
 import com.anmol.wedza.Fragments.story;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,15 +41,26 @@ public class HomeActivity extends AppCompatActivity
     Button timeline,guestlist,gallery,story;
     ImageButton camera;
     private static long back_pressed;
+    String authcheck = "2805";
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         if(auth.getCurrentUser()==null){
             startActivity(new Intent(HomeActivity.this,MainActivity.class));
             finish();
         }
+
         else {
+//            db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                    DocumentSnapshot snapshot = task.getResult();
+//                    if(snapshot.exists())
+//                }
+//            });
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 

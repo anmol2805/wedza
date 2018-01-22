@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -50,6 +51,7 @@ public class EditcoverpicActivity extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     String wedte,coverpic;
+    ProgressBar prgbr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +62,8 @@ public class EditcoverpicActivity extends AppCompatActivity {
         update = (Button)findViewById(R.id.update);
         wedte = getIntent().getStringExtra("weddate");
         coverpic = getIntent().getStringExtra("coverpic");
+        prgbr = (ProgressBar)findViewById(R.id.prgbr);
+        prgbr.setVisibility(View.GONE);
         Glide.with(this).load(coverpic).into(uploadpic);
         weddate.setText(wedte);
         permissionRequest();
@@ -92,6 +96,7 @@ public class EditcoverpicActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         DocumentSnapshot snapshot = task.getResult();
                         if(snapshot.exists()){
+                            prgbr.setVisibility(View.VISIBLE);
                             String weddingid = snapshot.getString("currentwedding");
                             updateimg(weddingid);
                             updatedate(weddingid);
@@ -119,17 +124,20 @@ public class EditcoverpicActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Void aVoid) {
                     Toast.makeText(EditcoverpicActivity.this,"Wedding date updated successfully",Toast.LENGTH_SHORT).show();
+                    prgbr.setVisibility(View.GONE);
                 }
             });
         }
         else {
             Toast.makeText(EditcoverpicActivity.this,"Please mention a wedding date",Toast.LENGTH_SHORT).show();
+            prgbr.setVisibility(View.GONE);
         }
 
     }
 
     private void updateimg(final String weddingid) {
         if(fileuri!=null){
+            prgbr.setVisibility(View.VISIBLE);
             StorageReference reference = storageReference.child(fileuri.getLastPathSegment());
             reference.putFile(fileuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -141,6 +149,7 @@ public class EditcoverpicActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(EditcoverpicActivity.this,"Coverpic Updated Successfully",Toast.LENGTH_SHORT).show();
+                            prgbr.setVisibility(View.GONE);
                         }
                     });
                 }

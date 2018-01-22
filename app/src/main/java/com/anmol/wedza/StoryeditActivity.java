@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,10 +18,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,6 +53,7 @@ public class StoryeditActivity extends AppCompatActivity {
     ImageView play;
     Uri fileuri = null;
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+    ProgressBar prgimg,prgstry;
     private static final int PICK_REQUEST_CODE = 300;
     private static final int MY_PERMISSIONS_REQUEST = 123;
     @Override
@@ -62,6 +66,10 @@ public class StoryeditActivity extends AppCompatActivity {
         browse = (ImageButton) findViewById(R.id.browse);
         storytext = (EditText)findViewById(R.id.storytext);
         play = (ImageView)findViewById(R.id.play);
+        prgimg = (ProgressBar)findViewById(R.id.prgbrimg);
+        prgstry = (ProgressBar)findViewById(R.id.prgbrstory);
+        prgstry.setVisibility(View.GONE);
+        prgimg.setVisibility(View.GONE);
         upload.setVisibility(View.GONE);
         String st = getIntent().getStringExtra("storycontent");
         storytext.setText(st);
@@ -77,6 +85,7 @@ public class StoryeditActivity extends AppCompatActivity {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                prgimg.setVisibility(View.VISIBLE);
                 StorageReference reference = storageReference.child(fileuri.getLastPathSegment());
                 reference.putFile(fileuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -98,11 +107,22 @@ public class StoryeditActivity extends AppCompatActivity {
                                     map.put("mediatype",mediatype);
                                     DocumentReference ref = db.collection("weddings").document(weddindid).collection("stories").document();
                                     String id = ref.getId();
-                                    db.collection("weddings").document(weddindid).collection("stories").document(id).set(map);
+                                    db.collection("weddings").document(weddindid).collection("stories").document(id).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            prgimg.setVisibility(View.GONE);
+                                        }
+                                    });
                                 }
 
                             }
                         });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        prgimg.setVisibility(View.GONE);
+                        Toast.makeText(StoryeditActivity.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -110,6 +130,7 @@ public class StoryeditActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                prgstry.setVisibility(View.VISIBLE);
                 final String storycon = storytext.getText().toString().trim();
                 db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -122,11 +143,18 @@ public class StoryeditActivity extends AppCompatActivity {
                             db.collection("weddings").document(weddindid).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+                                    prgstry.setVisibility(View.GONE);
                                     finish();
                                 }
                             });
                         }
 
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        prgstry.setVisibility(View.GONE);
+                        Toast.makeText(StoryeditActivity.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
                     }
                 });
             }

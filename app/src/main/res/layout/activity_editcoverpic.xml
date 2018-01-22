@@ -59,4 +59,14 @@
         android:text="Update changes"
         android:textColor="#FCE4B6"
         />
+
+    <ProgressBar
+        android:id="@+id/prgbr"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/update"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:layout_marginTop="10dp" />
 </RelativeLayout>

@@ -50,6 +50,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
     EditText fbpglnk;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     ProgressBar prgbr;
+    String authcheck;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,18 +86,6 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
-            }
-        });
-        DocumentReference ref = db.collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document();
-        String id = ref.getId();
-        Map<String,Object> cmap = new HashMap<>();
-        cmap.put("weddingid",weddingid);
-        db.collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document(id).set(cmap).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Map<String,Object> map = new HashMap<>();
-                map.put("currentwedding",weddingid);
-                db.collection("users").document(auth.getCurrentUser().getUid()).set(map);
             }
         });
         tgr.setChecked(true);
@@ -156,6 +145,18 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                             db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).set(yourinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+                                    DocumentReference ref1 = db.collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document();
+                                    String id1 = ref1.getId();
+                                    Map<String,Object> cmap = new HashMap<>();
+                                    cmap.put("weddingid",weddingid);
+                                    db.collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document(id1).set(cmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Map<String,Object> map = new HashMap<>();
+                                            map.put("currentwedding",weddingid);
+                                            db.collection("users").document(auth.getCurrentUser().getUid()).set(map);
+                                        }
+                                    });
                                     Map<String,Object> map = new HashMap<>();
                                     map.put("weddingid",weddingid);
                                     DocumentReference ref = db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document();

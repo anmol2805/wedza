@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -53,6 +54,7 @@ public class CreateeventActivity extends AppCompatActivity {
     ImageButton eventimgedit;
     Button createevent;
     Button dateedit,timeedit;
+    ProgressBar prgbr;
     private static final int PICK_REQUEST_CODE = 300;
     Uri fileuri = null;
     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -75,6 +77,8 @@ public class CreateeventActivity extends AppCompatActivity {
         both = (RadioButton)findViewById(R.id.both);
         eventimgedit = (ImageButton)findViewById(R.id.eventimgedit);
         createevent = (Button)findViewById(R.id.createevent);
+        prgbr = (ProgressBar)findViewById(R.id.prgbr);
+        prgbr.setVisibility(View.GONE);
 //        dateedit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 //            @Override
 //            public void onFocusChange(View view, boolean b) {
@@ -181,6 +185,7 @@ public class CreateeventActivity extends AppCompatActivity {
                     final String finaltime = sdf.format(mdate);
                     final Timestamp timestamp = Timestamp.valueOf(finaltime);
                     if(fileuri!=null){
+                        prgbr.setVisibility(View.VISIBLE);
                         StorageReference reference = storageReference.child(fileuri.getLastPathSegment());
                         reference.putFile(fileuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
@@ -203,6 +208,7 @@ public class CreateeventActivity extends AppCompatActivity {
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
+                                                            prgbr.setVisibility(View.GONE);
                                                             finish();
                                                         }
                                                     });
