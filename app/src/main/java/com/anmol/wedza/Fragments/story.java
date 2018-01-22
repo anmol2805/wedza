@@ -253,10 +253,13 @@ public class story extends Fragment {
                     }
 
                 }
-                if(!storyimages.isEmpty()){
-                    storyimageAdapter = new StoryimageAdapter(getActivity(),storyimages,itemClickListener);
-                    listimg.setAdapter(storyimageAdapter);
+                if(getActivity()!=null){
+                    if(!storyimages.isEmpty()){
+                        storyimageAdapter = new StoryimageAdapter(getActivity(),storyimages,itemClickListener);
+                        listimg.setAdapter(storyimageAdapter);
+                    }
                 }
+
 
             }
         }).addOnFailureListener(new OnFailureListener() {

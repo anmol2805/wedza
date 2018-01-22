@@ -136,10 +136,13 @@ public class guestlist extends Fragment {
                                 }
 
                             }
-                            if(!guests.isEmpty()){
-                                guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
-                                glv.setAdapter(guestAdapter);
+                            if(getActivity()!=null){
+                                if(!guests.isEmpty()){
+                                    guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
+                                    glv.setAdapter(guestAdapter);
+                                }
                             }
+
                         }
 
 
@@ -182,10 +185,13 @@ public class guestlist extends Fragment {
                                 }
 
                             }
-                            if(!guests.isEmpty()){
-                                guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
-                                glv.setAdapter(guestAdapter);
+                            if(getActivity()!=null){
+                                if(!guests.isEmpty()){
+                                    guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
+                                    glv.setAdapter(guestAdapter);
+                                }
                             }
+
                         }
 
 
@@ -228,10 +234,13 @@ public class guestlist extends Fragment {
                                 }
 
                             }
-                            if(!guests.isEmpty()){
-                                guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
-                                glv.setAdapter(guestAdapter);
+                            if(getActivity()!=null){
+                                if(!guests.isEmpty()){
+                                    guestAdapter = new GuestAdapter(getActivity(),R.layout.guestlayout,guests);
+                                    glv.setAdapter(guestAdapter);
+                                }
                             }
+
                         }
 
 

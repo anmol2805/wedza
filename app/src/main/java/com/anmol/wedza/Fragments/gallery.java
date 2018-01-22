@@ -120,39 +120,49 @@ public class gallery extends Fragment {
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                final String weddingid = task.getResult().getString("currentwedding");
-                db.collection("weddings").document(weddingid).collection("events").get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        for(DocumentSnapshot doc:task.getResult()){
-                            db.collection("weddings").document(weddingid).collection("gallery").whereEqualTo("event",doc.getId()).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    final String weddingid = snapshot.getString("currentwedding");
+                    db.collection("weddings").document(weddingid).collection("events").get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     for(DocumentSnapshot doc:task.getResult()){
-                                        Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"),doc.getString("event"));
-                                        galleries.add(gallery);
-                                    }
-                                    if(!galleries.isEmpty()){
-                                        galleryAlbumAdapter = new GalleryAlbumAdapter(getActivity(),R.layout.galleryalbumlayout, (ArrayList<Gallery>) galleries);
-                                        gridView.setAdapter(galleryAlbumAdapter);
-                                    }
+                                        if(doc.exists()){
+                                            db.collection("weddings").document(weddingid).collection("gallery").whereEqualTo("event",doc.getId()).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    for(DocumentSnapshot doc:task.getResult()){
+                                                        Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"),doc.getString("event"));
+                                                        galleries.add(gallery);
+                                                    }
+                                                    if(getActivity()!=null){
+                                                        if(!galleries.isEmpty()){
+                                                            galleryAlbumAdapter = new GalleryAlbumAdapter(getActivity(),R.layout.galleryalbumlayout, (ArrayList<Gallery>) galleries);
+                                                            gridView.setAdapter(galleryAlbumAdapter);
+                                                        }
+                                                    }
 
+
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+
+                                                }
+                                            });
+                                        }
+
+                                    }
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
 
-                                }
-                            });
                         }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                    });
+                }
 
-                    }
-                });
             }
         });
 
@@ -164,26 +174,36 @@ public class gallery extends Fragment {
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                final String weddingid = task.getResult().getString("currentwedding");
-                db.collection("weddings").document(weddingid).collection("gallery").orderBy("time", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        for(DocumentSnapshot doc:task.getResult()){
-                            Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"),doc.getString("event"));
-                            galleries.add(gallery);
-                        }
-                        if(!galleries.isEmpty()){
-                            galleryAdapter = new GalleryAdapter(getActivity(),R.layout.gallerylayout, (ArrayList<Gallery>) galleries);
-                            gridView.setAdapter(galleryAdapter);
-                        }
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    final String weddingid = snapshot.getString("currentwedding");
+                    db.collection("weddings").document(weddingid).collection("gallery").orderBy("time", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for(DocumentSnapshot doc:task.getResult()){
+                                if(doc.exists()){
+                                    Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"),doc.getString("event"));
+                                    galleries.add(gallery);
+                                }
 
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                            }
+                            if(getActivity()!=null){
+                                if(!galleries.isEmpty()){
+                                    galleryAdapter = new GalleryAdapter(getActivity(),R.layout.gallerylayout, (ArrayList<Gallery>) galleries);
+                                    gridView.setAdapter(galleryAdapter);
+                                }
+                            }
 
-                    }
-                });
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+                }
+
             }
         });
 

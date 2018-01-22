@@ -117,10 +117,14 @@ public class GuestAdapter extends ArrayAdapter<Guest> {
                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    Boolean admin = task.getResult().getBoolean("admin");
-                                    if(admin){
-                                        adminlayout.setVisibility(View.VISIBLE);
+                                    DocumentSnapshot snapshot = task.getResult();
+                                    if(snapshot.exists()){
+                                        Boolean admin = snapshot.getBoolean("admin");
+                                        if(admin){
+                                            adminlayout.setVisibility(View.VISIBLE);
+                                        }
                                     }
+
                                 }
                             });
                     btnmk.setOnClickListener(new View.OnClickListener() {
