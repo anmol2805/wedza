@@ -51,7 +51,10 @@ import com.google.firebase.storage.UploadTask;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -498,13 +501,30 @@ public class media extends Fragment {
 
         ContentResolver cr = getActivity().getContentResolver();
         String type = cr.getType(filePath);
-        fileUri = filePath;
+
         if(type.contains("image")){
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+                byte[] bytesBitmap = byteArrayOutputStream.toByteArray();
+                File temp = File.createTempFile("wedding", "pic");
+                FileOutputStream fileOutputStream = new FileOutputStream(temp);
+                fileOutputStream.write(bytesBitmap);
+                fileOutputStream.flush();
+                fileOutputStream.close();
+                filePath = Uri.fromFile(temp);
+                fileUri = filePath;
+                imgPreview.setImageURI(filePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             videoPreview.setVisibility(View.GONE);
             prev.setVisibility(View.GONE);
             imgPreview.setVisibility(View.VISIBLE);
-            imgPreview.setImageURI(filePath);
+
         }else if(type.contains("video")){
+            fileUri = filePath;
             videoPreview.setVisibility(View.VISIBLE);
             prev.setVisibility(View.GONE);
             imgPreview.setVisibility(View.GONE);
@@ -514,25 +534,23 @@ public class media extends Fragment {
 
     private void previewCapturedImage() {
         try {
-            // hide video preview
-            videoPreview.setVisibility(View.GONE);
-            prev.setVisibility(View.GONE);
-            imgPreview.setVisibility(View.VISIBLE);
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), fileUri);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+            byte[] bytesBitmap = byteArrayOutputStream.toByteArray();
+            File temp = File.createTempFile("wedding", "pic");
+            FileOutputStream fileOutputStream = new FileOutputStream(temp);
+            fileOutputStream.write(bytesBitmap);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            fileUri = Uri.fromFile(temp);
             imgPreview.setImageURI(fileUri);
-            // bimatp factory
-//            BitmapFactory.Options options = new BitmapFactory.Options();
-//
-//            // downsizing image as it throws OutOfMemory Exception for larger
-//            // images
-//            options.inSampleSize = 8;
-//
-//            final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
-//                    options);
-//
-//            imgPreview.setImageBitmap(bitmap);
-        } catch (NullPointerException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+        videoPreview.setVisibility(View.GONE);
+        prev.setVisibility(View.GONE);
+        imgPreview.setVisibility(View.VISIBLE);
     }
     private void previewVideo() {
         try {

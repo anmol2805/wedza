@@ -4,7 +4,9 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -30,6 +32,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -235,8 +241,23 @@ public class CreateeventActivity extends AppCompatActivity {
         if(requestCode==PICK_REQUEST_CODE){
             if(resultCode == RESULT_OK){
                 Uri uri = data.getData();
-                fileuri = uri;
-                eventimgedit.setImageURI(uri);
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+                    byte[] bytesBitmap = byteArrayOutputStream.toByteArray();
+                    File temp = File.createTempFile("event", "pic");
+                    FileOutputStream fileOutputStream = new FileOutputStream(temp);
+                    fileOutputStream.write(bytesBitmap);
+                    fileOutputStream.flush();
+                    fileOutputStream.close();
+                    fileuri = Uri.fromFile(temp);
+                    eventimgedit.setImageURI(fileuri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
 
             }else if (resultCode == RESULT_CANCELED) {
                 // user cancelled recording
