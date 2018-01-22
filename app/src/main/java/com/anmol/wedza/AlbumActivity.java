@@ -55,26 +55,33 @@ public class AlbumActivity extends AppCompatActivity {
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                String weddingid = task.getResult().getString("currentwedding");
-                db.collection("weddings").document(weddingid).collection("gallery").whereEqualTo("event",event).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        for(DocumentSnapshot doc:task.getResult()){
-                            Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"),doc.getString("event"));
-                            galleries.add(gallery);
-                        }
-                        if(!galleries.isEmpty()){
-                            galleryAdapter = new GalleryAdapter(AlbumActivity.this,R.layout.gallerylayout, (ArrayList<Gallery>) galleries);
-                            albumgridview.setAdapter(galleryAdapter);
-                        }
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    String weddingid = snapshot.getString("currentwedding");
+                    db.collection("weddings").document(weddingid).collection("gallery").whereEqualTo("event",event).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for(DocumentSnapshot doc:task.getResult()){
+                                if(doc.exists()){
+                                    Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"),doc.getString("event"));
+                                    galleries.add(gallery);
+                                }
 
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                            }
+                            if(!galleries.isEmpty()){
+                                galleryAdapter = new GalleryAdapter(AlbumActivity.this,R.layout.gallerylayout, (ArrayList<Gallery>) galleries);
+                                albumgridview.setAdapter(galleryAdapter);
+                            }
 
-                    }
-                });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+                }
+
             }
         });
 

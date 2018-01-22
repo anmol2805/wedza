@@ -84,11 +84,15 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                String weddingid = task.getResult().getString("currentwedding");
-                loadcoverpic(weddingid);
-                loadtimeline(weddingid);
-                checkadmin(weddingid);
-            }
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    String weddingid = snapshot.getString("currentwedding");
+                    loadcoverpic(weddingid);
+                    loadtimeline(weddingid);
+                    checkadmin(weddingid);
+
+                }
+                            }
         });
 
         lv.setOnScrollListener(this);
@@ -143,9 +147,13 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.getResult().getBoolean("admin")){
-                            editcoverpic.setVisibility(View.VISIBLE);
+                        DocumentSnapshot snapshot = task.getResult();
+                        if(snapshot.exists()){
+                            if(snapshot.getBoolean("admin")){
+                                editcoverpic.setVisibility(View.VISIBLE);
+                            }
                         }
+
                     }
                 });
     }
@@ -156,15 +164,18 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(DocumentSnapshot doc:task.getResult()){
-                    Timeline timeline = new Timeline(doc.getString("medialink")
-                            ,doc.getString("event")
-                            ,doc.getString("mediatype")
-                            ,doc.getString("des")
-                            ,doc.getString("username")
-                            ,auth.getCurrentUser().getUid()
-                            ,doc.getId()
-                            ,doc.getString("profilepicturepath"));
-                    timelines.add(timeline);
+                    if(doc.exists()){
+                        Timeline timeline = new Timeline(doc.getString("medialink")
+                                ,doc.getString("event")
+                                ,doc.getString("mediatype")
+                                ,doc.getString("des")
+                                ,doc.getString("username")
+                                ,auth.getCurrentUser().getUid()
+                                ,doc.getId()
+                                ,doc.getString("profilepicturepath"));
+                        timelines.add(timeline);
+                    }
+
                 }
                 if(getActivity()!=null){
                     if(!timelines.isEmpty()){
@@ -191,17 +202,20 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
             @Override
             public void onEvent(final DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if(getActivity()!=null){
-                    Glide.with(getActivity()).load(documentSnapshot.getString("coverpic")).into(coverpic);
-                    weddingdate.setText(documentSnapshot.getString("weddingdate"));
-                    editcoverpic.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(getActivity(), EditcoverpicActivity.class);
-                            intent.putExtra("coverpic",documentSnapshot.getString("coverpic"));
-                            intent.putExtra("weddate",documentSnapshot.getString("weddingdate"));
-                            startActivity(intent);
-                        }
-                    });
+                    if(documentSnapshot.exists()){
+                        Glide.with(getActivity()).load(documentSnapshot.getString("coverpic")).into(coverpic);
+                        weddingdate.setText(documentSnapshot.getString("weddingdate"));
+                        editcoverpic.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(getActivity(), EditcoverpicActivity.class);
+                                intent.putExtra("coverpic",documentSnapshot.getString("coverpic"));
+                                intent.putExtra("weddate",documentSnapshot.getString("weddingdate"));
+                                startActivity(intent);
+                            }
+                        });
+                    }
+
                 }
             }
         });

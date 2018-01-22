@@ -65,11 +65,11 @@
         android:layout_below="@+id/phone_number"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:elevation="4dp"
-        android:src="@drawable/ic_send_white_24dp"
-        android:text="Get Code"
-        app:fabSize="normal" />
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:elevation="4dp"
+
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_send_white_24dp" />
 
     <EditText
         android:layout_width="100dp"
@@ -120,18 +120,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/phone_number"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:scaleX="0"
         android:scaleY="0"
-        android:src="@drawable/ic_done_white_24dp"
-        android:text="VERIFY"
         android:visibility="invisible"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:elevation="4dp"
         app:fabSize="normal"
-        android:elevation="4dp"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/colorPrimaryDark"
 
-        />
+        app:srcCompat="@drawable/ic_done_white_24dp" />
 
     <ImageView
         android:id="@+id/imageView5"
