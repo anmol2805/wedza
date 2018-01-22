@@ -95,29 +95,37 @@ public class Editpersonalinfo extends AppCompatActivity {
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                final String weddingid = task.getResult().getString("currentwedding");
-                db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid())
-                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        uname = task.getResult().getString("username");
-                        name.setText(uname);
-                        String mstatus = task.getResult().getString("status");
-                        if(mstatus.contains("single")){
-                            status = "single";
-                            single.setChecked(true);
-                            marrried.setChecked(false);
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    final String weddingid = snapshot.getString("currentwedding");
+                    db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid())
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot snapshot1 = task.getResult();
+                            if(snapshot1.exists()){
+                                uname = snapshot1.getString("username");
+                                name.setText(uname);
+                                String mstatus = snapshot1.getString("status");
+                                if(mstatus.contains("single")){
+                                    status = "single";
+                                    single.setChecked(true);
+                                    marrried.setChecked(false);
+                                }
+                                else if(mstatus.contains("married")){
+                                    status = "married";
+                                    single.setChecked(false);
+                                    marrried.setChecked(true);
+                                }
+                                profilePicturePath = snapshot1.getString("profilepicturepath");
+                                Glide.with(Editpersonalinfo.this).load(profilePicturePath).into(uppic);
+                                fun(weddingid);
+                            }
+
                         }
-                        else if(mstatus.contains("married")){
-                            status = "married";
-                            single.setChecked(false);
-                            marrried.setChecked(true);
-                        }
-                        profilePicturePath = task.getResult().getString("profilepicturepath");
-                        Glide.with(Editpersonalinfo.this).load(profilePicturePath).into(uppic);
-                        fun(weddingid);
-                    }
-                });
+                    });
+                }
+
 
             }
         });

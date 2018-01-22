@@ -44,8 +44,12 @@ public class KeypeopleActivity extends AppCompatActivity {
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                String weddingid = task.getResult().getString("currentwedding");
-                getteam(weddingid);
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    String weddingid = snapshot.getString("currentwedding");
+                    getteam(weddingid);
+                }
+
             }
         });
         permissionRequest();
@@ -86,8 +90,12 @@ public class KeypeopleActivity extends AppCompatActivity {
         db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                     String team = task.getResult().getString("team");
-                     getlist(weddingid,team);
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    String team = snapshot.getString("team");
+                    getlist(weddingid,team);
+                }
+
             }
         });
     }
@@ -98,16 +106,25 @@ public class KeypeopleActivity extends AppCompatActivity {
                 @Override
                 public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                     keypeoples.clear();
-                    for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
-                        String name = doc.getString("username");
-                        String work = doc.getString("userwork");
-                        String image = doc.getString("profilepicturepath");
-                        String contact = doc.getString("contactnumber");
-                        Keypeople keypeople = new Keypeople(name,image,contact,work);
-                        keypeoples.add(keypeople);
+                    if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
+                        for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
+                            if(doc.exists()){
+                                String name = doc.getString("username");
+                                String work = doc.getString("userwork");
+                                String image = doc.getString("profilepicturepath");
+                                String contact = doc.getString("contactnumber");
+                                Keypeople keypeople = new Keypeople(name,image,contact,work);
+                                keypeoples.add(keypeople);
+                            }
+
+                        }
+                        if(!keypeoples.isEmpty()){
+                            keypeopleAdapter = new KeypeopleAdapter(KeypeopleActivity.this,R.layout.keypeoplelayout,keypeoples);
+                            keypeoplelist.setAdapter(keypeopleAdapter);
+                        }
                     }
-                    keypeopleAdapter = new KeypeopleAdapter(KeypeopleActivity.this,R.layout.keypeoplelayout,keypeoples);
-                    keypeoplelist.setAdapter(keypeopleAdapter);
+
+
                 }
             });
     }

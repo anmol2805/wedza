@@ -7,6 +7,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -180,15 +181,43 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_edtpersonalinfo) {
-            startActivity(new Intent(HomeActivity.this,Editpersonalinfo.class));
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(HomeActivity.this,Editpersonalinfo.class));
+                }
+            },100);
+
         }
         else if(id == R.id.nav_wedset){
-            startActivity(new Intent(HomeActivity.this,Weddingsettings.class));
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(HomeActivity.this,Weddingsettings.class));
+                }
+            },100);
+
         }
         else if (id == R.id.nav_createwed) {
-            startActivity(new Intent(HomeActivity.this,CreateweddingActivity.class));
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(HomeActivity.this,CreateweddingActivity.class));
+                }
+            },100);
+
         } else if (id == R.id.nav_contactwed) {
-            startActivity(new Intent(HomeActivity.this,ContactdeveloperActivity.class));
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(HomeActivity.this,ContactdeveloperActivity.class));
+                }
+            },100);
+
         } else if (id == R.id.nav_like) {
             Uri uri = Uri.parse("market://details?id=" + "com.anmol.hibiscus");
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);

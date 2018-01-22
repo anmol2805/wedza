@@ -86,26 +86,34 @@ public class Weddingsettings extends AppCompatActivity {
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                String weddingid = task.getResult().getString("currentwedding");
-                db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid())
-                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        int pos = arrayAdapter.getPosition(task.getResult().getString("relation"));
-                        spinner.setSelection(pos);
-                        String mteam = task.getResult().getString("team");
-                        if(mteam.contains("groom")){
-                            team = "groom";
-                            tbr.setChecked(false);
-                            tgr.setChecked(true);
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    String weddingid = snapshot.getString("currentwedding");
+                    db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid())
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot snapshot1 = task.getResult();
+                            if(snapshot1.exists()){
+                                int pos = arrayAdapter.getPosition(snapshot1.getString("relation"));
+                                spinner.setSelection(pos);
+                                String mteam = snapshot1.getString("team");
+                                if(mteam.contains("groom")){
+                                    team = "groom";
+                                    tbr.setChecked(false);
+                                    tgr.setChecked(true);
+                                }
+                                else if(mteam.contains("bride")){
+                                    team = "bride";
+                                    tbr.setChecked(true);
+                                    tgr.setChecked(false);
+                                }
+                            }
+
                         }
-                        else if(mteam.contains("bride")){
-                            team = "bride";
-                            tbr.setChecked(true);
-                            tgr.setChecked(false);
-                        }
-                    }
-                });
+                    });
+                }
+
             }
         });
 
@@ -120,24 +128,28 @@ public class Weddingsettings extends AppCompatActivity {
                     db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            String weddingid = task.getResult().getString("currentwedding");
-                            Map<String,Object> map = new HashMap<>();
-                            map.put("relation",relation);
-                            map.put("team",team);
-                            db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid())
-                                    .update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    showToast("updated settings successfully");
-                                    prgbr.setVisibility(View.GONE);
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    showToast("Network error...unable to save changes.");
-                                    prgbr.setVisibility(View.GONE);
-                                }
-                            });
+                            DocumentSnapshot snapshot = task.getResult();
+                            if(snapshot.exists()){
+                                String weddingid = snapshot.getString("currentwedding");
+                                Map<String,Object> map = new HashMap<>();
+                                map.put("relation",relation);
+                                map.put("team",team);
+                                db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid())
+                                        .update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        showToast("updated settings successfully");
+                                        prgbr.setVisibility(View.GONE);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        showToast("Network error...unable to save changes.");
+                                        prgbr.setVisibility(View.GONE);
+                                    }
+                                });
+                            }
+
 
                         }
                     });

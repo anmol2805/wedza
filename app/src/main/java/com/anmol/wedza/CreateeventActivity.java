@@ -184,26 +184,30 @@ public class CreateeventActivity extends AppCompatActivity {
                         StorageReference reference = storageReference.child(fileuri.getLastPathSegment());
                         reference.putFile(fileuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
                                 final String medialink = String.valueOf(taskSnapshot.getDownloadUrl());
                                 db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        String weddindid = task.getResult().getString("currentwedding");
-                                        Map<String,Object> map = new HashMap<>();
-                                        map.put("eventdes",des);
-                                        map.put("eventimg",medialink);
-                                        map.put("eventlocation",eventloc);
-                                        map.put("team",team);
-                                        map.put("eventtime",finaltime);
-                                        map.put("time",timestamp);
-                                        db.collection("weddings").document(weddindid).collection("events").document(eventname).set(map)
-                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void aVoid) {
-                                                        finish();
-                                                    }
-                                                });
+                                        DocumentSnapshot snapshot = task.getResult();
+                                        if(snapshot.exists()){
+                                            String weddindid = snapshot.getString("currentwedding");
+                                            Map<String,Object> map = new HashMap<>();
+                                            map.put("eventdes",des);
+                                            map.put("eventimg",medialink);
+                                            map.put("eventlocation",eventloc);
+                                            map.put("team",team);
+                                            map.put("eventtime",finaltime);
+                                            map.put("time",timestamp);
+                                            db.collection("weddings").document(weddindid).collection("events").document(eventname).set(map)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            finish();
+                                                        }
+                                                    });
+                                        }
+
                                     }
                                 });
                             }

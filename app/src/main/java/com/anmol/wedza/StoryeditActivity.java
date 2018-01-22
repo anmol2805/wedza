@@ -89,14 +89,18 @@ public class StoryeditActivity extends AppCompatActivity {
                         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                String weddindid = task.getResult().getString("currentwedding");
-                                Map<String,Object> map = new HashMap<>();
-                                map.put("time",timestamp);
-                                map.put("medialink",medialink);
-                                map.put("mediatype",mediatype);
-                                DocumentReference ref = db.collection("weddings").document(weddindid).collection("stories").document();
-                                String id = ref.getId();
-                                db.collection("weddings").document(weddindid).collection("stories").document(id).set(map);
+                                DocumentSnapshot snapshot = task.getResult();
+                                if(snapshot.exists()){
+                                    String weddindid = snapshot.getString("currentwedding");
+                                    Map<String,Object> map = new HashMap<>();
+                                    map.put("time",timestamp);
+                                    map.put("medialink",medialink);
+                                    map.put("mediatype",mediatype);
+                                    DocumentReference ref = db.collection("weddings").document(weddindid).collection("stories").document();
+                                    String id = ref.getId();
+                                    db.collection("weddings").document(weddindid).collection("stories").document(id).set(map);
+                                }
+
                             }
                         });
                     }
@@ -110,15 +114,19 @@ public class StoryeditActivity extends AppCompatActivity {
                 db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        String weddindid = task.getResult().getString("currentwedding");
-                        Map<String,Object> map = new HashMap<>();
-                        map.put("storycontent",storycon);
-                        db.collection("weddings").document(weddindid).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                finish();
-                            }
-                        });
+                        DocumentSnapshot snapshot = task.getResult();
+                        if(snapshot.exists()){
+                            String weddindid = snapshot.getString("currentwedding");
+                            Map<String,Object> map = new HashMap<>();
+                            map.put("storycontent",storycon);
+                            db.collection("weddings").document(weddindid).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    finish();
+                                }
+                            });
+                        }
+
                     }
                 });
             }

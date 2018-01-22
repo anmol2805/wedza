@@ -90,9 +90,13 @@ public class EditcoverpicActivity extends AppCompatActivity {
                 db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        String weddingid = task.getResult().getString("currentwedding");
-                        updateimg(weddingid);
-                        updatedate(weddingid);
+                        DocumentSnapshot snapshot = task.getResult();
+                        if(snapshot.exists()){
+                            String weddingid = snapshot.getString("currentwedding");
+                            updateimg(weddingid);
+                            updatedate(weddingid);
+                        }
+
                     }
                 });
 
