@@ -180,11 +180,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
-                    android:clickable="true"
-                    android:elevation="16dp"
+                    app:clickable="true"
+                    app:elevation="16dp"
                     android:visibility="gone"
                     app:fabSize="normal"
-                    android:backgroundTint="@color/colorPrimaryDark"
+                    app:backgroundTint="@color/colorPrimaryDark"
                     app:srcCompat="@drawable/editstory" />
 
                 <TextView

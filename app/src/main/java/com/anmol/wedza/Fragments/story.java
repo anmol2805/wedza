@@ -96,7 +96,7 @@ public class story extends Fragment {
 
         db.collection("users").document(auth.getCurrentUser().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+            public void onEvent(final DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if(documentSnapshot!=null && documentSnapshot.exists()){
                     String weddingid = documentSnapshot.getString("currentwedding");
                     loadmedia(weddingid);
@@ -106,10 +106,14 @@ public class story extends Fragment {
                             .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            Boolean admin = task.getResult().getBoolean("admin");
-                            if(admin.equals(true)){
-                                authpost.setVisibility(View.VISIBLE);
+                            DocumentSnapshot snapshot = task.getResult();
+                            if(snapshot.exists()){
+                                Boolean admin = snapshot.getBoolean("admin");
+                                if(admin.equals(true)){
+                                    authpost.setVisibility(View.VISIBLE);
+                                }
                             }
+
                         }
                     });
                     db.collection("weddings")
@@ -118,15 +122,20 @@ public class story extends Fragment {
                             .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                            if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
+                                for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
+                                    if(doc.exists()){
+                                        if(doc.getId().contains(auth.getCurrentUser().getUid())){
+                                            liked.setBackgroundResource(R.drawable.like);
+                                            likestatus.setText("You loved it!");
+                                        }
+                                    }
 
-                            for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
-                                if(doc.getId().contains(auth.getCurrentUser().getUid())){
-                                    liked.setBackgroundResource(R.drawable.like);
-                                    likestatus.setText("You loved it!");
                                 }
+                                String size = String.valueOf(documentSnapshots.size());
+                                nlikes.setText(size + " loved this story");
                             }
-                            String size = String.valueOf(documentSnapshots.size());
-                            nlikes.setText(size + " loved this story");
+
                         }
                     });
                     db.collection("weddings")
@@ -136,9 +145,11 @@ public class story extends Fragment {
                                 @Override
                                 public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
 
+                                    if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
+                                        String size = String.valueOf(documentSnapshots.size());
+                                        nwishes.setText(size + " Best Wishes");
+                                    }
 
-                                    String size = String.valueOf(documentSnapshots.size());
-                                    nwishes.setText(size + " Best Wishes");
                                 }
                             });
                 }
@@ -150,13 +161,17 @@ public class story extends Fragment {
                 db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        Map<String,Object> map = new HashMap<>();
-                        map.put("like",true);
-                        String weddingid = task.getResult().getString("currentwedding");
-                        db.collection("weddings")
-                                .document(weddingid)
-                                .collection("storylikes")
-                                .document(auth.getCurrentUser().getUid()).set(map);
+                        DocumentSnapshot snapshot = task.getResult();
+                        if(snapshot.exists()){
+                            Map<String,Object> map = new HashMap<>();
+                            map.put("like",true);
+                            String weddingid = snapshot.getString("currentwedding");
+                            db.collection("weddings")
+                                    .document(weddingid)
+                                    .collection("storylikes")
+                                    .document(auth.getCurrentUser().getUid()).set(map);
+                        }
+
                     }
                 });
             }
@@ -173,13 +188,17 @@ public class story extends Fragment {
                 db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        Map<String,Object> map = new HashMap<>();
-                        map.put("like",true);
-                        String weddingid = task.getResult().getString("currentwedding");
-                        db.collection("weddings")
-                                .document(weddingid)
-                                .collection("storylikes")
-                                .document(auth.getCurrentUser().getUid()).set(map);
+                        DocumentSnapshot snapshot = task.getResult();
+                        if(snapshot.exists()){
+                            Map<String,Object> map = new HashMap<>();
+                            map.put("like",true);
+                            String weddingid = snapshot.getString("currentwedding");
+                            db.collection("weddings")
+                                    .document(weddingid)
+                                    .collection("storylikes")
+                                    .document(auth.getCurrentUser().getUid()).set(map);
+                        }
+
                     }
                 });
             }
@@ -198,17 +217,21 @@ public class story extends Fragment {
         db.collection("weddings").document(weddingid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull final Task<DocumentSnapshot> task) {
-                final String st = task.getResult().getString("storycontent");
-                storycontent.setText(st);
-                authpost.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(getActivity(), StoryeditActivity.class);
-                        intent.putExtra("storycontent",st);
-                        startActivity(intent);
-                        getActivity().overridePendingTransition(R.anim.slide_left_in,R.anim.still);
-                    }
-                });
+                DocumentSnapshot snapshot = task.getResult();
+                if(snapshot.exists()){
+                    final String st = snapshot.getString("storycontent");
+                    storycontent.setText(st);
+                    authpost.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), StoryeditActivity.class);
+                            intent.putExtra("storycontent",st);
+                            startActivity(intent);
+                            getActivity().overridePendingTransition(R.anim.slide_left_in,R.anim.still);
+                        }
+                    });
+                }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -224,8 +247,11 @@ public class story extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (DocumentSnapshot doc : task.getResult()){
-                    Storyimage storyimage = new Storyimage(doc.getString("medialink"),doc.getString("mediatype"));
-                    storyimages.add(storyimage);
+                    if(doc.exists()){
+                        Storyimage storyimage = new Storyimage(doc.getString("medialink"),doc.getString("mediatype"));
+                        storyimages.add(storyimage);
+                    }
+
                 }
                 if(!storyimages.isEmpty()){
                     storyimageAdapter = new StoryimageAdapter(getActivity(),storyimages,itemClickListener);

@@ -174,33 +174,39 @@ public class CreateeventActivity extends AppCompatActivity {
                     Date mdate = sdf.parse(date + " " + time);
                     final String finaltime = sdf.format(mdate);
                     final Timestamp timestamp = Timestamp.valueOf(finaltime);
-                    StorageReference reference = storageReference.child(fileuri.getLastPathSegment());
-                    reference.putFile(fileuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            final String medialink = String.valueOf(taskSnapshot.getDownloadUrl());
-                            db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    String weddindid = task.getResult().getString("currentwedding");
-                                    Map<String,Object> map = new HashMap<>();
-                                    map.put("eventdes",des);
-                                    map.put("eventimg",medialink);
-                                    map.put("eventlocation",eventloc);
-                                    map.put("team",team);
-                                    map.put("eventtime",finaltime);
-                                    map.put("time",timestamp);
-                                    db.collection("weddings").document(weddindid).collection("events").document(eventname).set(map)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    finish();
-                                                }
-                                            });
-                                }
-                            });
-                        }
-                    });
+                    if(fileuri!=null){
+                        StorageReference reference = storageReference.child(fileuri.getLastPathSegment());
+                        reference.putFile(fileuri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                final String medialink = String.valueOf(taskSnapshot.getDownloadUrl());
+                                db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        String weddindid = task.getResult().getString("currentwedding");
+                                        Map<String,Object> map = new HashMap<>();
+                                        map.put("eventdes",des);
+                                        map.put("eventimg",medialink);
+                                        map.put("eventlocation",eventloc);
+                                        map.put("team",team);
+                                        map.put("eventtime",finaltime);
+                                        map.put("time",timestamp);
+                                        db.collection("weddings").document(weddindid).collection("events").document(eventname).set(map)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        finish();
+                                                    }
+                                                });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        Toast.makeText(CreateeventActivity.this,"Please select an image to upload!!!",Toast.LENGTH_SHORT).show();
+                    }
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
