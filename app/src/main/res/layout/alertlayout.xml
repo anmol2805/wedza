@@ -19,9 +19,11 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/username"
                 android:text="name"
-                android:textColor="#000"
+                android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
+                android:layout_marginTop="5dp"
                 android:layout_marginHorizontal="5dp"
+                android:textSize="16sp"
 
                 />
             <TextView
@@ -30,10 +32,11 @@
                 android:id="@+id/commenttext"
                 android:layout_below="@+id/username"
                 android:layout_marginHorizontal="5dp"
-
+                android:layout_marginBottom="5dp"
                 android:text="comment"
+                android:textSize="17sp"
                 android:textStyle="italic"
-                android:textColor="#000"
+                android:textColor="@color/colorPrimary"
                 />
 
         </RelativeLayout>
