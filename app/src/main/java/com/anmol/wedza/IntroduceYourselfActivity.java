@@ -145,11 +145,11 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                             db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).set(yourinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    DocumentReference ref1 = db.collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document();
-                                    String id1 = ref1.getId();
+//                                    DocumentReference ref1 = db.collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document();
+//                                    String id1 = ref1.getId();
                                     Map<String,Object> cmap = new HashMap<>();
                                     cmap.put("weddingid",weddingid);
-                                    db.collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document(id1).set(cmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    db.collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document(weddingid).set(cmap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Map<String,Object> map = new HashMap<>();
