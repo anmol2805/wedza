@@ -235,15 +235,15 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_contactwed) {
             Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
                     startActivity(new Intent(HomeActivity.this,ContactdeveloperActivity.class));
                 }
             },100);
 
         } else if (id == R.id.nav_like) {
-            Uri uri = Uri.parse("market://details?id=" + "com.anmol.hibiscus");
+            Uri uri = Uri.parse("market://details?id=" + "com.anmol.wedza");
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
             // To count with Play market backstack, After pressing back button,
             // to taken back to our application, we need to add following flags to intent.
