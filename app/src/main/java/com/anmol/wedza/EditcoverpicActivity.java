@@ -251,7 +251,7 @@ public class EditcoverpicActivity extends AppCompatActivity {
                     fileOutputStream.flush();
                     fileOutputStream.close();
                     fileuri = Uri.fromFile(temp);
-                    uploadpic.setImageURI(fileuri);
+                    Glide.with(this).load(fileuri).into(uploadpic);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

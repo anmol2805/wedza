@@ -127,6 +127,7 @@ public class gallery extends Fragment {
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    galleries.clear();
                                     for(DocumentSnapshot doc:task.getResult()){
                                         if(doc.exists()){
                                             db.collection("weddings").document(weddingid).collection("gallery").whereEqualTo("event",doc.getId()).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -180,6 +181,7 @@ public class gallery extends Fragment {
                     db.collection("weddings").document(weddingid).collection("gallery").orderBy("time", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            galleries.clear();
                             for(DocumentSnapshot doc:task.getResult()){
                                 if(doc.exists()){
                                     Gallery gallery = new Gallery(doc.getString("medialink"),doc.getString("mediatype"),doc.getString("event"));

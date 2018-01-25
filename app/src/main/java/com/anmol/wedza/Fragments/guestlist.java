@@ -128,6 +128,7 @@ public class guestlist extends Fragment {
                     @Override
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                         if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
+                            guests.clear();
                             for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
                                 if(doc.exists()){
                                     Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
@@ -177,6 +178,7 @@ public class guestlist extends Fragment {
                     @Override
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                         if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
+                            guests.clear();
                             for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
                                 if(doc.exists()){
                                     Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
@@ -226,6 +228,7 @@ public class guestlist extends Fragment {
                     @Override
                     public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                         if(documentSnapshots!=null && !documentSnapshots.isEmpty()){
+                            guests.clear();
                             for(DocumentSnapshot doc:documentSnapshots.getDocuments()){
                                 if(doc.exists()){
                                     Guest guest = new Guest(doc.getString("username"),doc.getString("profilepicturepath")
