@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     EditText wedid;
     ProgressBar prgbr;
+    int checker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +47,11 @@ public class MainActivity extends AppCompatActivity {
                 db.collection("weddings").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        checker = 0;
                         for(DocumentSnapshot doc:task.getResult()){
                             if(doc.getId().contains(weddingid)){
                                 if (auth.getCurrentUser()!=null){
+                                    checker = 1;
                                     Intent intent = new Intent(MainActivity.this,HomeActivity.class);
                                     intent.putExtra("weddingid",weddingid);
                                     prgbr.setVisibility(View.GONE);
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                                     finish();
                                 }
                                 else {
+                                    checker = 1;
                                     Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                                     intent.putExtra("weddingid",weddingid);
                                     prgbr.setVisibility(View.GONE);
@@ -65,10 +69,11 @@ public class MainActivity extends AppCompatActivity {
                                     finish();
                                 }
                             }
-                            else{
-                                prgbr.setVisibility(View.GONE);
-                                Toast.makeText(MainActivity.this,"Wedding does not exist",Toast.LENGTH_SHORT).show();
-                            }
+                        }
+                        if(checker!=1){
+                            checker = 0;
+                            prgbr.setVisibility(View.GONE);
+                            Toast.makeText(MainActivity.this,"Wedding does not exist",Toast.LENGTH_SHORT).show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
