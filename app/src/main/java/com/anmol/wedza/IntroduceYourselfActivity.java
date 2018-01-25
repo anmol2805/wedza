@@ -182,6 +182,10 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                             });
 
                         }
+                        else {
+                            prgbr.setVisibility(View.GONE);
+                            showToast("Please select relation with the couple");
+                        }
                     }
                 });
 
