@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "149269006670-6prh6uou8rietf518k4tq9d2bgfi5cd6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anmol.wedza",
+            "certificate_hash": "3919776c655dae3a1c6c32a00275421ffcc4ca84"
+          }
+        },
+        {
+          "client_id": "149269006670-ivtlmc4h8aopknn5pnosgn089f49895k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anmol.wedza",
+            "certificate_hash": "3f5cbeba444037af15a64a2f67c9a59b8c404a76"
+          }
+        },
+        {
           "client_id": "149269006670-r1cbjnb2afsosvrbj3g7veac3bk3dkn0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -39,6 +55,13 @@
         "appinvite_service": {
           "status": 2,
           "other_platform_oauth_client": [
+            {
+              "client_id": "149269006670-jsuhf92ecc2oa3j87f7olp3cjgmi096t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.Wedza"
+              }
+            },
             {
               "client_id": "149269006670-e4e2dj5pc2334oj5t4sr53cl76kohgd1.apps.googleusercontent.com",
               "client_type": 3
