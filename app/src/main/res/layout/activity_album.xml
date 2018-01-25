@@ -9,7 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:id="@+id/albumgridview"
-        android:columnWidth="125dp"
+        android:columnWidth="100dp"
         android:numColumns="auto_fit"
         android:verticalSpacing="10dp"
         android:stretchMode="spacingWidthUniform"
