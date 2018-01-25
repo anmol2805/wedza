@@ -117,6 +117,7 @@ public class gallery extends Fragment {
     private void albumshow() {
         selectintent = 1;
         galleries.clear();
+        gridView.setAdapter(null);
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -140,6 +141,7 @@ public class gallery extends Fragment {
                                                     if(getActivity()!=null){
                                                         if(!galleries.isEmpty()){
                                                             galleryAlbumAdapter = new GalleryAlbumAdapter(getActivity(),R.layout.galleryalbumlayout, (ArrayList<Gallery>) galleries);
+                                                            galleryAlbumAdapter.notifyDataSetChanged();
                                                             gridView.setAdapter(galleryAlbumAdapter);
                                                         }
                                                     }
@@ -172,6 +174,7 @@ public class gallery extends Fragment {
     private void allpicsshow() {
         selectintent = 0;
         galleries.clear();
+        gridView.setAdapter(null);
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

@@ -123,6 +123,7 @@ public class guestlist extends Fragment {
     }
     private void teambride(String weddingid) {
         guests.clear();
+        glv.setAdapter(null);
         db.collection("weddings").document(weddingid).collection("users").whereEqualTo("team","bride")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -173,6 +174,7 @@ public class guestlist extends Fragment {
 
     private void teamgroom(String weddingid) {
         guests.clear();
+        glv.setAdapter(null);
         db.collection("weddings").document(weddingid).collection("users").whereEqualTo("team","groom")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -223,6 +225,7 @@ public class guestlist extends Fragment {
 
     private void everyguest(String weddingid) {
         guests.clear();
+        glv.setAdapter(null);
         db.collection("weddings").document(weddingid).collection("users")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
