@@ -15,8 +15,8 @@ android {
         applicationId "com.anmol.wedza"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 7
-        versionName '1.7'
+        versionCode 8
+        versionName '1.8'
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

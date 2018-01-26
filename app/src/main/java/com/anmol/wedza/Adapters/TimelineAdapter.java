@@ -89,6 +89,7 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
             TextView uname = (TextView)v.findViewById(R.id.uname);
             TextView event = (TextView)v.findViewById(R.id.eventname);
             TextView des = (TextView)v.findViewById(R.id.des);
+            final TextView numlike = (TextView)v.findViewById(R.id.numlike);
             uname.setText(timelines.get(position).getUsername());
             event.setText(timelines.get(position).getEvent());
             des.setText(timelines.get(position).getDes());
@@ -152,8 +153,21 @@ public class TimelineAdapter extends ArrayAdapter<Timeline> {
                                                 like.setVisibility(View.INVISIBLE);
                                                 unlike.setVisibility(View.VISIBLE);
                                             }
+
                                         }
 
+                                    }
+                                    int size = documentSnapshots.size();
+                                    if(size == 0){
+                                        numlike.setVisibility(View.GONE);
+                                    }
+                                    else if (size == 1){
+                                        numlike.setVisibility(View.VISIBLE);
+                                        numlike.setText(String.valueOf(size) + " like");
+                                    }
+                                    else {
+                                        numlike.setVisibility(View.VISIBLE);
+                                        numlike.setText(String.valueOf(size) + " likes");
                                     }
                                 }
 
