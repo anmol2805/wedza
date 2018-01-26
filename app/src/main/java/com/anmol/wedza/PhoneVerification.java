@@ -392,6 +392,8 @@ public class PhoneVerification extends AppCompatActivity {
                             intent.putExtra("profilePicturePath",profilePicturePath);
                             intent.putExtra("username",username);
                             intent.putExtra("weddingid",weddingid);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                             overridePendingTransition(R.anim.slide_left_in,R.anim.slide_left_out);
                             showToast("Successfully Verified and Logged in !");

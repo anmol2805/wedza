@@ -167,6 +167,8 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                                         public void onSuccess(Void aVoid) {
                                             prgbr.setVisibility(View.GONE);
                                             Intent intent = new Intent(IntroduceYourselfActivity.this,HomeActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
                                             overridePendingTransition(R.anim.slide_left_in,R.anim.slide_left_out);
                                         }

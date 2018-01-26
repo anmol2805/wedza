@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
                                     checker = 1;
                                     Intent intent = new Intent(MainActivity.this,HomeActivity.class);
                                     intent.putExtra("weddingid",weddingid);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     prgbr.setVisibility(View.GONE);
                                     startActivity(intent);
                                     overridePendingTransition(R.anim.slide_left_in,R.anim.slide_left_out);
@@ -70,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
                                     checker = 1;
                                     Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                                     intent.putExtra("weddingid",weddingid);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     prgbr.setVisibility(View.GONE);
                                     startActivity(intent);
                                     overridePendingTransition(R.anim.slide_left_in,R.anim.slide_left_out);
