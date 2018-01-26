@@ -19,7 +19,7 @@
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:visibility="invisible"
         android:layout_below="@+id/textView11"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp" />
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView3"
         android:layout_centerHorizontal="true"
-
+        android:layout_marginTop="50dp"
         android:background="@drawable/common_google_signin_btn_text_light_focused"
         android:text="Sign in with Google"
         android:textAppearance="@style/TextAppearance.AppCompat" />
@@ -50,7 +50,7 @@
         android:layout_height="180dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/login_button"
+        android:layout_below="@+id/google_sign_in"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="50dp"
         app:srcCompat="@drawable/login" />
@@ -66,6 +66,7 @@
         android:textColor="#000"
         android:alpha="0.6"
         android:textStyle="italic"
+        android:visibility="invisible"
         android:text="To continue with facebook, please make sure that you have facebook app installed on your device." />
 
     <!--<Button-->
