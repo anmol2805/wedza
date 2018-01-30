@@ -85,7 +85,7 @@ public class EventsActivity extends AppCompatActivity {
         db.collection("weddings").document(weddingid)
                 .collection("events")
                 .orderBy("time")
-                .whereGreaterThanOrEqualTo("time",timestamp).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                 events.clear();
