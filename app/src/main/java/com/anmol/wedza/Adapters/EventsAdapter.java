@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.anmol.wedza.CreateeventActivity;
@@ -55,7 +58,7 @@ public class EventsAdapter extends ArrayAdapter<Event> {
     }
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if(convertView!=null){
             return convertView;
         }
@@ -70,6 +73,28 @@ public class EventsAdapter extends ArrayAdapter<Event> {
             TextView eventdes = (TextView)v.findViewById(R.id.eventdes);
             ImageView eventimg = (ImageView)v.findViewById(R.id.eventimg);
             ImageView teamicon = (ImageView)v.findViewById(R.id.teamicon);
+            Button loc = (Button)v.findViewById(R.id.loc);
+            LinearLayout locl = (LinearLayout)v.findViewById(R.id.locl);
+            locl.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String map = "http://maps.google.co.in/maps?q=" +events.get(position).getEventlocation();
+                    Uri mapuri = Uri.parse("geo:0,0?q=" + Uri.encode(events.get(position).getEventlocation()));
+                    Intent intent = new Intent(Intent.ACTION_VIEW, mapuri);
+                    intent.setPackage("com.google.android.apps.maps");
+                    context.startActivity(intent);
+                }
+            });
+            loc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri mapuri = Uri.parse("geo:0,0?q=" + Uri.encode(events.get(position).getEventlocation()));
+                    String map = "http://maps.google.co.in/maps?q=" + events.get(position).getEventlocation();
+                    Intent intent = new Intent(Intent.ACTION_VIEW, mapuri);
+                    intent.setPackage("com.google.android.apps.maps");
+                    context.startActivity(intent);
+                }
+            });
 //            final ImageButton edit = (ImageButton)v.findViewById(R.id.edit);
 //            final FirebaseAuth auth = FirebaseAuth.getInstance();
 //            final FirebaseFirestore db = FirebaseFirestore.getInstance();

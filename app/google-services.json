@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "149269006670-3sci16h81p1l1134q7ncb6r8tbvnv5v4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anmol.wedza",
+            "certificate_hash": "c79d1b144190dc24dc52304619e1b4776b126167"
+          }
+        },
+        {
           "client_id": "149269006670-6prh6uou8rietf518k4tq9d2bgfi5cd6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

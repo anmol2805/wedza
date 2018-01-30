@@ -40,7 +40,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_marginLeft="5dp"
                         android:layout_marginVertical="5dp"
@@ -55,7 +55,7 @@
                         <TextView
                             android:id="@+id/eventtime"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginHorizontal="5dp"
                             android:layout_weight="1"
                             android:text="TextView"
@@ -64,8 +64,9 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/locl"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_marginLeft="5dp"
                         android:layout_marginVertical="5dp"
@@ -80,7 +81,7 @@
                         <TextView
                             android:id="@+id/eventloc"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginHorizontal="5dp"
                             android:layout_weight="1"
                             android:text="TextView"
