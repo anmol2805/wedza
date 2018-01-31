@@ -15,10 +15,13 @@ android {
         applicationId "com.anmol.wedza"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 8
-        versionName '1.8'
+        versionCode 9
+        versionName '1.9'
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
     }
     buildTypes {
         release {
