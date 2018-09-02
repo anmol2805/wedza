@@ -49,12 +49,15 @@ public class MainActivity extends AppCompatActivity {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //receives wedding id
                 prgbr.setVisibility(View.VISIBLE);
                 final String weddingid = wedid.getText().toString().trim();
+                // edit firestore query to realtimedb
                 db.collection("weddings").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         checker = 0;
+                        //checks whether id is valid or not
                         for(DocumentSnapshot doc:task.getResult()){
                             if(doc.getId().contains(weddingid)){
                                 if (auth.getCurrentUser()!=null){
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                                     finish();
                                 }
                                 else {
+                                    // sends wedding id to loginactivity
                                     checker = 1;
                                     Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                                     intent.putExtra("weddingid",weddingid);

@@ -60,6 +60,8 @@ public class HomeActivity extends AppCompatActivity
             finish();
         }
         else {
+            //checks if user data is present or not
+            //edit query
             db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {

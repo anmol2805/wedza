@@ -195,7 +195,7 @@ public class media extends Fragment {
                 pickmedia();
             }
         });
-
+        //wedding id
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -257,14 +257,19 @@ public class media extends Fragment {
     private void savetogallery(final String weddingid, final String eventname) {
         if(getActivity()!=null){
             if(fileUri!=null){
+                //storage
                 prgbr.setVisibility(View.VISIBLE);
                 StorageReference reference = storageReference.child("photos").child(fileUri.getLastPathSegment());
                 reference.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Toast.makeText(getActivity(), "Saved successfully", Toast.LENGTH_SHORT).show();
+                        // returns download url
                         String medialink = String.valueOf(taskSnapshot.getDownloadUrl());
+                        // returns type
                         String mediatype = taskSnapshot.getMetadata().getContentType();
+
+                        //  saves media details
                         DocumentReference ref = db.collection("weddings").document(weddingid).collection("gallery").document();
                         String imageid = ref.getId();
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -300,7 +305,7 @@ public class media extends Fragment {
     }
 
     private void posttotimeline(final String weddingid, final String eventname) {
-
+//post to both
         final String des = description.getText().toString().trim();
         if(getActivity()!=null){
             if(fileUri!=null){
@@ -322,6 +327,7 @@ public class media extends Fragment {
                         String date = sdf.format(new Date());
                         final java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(date);
                         map.put("time",timestamp);
+                        //edit
                         db.collection("weddings").document(weddingid).collection("gallery").document(imageid).set(map);
                         db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override

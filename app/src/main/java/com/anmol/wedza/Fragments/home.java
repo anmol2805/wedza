@@ -81,6 +81,8 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         weddingdate = (TextView)header.findViewById(R.id.date);
         editcoverpic = (FloatingActionButton)header.findViewById(R.id.editcover);
         editcoverpic.setVisibility(View.GONE);
+        // receiving current wedding id
+        //edit
         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -143,6 +145,8 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
     }
 
     private void checkadmin(String weddingid) {
+        //check if admin or not
+        //edit
         db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -160,6 +164,9 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
 
     private void loadtimeline(String weddingid) {
         timelines.clear();
+        // load timeline
+        // edit
+        // **important
         db.collection("weddings").document(weddingid).collection("timeline").orderBy("time", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -198,6 +205,8 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
     }
 
     private void loadcoverpic(String weddingid) {
+        //loads the coverpic
+        //edit
         db.collection("weddings").document(weddingid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(final DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {

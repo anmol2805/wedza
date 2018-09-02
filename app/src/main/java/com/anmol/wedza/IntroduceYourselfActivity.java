@@ -67,6 +67,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
         prgbr = (ProgressBar)findViewById(R.id.prgbr);
         prgbr.setVisibility(View.GONE);
         Intent intent = getIntent();
+        // receiving all intents
         profilePicturePath = intent.getStringExtra("profilePicturePath");
         username = intent.getStringExtra("username");
         weddingid = intent.getStringExtra("weddingid");
@@ -130,6 +131,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
     }
 
     private void fun(final String relation) {
+        // subitting  form
         done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -141,7 +143,9 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                         if(!relation.contains("Select Relation type")){
                             Yourinfo yourinfo = new Yourinfo(uname,fbpagelink,relation,team,status,profilePicturePath,weddingid,admin,keypeople);
 
+                            //edit query
 
+                            // updatig user to weddings--users
                             db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).set(yourinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -149,6 +153,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
 //                                    String id1 = ref1.getId();
                                     Map<String,Object> cmap = new HashMap<>();
                                     cmap.put("weddingid",weddingid);
+                                    // updating users to users
                                     db.collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document(weddingid).set(cmap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
