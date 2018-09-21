@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -31,16 +32,20 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
-    Button join,login;
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    EditText wedid;
-    ProgressBar prgbr;
-    int checker;
+    private Button join, login;
+    private FirebaseAuth auth;
+    private DatabaseReference db;
+    private EditText wedid;
+    private ProgressBar prgbr;
+    private int checker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        auth  = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance().getReference();
+
         join = (Button)findViewById(R.id.joinwed);
         login = (Button)findViewById(R.id.login);
         wedid = (EditText)findViewById(R.id.wedid);
@@ -53,13 +58,15 @@ public class MainActivity extends AppCompatActivity {
                 prgbr.setVisibility(View.VISIBLE);
                 final String weddingid = wedid.getText().toString().trim();
                 // edit firestore query to realtimedb
-                db.collection("weddings").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                db.child("weddings").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    public void onDataChange(DataSnapshot dataSnapshot) {
                         checker = 0;
                         //checks whether id is valid or not
-                        for(DocumentSnapshot doc:task.getResult()){
-                            if(doc.getId().contains(weddingid)){
+                        for(DataSnapshot ds: dataSnapshot.getChildren()) {
+                            String data = ds.getKey();
+
+                            if(data.equals(weddingid)) {
                                 if (auth.getCurrentUser()!=null){
                                     checker = 1;
                                     Intent intent = new Intent(MainActivity.this,HomeActivity.class);
@@ -85,15 +92,16 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
                         }
+
                         if(checker!=1){
                             checker = 0;
                             prgbr.setVisibility(View.GONE);
                             Toast.makeText(MainActivity.this,"Wedding does not exist",Toast.LENGTH_SHORT).show();
                         }
                     }
-                }).addOnFailureListener(new OnFailureListener() {
+
                     @Override
-                    public void onFailure(@NonNull Exception e) {
+                    public void onCancelled(DatabaseError databaseError) {
                         Toast.makeText(MainActivity.this,"Network Error!!!",Toast.LENGTH_SHORT).show();
                         prgbr.setVisibility(View.GONE);
                     }

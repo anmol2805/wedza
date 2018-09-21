@@ -23,6 +23,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -32,28 +34,31 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class IntroduceYourselfActivity extends AppCompatActivity {
+    private Spinner spinner;
+    private Button done;
+    private ArrayAdapter<CharSequence> arrayAdapter;
+    private DatabaseReference db;
+    private FirebaseAuth auth;
+    private String profilePicturePath;
+    private String username;
+    private String weddingid;
+    private EditText name;
+    private CircleImageView uppic;
+    private RadioButton tbr,tgr,single,marrried;
+    private String team = "groom";
+    private String status = "single";
+    private String uname;
+    private String fbpagelink = null;
+    private EditText fbpglnk;
+    private ProgressBar prgbr;
+    private String authcheck;
 
-    Spinner spinner;
-    Button done;
-    ArrayAdapter<CharSequence> arrayAdapter;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    String profilePicturePath;
-    String username;
-    String weddingid;
-    EditText name;
-    CircleImageView uppic;
-    RadioButton tbr,tgr,single,marrried;
-    String team = "groom";
-    String status = "single";
-    String uname;
-    String fbpagelink = null;
-    EditText fbpglnk;
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    ProgressBar prgbr;
-    String authcheck;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = FirebaseDatabase.getInstance().getReference();
+        auth = FirebaseAuth.getInstance();
+
         setContentView(R.layout.activity_introduce_yourself);
         spinner = (Spinner)findViewById(R.id.relation);
         done =  (Button)findViewById(R.id.done);
@@ -66,6 +71,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
         fbpglnk = (EditText)findViewById(R.id.fbpagelink);
         prgbr = (ProgressBar)findViewById(R.id.prgbr);
         prgbr.setVisibility(View.GONE);
+
         Intent intent = getIntent();
         // receiving all intents
         profilePicturePath = intent.getStringExtra("profilePicturePath");
@@ -146,7 +152,7 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                             //edit query
 
                             // updatig user to weddings--users
-                            db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).set(yourinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            db.child("weddings").child(weddingid).child("users").child(auth.getCurrentUser().getUid()).setValue(yourinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
 //                                    DocumentReference ref1 = db.collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document();
@@ -154,20 +160,21 @@ public class IntroduceYourselfActivity extends AppCompatActivity {
                                     Map<String,Object> cmap = new HashMap<>();
                                     cmap.put("weddingid",weddingid);
                                     // updating users to users
-                                    db.collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document(weddingid).set(cmap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    db.child("users").child(auth.getCurrentUser().getUid()).child("weddings").child(weddingid).setValue(cmap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Map<String,Object> map = new HashMap<>();
                                             map.put("currentwedding",weddingid);
-                                            db.collection("users").document(auth.getCurrentUser().getUid()).set(map);
+                                            db.child("users").child(auth.getCurrentUser().getUid()).setValue(map);
                                         }
                                     });
+
                                     Map<String,Object> map = new HashMap<>();
                                     map.put("weddingid",weddingid);
-                                    DocumentReference ref = db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document();
-                                    String id = ref.getId();
-                                    db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).collection("weddings").document(id)
-                                            .set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                                    DatabaseReference ref = db.child("weddings").child(weddingid).child("users").child(auth.getCurrentUser().getUid()).child("weddings");
+                                    //String id = ref.getId();
+                                    ref.setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             prgbr.setVisibility(View.GONE);

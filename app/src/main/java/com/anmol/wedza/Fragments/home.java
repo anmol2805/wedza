@@ -1,5 +1,6 @@
 package com.anmol.wedza.Fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -32,6 +33,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -42,6 +48,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -49,17 +56,19 @@ import java.util.List;
  */
 
 public class home extends Fragment implements AbsListView.OnScrollListener{
-    ListView lv;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    ImageView coverpic;
-    int lastTopValue = 0;
-    List<Timeline> timelines;
-    TimelineAdapter timelineAdapter;
-    Button keypeople,alerts,events;
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    TextView weddingdate;
-    RelativeLayout kpl,evl,alrl;
-    FloatingActionButton editcoverpic;
+    private ListView lv;
+    private DatabaseReference db;
+    private ImageView coverpic;
+    private int lastTopValue = 0;
+    private List<Timeline> timelines;
+    private TimelineAdapter timelineAdapter;
+    private Button keypeople,alerts,events;
+    private FirebaseAuth auth;
+    private TextView weddingdate;
+    private RelativeLayout kpl,evl,alrl;
+    private FloatingActionButton editcoverpic;
+
+    @SuppressLint("RestrictedApi")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
@@ -73,6 +82,9 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         evl = (RelativeLayout)view.findViewById(R.id.evl);
         alrl = (RelativeLayout)view.findViewById(R.id.alrl);
 
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance().getReference();
+
         timelines = new ArrayList<>();
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         ViewGroup header = (ViewGroup)layoutInflater.inflate(R.layout.listheader,lv,false);
@@ -83,7 +95,25 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         editcoverpic.setVisibility(View.GONE);
         // receiving current wedding id
         //edit
-        db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.child("users").child(auth.getCurrentUser().getUid()).child("currentwedding").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    String weddingid = dataSnapshot.getValue(String.class);
+                    loadcoverpic(weddingid);
+                    loadtimeline(weddingid);
+                    checkadmin(weddingid);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        /*db.child("users").child(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot snapshot = task.getResult();
@@ -94,8 +124,8 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
                     checkadmin(weddingid);
 
                 }
-                            }
-        });
+            }
+        });*/
 
         lv.setOnScrollListener(this);
 
@@ -147,7 +177,23 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
     private void checkadmin(String weddingid) {
         //check if admin or not
         //edit
-        db.collection("weddings").document(weddingid).collection("users").document(auth.getCurrentUser().getUid()).get()
+        db.child("weddings").child(weddingid).child("users").child(auth.getCurrentUser().getUid()).child("admin")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists() && dataSnapshot.getValue(Boolean.class)) {
+                        editcoverpic.setVisibility(View.VISIBLE);
+                    }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        /*db.child("weddings").child(weddingid).child("users").child(auth.getCurrentUser().getUid()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -159,7 +205,7 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
                         }
 
                     }
-                });
+                });*/
     }
 
     private void loadtimeline(String weddingid) {
@@ -167,7 +213,43 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
         // load timeline
         // edit
         // **important
-        db.collection("weddings").document(weddingid).collection("timeline").orderBy("time", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+        db.child("weddings").child(weddingid).child("timeline").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds: dataSnapshot.getChildren()) {
+                    if(dataSnapshot.exists()){
+                        Timeline timeline = new Timeline(ds.child("medialink").getValue(String.class),
+                                ds.child("event").getValue(String.class),
+                                ds.child("mediatype").getValue(String.class),
+                                ds.child("des").getValue(String.class),
+                                ds.child("username").getValue(String.class),
+                                ds.child(auth.getCurrentUser().getUid()).getValue(String.class),
+                                ds.getKey(),
+                                ds.child("profilepicturepath").getValue(String.class));
+                        timelines.add(timeline);
+                    }
+
+                }
+
+                if(getActivity()!=null) {
+                    if(!timelines.isEmpty()) {
+                        Collections.reverse(timelines);
+                        timelineAdapter = new TimelineAdapter(getActivity(),R.layout.timeline,timelines);
+                        lv.setAdapter(timelineAdapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                if(getActivity()!=null){
+                    Toast.makeText(getActivity(),""+databaseError.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        /*db.collection("weddings").document(weddingid).collection("timeline").orderBy("time", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for(DocumentSnapshot doc:task.getResult()){
@@ -201,13 +283,38 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
                 }
 
             }
-        });
+        });*/
     }
 
     private void loadcoverpic(String weddingid) {
         //loads the coverpic
         //edit
-        db.collection("weddings").document(weddingid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+
+        db.child("weddings").child(weddingid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                if(getActivity()!=null && dataSnapshot.exists()) {
+                    Glide.with(getActivity()).load(dataSnapshot.child("coverpic").getValue(String.class)).into(coverpic);
+                    weddingdate.setText(dataSnapshot.child("weddingdate").getValue(String.class));
+                    editcoverpic.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), EditcoverpicActivity.class);
+                            intent.putExtra("coverpic",dataSnapshot.child("coverpic").getValue(String.class));
+                            intent.putExtra("weddate",dataSnapshot.child("weddingdate").getValue(String.class));
+                            startActivity(intent);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        /*db.collection("weddings").document(weddingid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(final DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 if(getActivity()!=null){
@@ -227,7 +334,7 @@ public class home extends Fragment implements AbsListView.OnScrollListener{
 
                 }
             }
-        });
+        });*/
     }
 
     @Override

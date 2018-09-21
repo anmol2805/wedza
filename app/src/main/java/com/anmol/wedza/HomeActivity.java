@@ -36,6 +36,11 @@ import com.anmol.wedza.Fragments.story;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -45,16 +50,21 @@ import java.security.Signature;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    Button timeline,guestlist,gallery,story;
-    ImageButton camera;
+    private FirebaseAuth auth;
+    private DatabaseReference db;
+    private Button timeline,guestlist,gallery,story;
+    private ImageButton camera;
     private static long back_pressed;
-    String authcheck = "2805";
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private String authcheck = "2805";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance().getReference();
+
         if(auth.getCurrentUser()==null){
             startActivity(new Intent(HomeActivity.this,MainActivity.class));
             finish();
@@ -62,7 +72,107 @@ public class HomeActivity extends AppCompatActivity
         else {
             //checks if user data is present or not
             //edit query
-            db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            db.child("users").child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(!dataSnapshot.hasChildren()) {
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(HomeActivity.this,MainActivity.class));
+                        Toast.makeText(HomeActivity.this,"Please complete your authentication procedure",Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                        setSupportActionBar(toolbar);
+
+                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                                HomeActivity.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                        drawer.setDrawerListener(toggle);
+                        toggle.syncState();
+
+                        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                        navigationView.setNavigationItemSelectedListener(HomeActivity.this);
+
+                        setFragment(new home());
+
+                        camera = (ImageButton)findViewById(R.id.camera);
+                        timeline = (Button)findViewById(R.id.vtimeline);
+                        guestlist = (Button)findViewById(R.id.vguestlist);
+                        gallery = (Button)findViewById(R.id.vgallery);
+                        story = (Button)findViewById(R.id.vstory);
+                        timeline.setBackgroundResource(R.drawable.homeredfilled);
+                        guestlist.setBackgroundResource(R.drawable.barratgrey);
+                        camera.setBackgroundResource(R.drawable.round_button);
+                        gallery.setBackgroundResource(R.drawable.gallerygreyfilled);
+                        story.setBackgroundResource(R.drawable.storygrey);
+                        camera.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                timeline.setBackgroundResource(R.drawable.homegrey);
+                                guestlist.setBackgroundResource(R.drawable.barratgrey);
+                                camera.setBackgroundResource(R.drawable.round_button1);
+                                gallery.setBackgroundResource(R.drawable.gallerygreyfilled);
+                                story.setBackgroundResource(R.drawable.storygrey);
+                                //startActivity(new Intent(HomeActivity.this,CameraActivity.class));
+                                setFragment(new media());
+                            }
+                        });
+                        guestlist.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                timeline.setBackgroundResource(R.drawable.homegrey);
+                                guestlist.setBackgroundResource(R.drawable.barratred);
+                                camera.setBackgroundResource(R.drawable.round_button);
+                                gallery.setBackgroundResource(R.drawable.gallerygreyfilled);
+                                story.setBackgroundResource(R.drawable.storygrey);
+                                setFragment(new guestlist());
+                            }
+                        });
+                        timeline.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                timeline.setBackgroundResource(R.drawable.homeredfilled);
+                                guestlist.setBackgroundResource(R.drawable.barratgrey);
+                                camera.setBackgroundResource(R.drawable.round_button);
+                                gallery.setBackgroundResource(R.drawable.gallerygreyfilled);
+                                story.setBackgroundResource(R.drawable.storygrey);
+                                setFragment(new home());
+                            }
+                        });
+                        gallery.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                timeline.setBackgroundResource(R.drawable.homegrey);
+                                guestlist.setBackgroundResource(R.drawable.barratgrey);
+                                camera.setBackgroundResource(R.drawable.round_button);
+                                gallery.setBackgroundResource(R.drawable.galleryr);
+                                story.setBackgroundResource(R.drawable.storygrey);
+                                setFragment(new gallery());
+                            }
+                        });
+                        story.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                timeline.setBackgroundResource(R.drawable.homegrey);
+                                guestlist.setBackgroundResource(R.drawable.barratgrey);
+                                camera.setBackgroundResource(R.drawable.round_button);
+                                gallery.setBackgroundResource(R.drawable.gallerygreyfilled);
+                                story.setBackgroundResource(R.drawable.storyred);
+                                setFragment(new story());
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+            /*db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     DocumentSnapshot snapshot = task.getResult();
@@ -158,7 +268,7 @@ public class HomeActivity extends AppCompatActivity
                         });
                     }
                 }
-            });
+            });*/
 
         }
 
